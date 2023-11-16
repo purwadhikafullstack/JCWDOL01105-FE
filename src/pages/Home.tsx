@@ -1,24 +1,12 @@
-import { UserInterface } from "@/lib/interface";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+
+import SkeletonProduct from "@/components/product/SkeletonProduct";
+import Banner from "@/components/product/Banner";
 
 const Home = () => {
-  /////// TestAPI
-  const { data: user, isFetched } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      const res = await axios.get("https://jsonplaceholder.typicode.com/users");
-      return res.data;
-    },
-  });
   return (
     <div>
-      {isFetched &&
-        user.map((item: UserInterface) => (
-          <p className="text-blue-400" key={item.id}>
-            {item.name}
-          </p>
-        ))}
+      <Banner />
+      <SkeletonProduct />
     </div>
   );
 };
