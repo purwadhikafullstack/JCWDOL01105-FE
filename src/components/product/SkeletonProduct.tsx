@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 const SkeletonProduct = () => {
   return (
-    <div className="grid grid-cols-6">
+    <div className="grid md:grid-cols-4 lg:grid-cols-6">
       {Array(18)
         .fill(0)
         .map((item, i) => (

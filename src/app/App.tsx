@@ -7,7 +7,7 @@ function App() {
   return (
     <Fragment>
       <Header />
-      <div className="mx-auto px-10 my-8  static">{<Outlet />}</div>
+      <div className="mx-auto px-10 my-8">{<Outlet />}</div>
       <Footer />
     </Fragment>
   );
