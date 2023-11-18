@@ -4,56 +4,49 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registeSchema } from "@/lib/schema";
+import { loginSchema } from "@/lib/schema";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Toaster, toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { usePostApi } from "@/lib/service";
+import { AuthContext } from "@/app/AuthContext";
 import icon from "@/assets/icons";
 
-const Register = () => {
+const Login = () => {
   const [show, setShow] = useState(false);
-
+  const { login } = useContext(AuthContext);
   const googleAuth = () => {
     window.open(`${import.meta.env.VITE_AUTH_URL}/google/oauth`, "_self");
   };
 
-  // const facebookAuth = () => {
-  //   window.open(`${import.meta.env.VITE_AUTH_URL}/facebook/oauth`, "_self");
-  // };
+  const facebookAuth = () => {
+    window.open(`${import.meta.env.VITE_AUTH_URL}/facebook/oauth`, "_self");
+  };
 
   const initForm = {
-    name: "",
-    email: "",
+    emailOrPhoneNumber: "",
     password: "",
-    phoneNumber: "",
   };
 
   type FormType = typeof initForm;
   const form = useForm({
-    resolver: zodResolver(registeSchema),
+    resolver: zodResolver(loginSchema),
     defaultValues: initForm,
   });
 
-  const { mutate, isSuccess, isError, error } = usePostApi("/api/user/register");
+  const { mutate, data, isSuccess, isError, error } = usePostApi("/api/user/login");
   const onSubmit = (values: FormType) => {
-    mutate({
-      name: values.name,
-      email: values.email,
-      password: values.password,
-      phoneNumber: values.phoneNumber,
-      role: "user",
-    });
+    mutate({ ...values });
   };
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Register Sukses");
+      toast.success("Login Sukses");
+      login(data.data);
       form.reset(initForm);
     }
     if (isError) {
-      console.log(error);
-      toast.error(error?.response?.data.message);
+      toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 
@@ -61,31 +54,19 @@ const Register = () => {
     <DialogContent className="sm:max-w-[425px]">
       <Toaster richColors expand={false} />
       <DialogHeader>
-        <DialogTitle>Daftar</DialogTitle>
+        <DialogTitle>Masuk</DialogTitle>
         <DialogDescription>Selamat Datang di Lawang</DialogDescription>
       </DialogHeader>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
           <FormField
             control={form.control}
-            name="name"
+            name="emailOrPhoneNumber"
             render={({ field }) => (
               <FormItem className="mb-3">
                 <FormControl>
-                  <Input type="text" id="name" placeholder="Nama lengkap" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="my-3">
-                <FormControl>
-                  <Input type="text" id="email" placeholder="Alamat email" {...field} />
+                  <Input type="text" id="emailOrPhoneNumber" placeholder="Email / nomor telepone" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,19 +85,6 @@ const Register = () => {
                       {show ? <Visibility /> : <VisibilityOff />}
                     </FormLabel>
                   </FormItem>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="phoneNumber"
-            render={({ field }) => (
-              <FormItem className="my-3">
-                <FormControl>
-                  <Input type="text" id="phoneNumber" placeholder="Nomor telepon" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -153,4 +121,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
