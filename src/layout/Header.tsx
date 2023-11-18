@@ -16,6 +16,7 @@ import { useGetAPI } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Register from "@/components/auth/Register";
+import Login from "@/components/auth/Login";
 import logo from "../../public/lawang.png";
 
 const Header = () => {
@@ -153,7 +154,7 @@ const Header = () => {
             )}
           </DropdownMenu>
         </div>
-        {route === "Register" ? <Register /> : <></>}
+        {route === "Register" ? <Register /> : <Login />}
       </Dialog>
     </nav>
   );
