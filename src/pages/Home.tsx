@@ -1,4 +1,3 @@
-
 import SkeletonProduct from "@/components/product/SkeletonProduct";
 import Banner from "@/components/product/Banner";
 
