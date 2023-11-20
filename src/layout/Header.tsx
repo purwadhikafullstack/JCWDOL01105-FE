@@ -15,13 +15,16 @@ import { Dialog } from "@/components/ui/dialog";
 import { useGetAPI } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Form } from "@/components/ui/form";
 import Register from "@/components/auth/Register";
 import Login from "@/components/auth/Login";
-import logo from "../../public/lawang.png";
-
+import image from "@/assets/images";
+import LocationField from "@/components/location/LocationField";
+import { useForm } from "react-hook-form";
 const Header = () => {
   const [route, setRoute] = useState("");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isLoactionDialogOpen, setIsLocationDialogOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [darkMode, setDarkMode] = useState(false);
   const { imageUrl, isLogin, loginGoogle } = useContext(AuthContext);
@@ -30,7 +33,6 @@ const Header = () => {
     sessionStorage.removeItem("token");
   };
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
-
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
     localStorage.setItem("mode", mode);
@@ -47,10 +49,23 @@ const Header = () => {
     };
   }, [darkMode]);
 
+  const init = {
+    name: "",
+    provinces: "",
+    regency: "",
+    district: "",
+  };
+  const form = useForm({
+    // resolver: zodResolver(formSchema),
+    defaultValues: init,
+  });
+
+  const onSubmit = () => {};
+
   return (
     <nav className="dark:bg-background flex px-20 py-4 justify-between border-b sticky z-10 top-0 w-full bg-white">
       <Link className="flex items-center" to={"/"}>
-        <img className="w-12" src={logo} alt="" />
+        <img className="w-12" src={image.logo} alt="logo" />
         <span className="text-3xl" style={{ color: "#3FC1C9" }}>
           Lawang
         </span>
@@ -65,7 +80,13 @@ const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenu>
-                <DropdownMenuTrigger>Kota</DropdownMenuTrigger>
+                {/* <LocationField form={form} /> */}
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
+                    <LocationField form={form} />
+                  </form>
+                </Form>
+                {/* <DropdownMenuTrigger>Kota</DropdownMenuTrigger> */}
                 <DropdownMenuContent>
                   <DropdownMenuItem>Bandung</DropdownMenuItem>
                 </DropdownMenuContent>
@@ -117,16 +138,42 @@ const Header = () => {
             </DropdownMenuTrigger>
             {isLogin ? (
               <DropdownMenuContent className="w-[200px]">
-                <DropdownMenuItem className="text-md font-medium">Pesanan</DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-medium">Favorit</DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-medium">Riwayat</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-md font-thin">Properti</DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-thin">Pengaturan</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-md font-thin" onClick={googleLogout}>
-                  Keluar
-                </DropdownMenuItem>
+                <div className="p-2">
+                  <DropdownMenuItem className="text-md font-medium py-2">
+                    <Link className="w-full" to="/setting/order">
+                      Pesanan
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-md font-medium py-2">
+                    <Link className="w-full" to="/setting/favorite">
+                      Favorit
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-md font-medium py-2">
+                    <Link className="w-full" to="/setting/history">
+                      Riwayat
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+                <DropdownMenuSeparator className="bg-slate-300" />
+                <div className="p-2">
+                  <DropdownMenuItem className="text-md font-thin">
+                    <Link className="w-full" to="">
+                      Sewakan Properti
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-md font-thin">
+                    <Link className="w-full " to={"/setting/profile"}>
+                      Akun
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+                <DropdownMenuSeparator className="bg-slate-300" />
+                <div className="p-2">
+                  <DropdownMenuItem className="text-md font-thin cursor-pointer" onClick={googleLogout}>
+                    Keluar
+                  </DropdownMenuItem>
+                </div>
               </DropdownMenuContent>
             ) : (
               <DropdownMenuContent className="w-[200px]">
