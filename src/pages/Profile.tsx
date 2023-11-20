@@ -20,7 +20,7 @@ const Profile = () => {
   const { data, isFetched, refetch } = useGetAPI(`/api/user/id/${id}`, "user-profile");
   const [otp, setOtp] = useState("");
   const { mutate } = usePostApi(`/api/user/id/${id}`);
-  const { mutate: otpRequest } = usePostApi(`/api/user/otp/request`);
+  const { mutate: otpRequest, isSuccess, data: request } = usePostApi(`/api/user/otp/request`);
   const {
     mutate: verify,
     isSuccess: verifyIsSuccess,
@@ -46,7 +46,6 @@ const Profile = () => {
   const onSubmitUpload = (values: any) => {
     const formData = new FormData();
     formData.append("file", values.file);
-    // mutate({...values});
   };
 
   const handleRequest = () => {
@@ -56,7 +55,6 @@ const Profile = () => {
   const handleVerify = () => {
     verify({ email: data?.email, otp: otp });
   };
-  // console.log(data.email);
 
   useEffect(() => {
     if (verifyIsSuccess) {
@@ -66,11 +64,17 @@ const Profile = () => {
       toast.success("Verifikasi berhasil");
     }
     if (verifyIsError) {
-      console.log(verifyError?.response.data.message);
       toast.error(verifyError?.response.data.message);
     }
     refetch();
   }, [refetch, verifyIsError, verifyIsSuccess]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.error(request.message);
+    }
+  }, [request]);
+
   return (
     <div className="border rounded-xl p-10 flex flex-row">
       <div className="w-1/3">
@@ -78,7 +82,7 @@ const Profile = () => {
           <img src={imageUrl as string} alt="" className="w-[250px] rounded-full mx-auto" />
           <div className="flex mt-2">
             <Button
-              className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 mx-auto"
+              className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 mx-auto hidden"
               onClick={() => handleClick()}
             >
               <AddAPhoto fontSize="small" className="mr-2" />
@@ -113,7 +117,7 @@ const Profile = () => {
                 )}
               />
               <Button
-                className="mx-auto mt-2 bg-[#3FC1C9]"
+                className="mx-auto mt-2 bg-[#3FC1C9] hidden"
                 type="submit"
                 onClick={() => dispathc(setRand(Math.random()))}
               >

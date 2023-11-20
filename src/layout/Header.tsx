@@ -15,16 +15,13 @@ import { Dialog } from "@/components/ui/dialog";
 import { useGetAPI } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Form } from "@/components/ui/form";
 import Register from "@/components/auth/Register";
 import Login from "@/components/auth/Login";
 import image from "@/assets/images";
-import LocationField from "@/components/location/LocationField";
-import { useForm } from "react-hook-form";
+
 const Header = () => {
   const [route, setRoute] = useState("");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isLoactionDialogOpen, setIsLocationDialogOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [darkMode, setDarkMode] = useState(false);
   const { imageUrl, isLogin, loginGoogle } = useContext(AuthContext);
@@ -49,19 +46,6 @@ const Header = () => {
     };
   }, [darkMode]);
 
-  const init = {
-    name: "",
-    provinces: "",
-    regency: "",
-    district: "",
-  };
-  const form = useForm({
-    // resolver: zodResolver(formSchema),
-    defaultValues: init,
-  });
-
-  const onSubmit = () => {};
-
   return (
     <nav className="dark:bg-background flex px-20 py-4 justify-between border-b sticky z-10 top-0 w-full bg-white">
       <Link className="flex items-center" to={"/"}>
@@ -80,13 +64,7 @@ const Header = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenu>
-                {/* <LocationField form={form} /> */}
-                <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
-                    <LocationField form={form} />
-                  </form>
-                </Form>
-                {/* <DropdownMenuTrigger>Kota</DropdownMenuTrigger> */}
+                <DropdownMenuTrigger>Kota</DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem>Bandung</DropdownMenuItem>
                 </DropdownMenuContent>
@@ -157,12 +135,12 @@ const Header = () => {
                 </div>
                 <DropdownMenuSeparator className="bg-slate-300" />
                 <div className="p-2">
-                  <DropdownMenuItem className="text-md font-thin">
+                  <DropdownMenuItem className="text-md font-thin py-2">
                     <Link className="w-full" to="">
                       Sewakan Properti
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="text-md font-thin">
+                  <DropdownMenuItem className="text-md font-thin py-2">
                     <Link className="w-full " to={"/setting/profile"}>
                       Akun
                     </Link>
@@ -170,33 +148,37 @@ const Header = () => {
                 </div>
                 <DropdownMenuSeparator className="bg-slate-300" />
                 <div className="p-2">
-                  <DropdownMenuItem className="text-md font-thin cursor-pointer" onClick={googleLogout}>
+                  <DropdownMenuItem className="text-md font-thin cursor-pointer py-2" onClick={googleLogout}>
                     Keluar
                   </DropdownMenuItem>
                 </div>
               </DropdownMenuContent>
             ) : (
               <DropdownMenuContent className="w-[200px]">
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsEditDialogOpen(true);
-                    setRoute("Register");
-                  }}
-                  className="text-md font-medium"
-                >
-                  Daftar
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsEditDialogOpen(true);
-                    setRoute("Login");
-                  }}
-                  className="text-md font-medium"
-                >
-                  Masuk
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-md font-thin">Sewakan Properti</DropdownMenuItem>
+                <div className="p-2">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setIsEditDialogOpen(true);
+                      setRoute("Register");
+                    }}
+                    className="text-md py-2"
+                  >
+                    Daftar
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setIsEditDialogOpen(true);
+                      setRoute("Login");
+                    }}
+                    className="text-md font-medium py-2"
+                  >
+                    Masuk
+                  </DropdownMenuItem>
+                </div>
+                <DropdownMenuSeparator className="bg-slate-300" />
+                <div className="p-2">
+                  <DropdownMenuItem className="text-md font-thin py-2">Sewakan Properti</DropdownMenuItem>
+                </div>
               </DropdownMenuContent>
             )}
           </DropdownMenu>

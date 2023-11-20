@@ -7,7 +7,6 @@ const Home = lazy(() => import("../pages/Home"));
 const Setting = lazy(() => import("../layout/Setting"));
 const Profile = lazy(() => import("../pages/Profile"));
 const ProtectedRoute = lazy(() => import("../components/auth/ProtectedRoute"));
-import Location from "@/pages/Location";
 
 const AppWrapper = () => {
   return (
@@ -16,7 +15,6 @@ const AppWrapper = () => {
         <Routes>
           <Route path="" element={<App />}>
             <Route path="" element={<Home />} />
-            <Route path="location" element={<Location />} />
 
             <Route path="/setting" element={<Setting />}>
               <Route
