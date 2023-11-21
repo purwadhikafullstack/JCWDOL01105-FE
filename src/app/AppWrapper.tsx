@@ -11,7 +11,7 @@ import TenantHome from "../pages/tenantHome";
 // import App from "./App";
 
 
-const App = lazy(() => import("../app/App"));
+// const App = lazy(() => import("../app/App"));
 const Home = lazy(() => import("../pages/Home"));
 const Setting = lazy(() => import("../layout/Setting"));
 const Profile = lazy(() => import("../pages/Profile"));
@@ -21,7 +21,7 @@ const AppWrapper = () => {
   return (
     <Fragment>
       <Suspense fallback={<Loading />}>
-        <MainNavBarTenant/>
+        
         <Routes>
           <Route path="/" element={<App />}>
           <Route path="/" element={<Home />} />

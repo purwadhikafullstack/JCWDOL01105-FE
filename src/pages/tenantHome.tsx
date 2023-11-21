@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/navigation-menu"
 
 import { useGetAPI , usePostApi} from "@/lib/service";
+import MainNavBarTenant from "@/components/mainNavBarTenant/mainNavBarTenant";
 
 
 const TenantHome = () => {
@@ -68,6 +69,7 @@ const TenantHome = () => {
 
   return (
     <>
+    <MainNavBarTenant/>
     <br/>
 
     <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">

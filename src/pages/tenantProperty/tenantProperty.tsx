@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
+import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
 
 import {
     Form,
@@ -54,8 +55,8 @@ const AddProperty : React.FC =()=>{
 
 
     return (
-  
-
+  <>
+<MainNavBarTenant/>
 <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
@@ -63,13 +64,10 @@ const AddProperty : React.FC =()=>{
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Nama Properti</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Nama Properti Anda" {...field} />
               </FormControl>
-              <FormDescription>
-             Ini nama properti Anda
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -87,10 +85,23 @@ const AddProperty : React.FC =()=>{
             </FormItem>
           )}
         />
+         <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>URL Gambar Properti</FormLabel>
+              <FormControl>
+                <Input placeholder="Masukkan Link Gambar Properti Anda" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
       </form>
       </Form>
-    
+    </>
     );
 }
 
