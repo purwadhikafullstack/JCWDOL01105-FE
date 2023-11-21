@@ -10,7 +10,12 @@ import TenantHome from "../pages/tenantHome";
 
 // import App from "./App";
 
+
+const App = lazy(() => import("../app/App"));
 const Home = lazy(() => import("../pages/Home"));
+const Setting = lazy(() => import("../layout/Setting"));
+const Profile = lazy(() => import("../pages/Profile"));
+const ProtectedRoute = lazy(() => import("../components/auth/ProtectedRoute"));
 
 const AppWrapper = () => {
   return (
@@ -26,6 +31,19 @@ const AppWrapper = () => {
         {/* <Routes>
           <Route path="/" element={<App />}>
             <Route path="/" element={<Home />} /> */}
+          {/* <Route path="" element={<App />}>
+            <Route path="" element={<Home />} /> */}
+
+            <Route path="/setting" element={<Setting />}>
+              <Route
+                path="profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
           </Route>
         </Routes>
       </Suspense>

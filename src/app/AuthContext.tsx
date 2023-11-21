@@ -28,7 +28,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const getToken = () => {
     const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : false;
     if (token) {
-      console.log("context", token);
       const payload: Token = jwtDecode(token);
       const data = { id: payload.id, role: payload.role, imageUrl: payload.image_url, isLogin: true, token: token };
       return data;
