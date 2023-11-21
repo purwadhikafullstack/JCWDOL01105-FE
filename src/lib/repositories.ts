@@ -1,23 +1,24 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
-const baseUrl = import.meta.env.VITE_BASE_URL;
+const baseURL = import.meta.env.VITE_BASE_URL;
+const axiosClient = axios.create({ baseURL: baseURL, timeout: 3000 });
 
 class Repositories {
-  async getApi(params: string) {
-    const res = await axios.get(`${baseUrl}/${params}`);
+  async getApi(params: string, headers: AxiosRequestConfig) {
+    const res = await axiosClient.get(`${params}`, headers);
     return res.data.data;
   }
 
-  async postApi(params: string, data: any) {
-    return await axios.post(`${baseUrl}/${params}`, data);
+  async postApi(params: string, data: unknown, headers: AxiosRequestConfig) {
+    return await axiosClient.post(`${params}`, data, headers);
   }
 
-  async putApi(params: string, data: any) {
-    return await axios.put(`${baseUrl}/${params}`, data);
+  async putApi(params: string, data: unknown, headers: AxiosRequestConfig) {
+    return await axiosClient.put(`${params}`, data, headers);
   }
 
-  async deleteApi(params: string, data: any) {
-    return await axios.delete(`${baseUrl}/${params}`, data);
+  async deleteApi(params: string, headers: AxiosRequestConfig) {
+    return await axiosClient.delete(`${params}`, headers);
   }
 }
 
