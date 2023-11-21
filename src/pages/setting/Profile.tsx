@@ -1,7 +1,7 @@
 import { AuthContext } from "@/app/AuthContext";
 import { useContext, useEffect, useState, useRef } from "react";
 import { useGetAPI, usePostApi } from "@/lib/service";
-import { Form, FormControl, FormItem, FormLabel, FormMessage, FormField } from "@/components/ui/form";
+import { Form, FormControl, FormItem, FormMessage, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -76,9 +76,9 @@ const Profile = () => {
   }, [request]);
 
   return (
-    <div className="border rounded-xl p-10 flex flex-row">
-      <div className="w-1/3">
-        <div className="">
+    <div className="border rounded-xl p-10 flex flex-col sm:flex-row">
+      <div className="w-full mb-10 sm:w-1/3">
+        <div>
           <img src={imageUrl as string} alt="" className="w-[250px] rounded-full mx-auto" />
           <div className="flex mt-2">
             <Button
@@ -116,11 +116,7 @@ const Profile = () => {
                   </FormItem>
                 )}
               />
-              <Button
-                className="mx-auto mt-2 bg-[#3FC1C9] hidden"
-                type="submit"
-                onClick={() => dispathc(setRand(Math.random()))}
-              >
+              <Button className="mx-auto mt-2 hidden" type="submit" onClick={() => dispathc(setRand(Math.random()))}>
                 Submit
               </Button>
             </form>
@@ -128,7 +124,7 @@ const Profile = () => {
         </div>
 
         {isFetched && (
-          <div className="mx-auto text-center">
+          <div className="lg:mx-auto text-center">
             <p className="italic font-thin">
               {data.email_verified ? "Email telah diverifikasi" : "Email belum diverifikasi"}
             </p>
@@ -171,30 +167,32 @@ const Profile = () => {
       </div>
 
       {isFetched && (
-        <div className="w-2/3 px-20">
-          <div className="flex justify-end">
-            <p className="cursor-pointer hover:underline">Edit</p>
-          </div>
+        <div className="w-full sm:w-2/3 sm:px-8 md:px-12 lg:px-16">
+          <div>
+            <div className="flex justify-end">
+              <p className="cursor-pointer hover:underline">Edit</p>
+            </div>
 
-          <div className="my-6">
-            <p className="text-lg font-medium">Nama Lengkap</p>
-            <p className="text-lg font-thin">{data.name}</p>
-          </div>
-          <div className="my-6">
-            <p className="text-lg font-medium">Alamat Email</p>
-            <p className="text-lg font-thin">{data.email}</p>
-          </div>
-          <div className="my-6">
-            <p className="text-lg font-medium">Alamat</p>
-            <p className="text-lg font-thin">{data.address ? data.address : "Tidak ada"}</p>
-          </div>
-          <div className="my-6">
-            <p className="text-lg font-medium">Jenis Kelamin</p>
-            <p className="text-lg font-thin">{data.gender ? data.gender : "Tidak ada"}</p>
-          </div>
-          <div className="my-6">
-            <p className="text-lg font-medium">Normor Telepone</p>
-            <p className="text-lg font-thin">{data.phone_number ? data.phone_number : "Tidak ada"}</p>
+            <div className="my-6">
+              <p className="text-lg font-medium">Nama Lengkap</p>
+              <p className="text-lg font-thin">{data.name}</p>
+            </div>
+            <div className="my-6">
+              <p className="text-lg font-medium">Alamat Email</p>
+              <p className="text-lg font-thin">{data.email}</p>
+            </div>
+            <div className="my-6">
+              <p className="text-lg font-medium">Alamat</p>
+              <p className="text-lg font-thin">{data.address ? data.address : "Tidak ada"}</p>
+            </div>
+            <div className="my-6">
+              <p className="text-lg font-medium">Jenis Kelamin</p>
+              <p className="text-lg font-thin">{data.gender ? data.gender : "Tidak ada"}</p>
+            </div>
+            <div className="my-6">
+              <p className="text-lg font-medium">Normor Telepone</p>
+              <p className="text-lg font-thin">{data.phone_number ? data.phone_number : "Tidak ada"}</p>
+            </div>
           </div>
         </div>
       )}
