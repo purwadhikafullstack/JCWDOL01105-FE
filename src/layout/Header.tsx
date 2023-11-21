@@ -17,6 +17,7 @@ import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Register from "@/components/auth/Register";
 import Login from "@/components/auth/Login";
+
 import image from "@/assets/images";
 
 const Header = () => {
@@ -30,6 +31,7 @@ const Header = () => {
     sessionStorage.removeItem("token");
   };
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
+
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
     localStorage.setItem("mode", mode);

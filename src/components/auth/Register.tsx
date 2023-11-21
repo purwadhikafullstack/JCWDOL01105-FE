@@ -9,7 +9,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Toaster, toast } from "sonner";
 import { useEffect, useState } from "react";
 import { usePostApi } from "@/lib/service";
-import icon from "../../assets/icons/index";
+import icon from "@/assets/icons";
 
 const Register = () => {
   const [show, setShow] = useState(false);
