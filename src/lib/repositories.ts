@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = import.meta.VITE_BASE_URL;
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 class Repositories {
   async getApi(params: string) {
