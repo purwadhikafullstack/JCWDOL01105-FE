@@ -61,7 +61,7 @@ const TenantHome = () => {
 // console.log(isFetched && data);
 
 
-
+// console.log(propData)
 
 
 
