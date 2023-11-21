@@ -1,6 +1,9 @@
 import z from "zod";
 import axios from "axios";
 
+const MAX_FILE_SIZE = 1000000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
+
 export const registeSchema = z.object({
   name: z
     .string()
@@ -46,4 +49,15 @@ export const loginSchema = z.object({
   //   }
   // }, "Email atau nomor telepon tidak sesuai"),
   password: z.string().min(6, { message: "Minimal 6 karakter" }).max(16, { message: "Maksimal 16 karakter" }),
+});
+
+export const uploadImageSchema = z.object({
+  file: z
+    .object({
+      name: z.string(),
+      size: z.number(),
+      type: z.string(),
+    })
+    .refine((files) => files?.size <= MAX_FILE_SIZE, `Ukuran gambar masksimal 1MB.`)
+    .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.type), "Hanya format .jpg, .jpeg, .png"),
 });

@@ -17,7 +17,7 @@ import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Register from "@/components/auth/Register";
 import Login from "@/components/auth/Login";
-import logo from "../../public/lawang.png";
+import image from "@/assets/images";
 
 const Header = () => {
   const [route, setRoute] = useState("");
@@ -30,7 +30,6 @@ const Header = () => {
     sessionStorage.removeItem("token");
   };
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
-
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
     localStorage.setItem("mode", mode);
@@ -50,7 +49,7 @@ const Header = () => {
   return (
     <nav className="dark:bg-background flex px-20 py-4 justify-between border-b sticky z-10 top-0 w-full bg-white">
       <Link className="flex items-center" to={"/"}>
-        <img className="w-12" src={logo} alt="" />
+        <img className="w-12" src={image.logo} alt="logo" />
         <span className="text-3xl" style={{ color: "#3FC1C9" }}>
           Lawang
         </span>
@@ -117,39 +116,69 @@ const Header = () => {
             </DropdownMenuTrigger>
             {isLogin ? (
               <DropdownMenuContent className="w-[200px]">
-                <DropdownMenuItem className="text-md font-medium">Pesanan</DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-medium">Favorit</DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-medium">Riwayat</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-md font-thin">Properti</DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-thin">Pengaturan</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-md font-thin" onClick={googleLogout}>
-                  Keluar
-                </DropdownMenuItem>
+                <div className="p-2">
+                  <DropdownMenuItem className="text-md font-medium py-2">
+                    <Link className="w-full" to="/setting/order">
+                      Pesanan
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-md font-medium py-2">
+                    <Link className="w-full" to="/setting/favorite">
+                      Favorit
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-md font-medium py-2">
+                    <Link className="w-full" to="/setting/history">
+                      Riwayat
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+                <DropdownMenuSeparator className="bg-slate-300" />
+                <div className="p-2">
+                  <DropdownMenuItem className="text-md font-thin py-2">
+                    <Link className="w-full" to="">
+                      Sewakan Properti
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-md font-thin py-2">
+                    <Link className="w-full " to={"/setting/profile"}>
+                      Akun
+                    </Link>
+                  </DropdownMenuItem>
+                </div>
+                <DropdownMenuSeparator className="bg-slate-300" />
+                <div className="p-2">
+                  <DropdownMenuItem className="text-md font-thin cursor-pointer py-2" onClick={googleLogout}>
+                    Keluar
+                  </DropdownMenuItem>
+                </div>
               </DropdownMenuContent>
             ) : (
               <DropdownMenuContent className="w-[200px]">
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsEditDialogOpen(true);
-                    setRoute("Register");
-                  }}
-                  className="text-md font-medium"
-                >
-                  Daftar
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsEditDialogOpen(true);
-                    setRoute("Login");
-                  }}
-                  className="text-md font-medium"
-                >
-                  Masuk
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-md font-thin">Sewakan Properti</DropdownMenuItem>
+                <div className="p-2">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setIsEditDialogOpen(true);
+                      setRoute("Register");
+                    }}
+                    className="text-md py-2"
+                  >
+                    Daftar
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setIsEditDialogOpen(true);
+                      setRoute("Login");
+                    }}
+                    className="text-md font-medium py-2"
+                  >
+                    Masuk
+                  </DropdownMenuItem>
+                </div>
+                <DropdownMenuSeparator className="bg-slate-300" />
+                <div className="p-2">
+                  <DropdownMenuItem className="text-md font-thin py-2">Sewakan Properti</DropdownMenuItem>
+                </div>
               </DropdownMenuContent>
             )}
           </DropdownMenu>
