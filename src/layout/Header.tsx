@@ -25,7 +25,7 @@ const Header = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [darkMode, setDarkMode] = useState(false);
-  const { imageUrl, isLogin, loginGoogle } = useContext(AuthContext);
+  const { imageUrl, isLogin, loginGoogle,role } = useContext(AuthContext);
   const googleLogout = () => {
     window.open(`${import.meta.env.VITE_BASE_URL}/auth/logout`, "_self");
     sessionStorage.removeItem("token");
