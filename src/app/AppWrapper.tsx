@@ -5,8 +5,9 @@ import Loading from "@/components/Loading";
 const App = lazy(() => import("../app/App"));
 const Home = lazy(() => import("../pages/Home"));
 const Setting = lazy(() => import("../layout/Setting"));
-const Profile = lazy(() => import("../pages/Profile"));
+const Profile = lazy(() => import("../pages/setting/Profile"));
 const ProtectedRoute = lazy(() => import("../components/auth/ProtectedRoute"));
+const Privacy = lazy(() => import("../pages/setting/Privacy"));
 
 const AppWrapper = () => {
   return (
@@ -22,6 +23,14 @@ const AppWrapper = () => {
                 element={
                   <ProtectedRoute>
                     <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="privacy"
+                element={
+                  <ProtectedRoute>
+                    <Privacy />
                   </ProtectedRoute>
                 }
               />
