@@ -12,6 +12,7 @@ const SelectLocation = ({
   locations: any;
   onChange?: any;
 }) => {
+  // console.log("this", locations);
   return (
     <div className="w-[180px]">
       <FormField

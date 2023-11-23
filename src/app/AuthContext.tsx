@@ -53,8 +53,10 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   };
 
   const logout = () => {
-    sessionStorage.removeItem("token");
-    navigate("/");
+    setTimeout(() => {
+      sessionStorage.removeItem("token");
+      navigate("/");
+    }, 1000);
   };
 
   useEffect(() => {}, [rand]);

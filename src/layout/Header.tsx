@@ -1,250 +1,53 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
-import { Separator } from "@/components/ui/separator";
-import { DropdownCalendar } from "@/components/ui/custom-calendar";
-import {
-  Menu,
-  AccountCircle,
-  Search,
-  CalendarMonth,
-  AddLocationAlt,
-  Brightness6,
-  LightMode,
-  DarkMode,
-} from "@mui/icons-material";
-import { Input } from "@/components/ui/input";
-import { Dialog } from "@/components/ui/dialog";
+import { useEffect, useContext } from "react";
+
 import { useGetAPI } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Switch } from "@/components/ui/switch";
-import Register from "@/components/auth/Register";
-import Login from "@/components/auth/Login";
+
 import image from "@/assets/images";
-import LocationField from "@/components/location/LocationField";
-import { Form, FormField } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import SearchField from "@/components/navigation/SearchField";
+import Account from "@/components/navigation/Account";
 
 const Header = () => {
-  const [route, setRoute] = useState("");
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [darkMode, setDarkMode] = useState(false);
-  const [isFind, setIsFind] = useState(false);
-  const { imageUrl, isLogin, loginGoogle } = useContext(AuthContext);
-  const googleLogout = () => {
-    window.open(`${import.meta.env.VITE_BASE_URL}/auth/logout`, "_self");
-    sessionStorage.removeItem("token");
-  };
-  const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
+  const { isLogin, loginGoogle } = useContext(AuthContext);
+
+  const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", {
+    withCredentials: true,
+  });
+
   useEffect(() => {
-    const mode = darkMode ? "dark" : "light";
-    localStorage.setItem("mode", mode);
     if (isSuccess) {
+      console.log("this", data);
       loginGoogle(data);
     }
-  }, [darkMode, isSuccess]);
+  }, [data]);
 
-  useEffect(() => {
-    const mode = localStorage.getItem("mode");
-    document.documentElement.classList.add(String(mode));
-    return () => {
-      document.documentElement.classList.remove(String(mode));
-    };
-  }, [darkMode]);
-  const handleChange = (e: any) => {
-    // console.log(e.target);
-  };
-  const initForm = {
-    province: "",
-    regency: "",
-    district: "",
-  };
-  const form = useForm({ defaultValues: initForm });
-  const onSubmit = (e: any) => {
-    console.log(e);
-  };
+  const form = useForm();
+  const onSubmit = (e: any) => {};
 
   return (
-    <nav>
-      <div className="dark:bg-background flex px-4 md:px-12 py-4 lg:px-20 justify-between border-b sticky z-10 top-0 w-full bg-white ">
+    <nav className="dark:bg-background flex px-4 md:px-12 py-4 lg:px-20 justify-between border-b sticky z-10 top-0 w-full bg-white items-center">
+      <div>
         <Link className="flex items-center" to={"/"}>
           <img className="w-12" src={image.logo} alt="logo" />
           <span className="text-3xl" style={{ color: "#3FC1C9" }}>
             Lawang
           </span>
         </Link>
-
-        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <div
-            className="flex w-1/2 justify-around border border-slate rounded-full"
-            onClick={() => setIsFind(!isFind)}
-          >
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center">
-                <AddLocationAlt />
-                Lokasi
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {/* <DropdownMenuItem>Bandung</DropdownMenuItem> */}
-                <div className="w-[600px] mx-auto">
-                  <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}
-                      onChange={(e) => handleChange(e)}
-                    >
-                      <LocationField form={form} />
-                      <button type="submit">click</button>
-                    </form>
-                  </Form>
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Separator orientation="vertical" />
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center">
-                <CalendarMonth /> Tanggal
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="flex">
-                <DropdownCalendar
-                  mode="range"
-                  captionLayout="dropdown-buttons"
-                  selected={date}
-                  onSelect={setDate}
-                  fromYear={1960}
-                  toYear={2030}
-                />
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Separator orientation="vertical" />
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center">
-                <Search />
-                Cari...
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="flex">
-                <Input />
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <div className="flex">
-            <div className="items-center mr-4 hidden lg:flex" onClick={() => setDarkMode(!darkMode)}>
-              <Brightness6 className="cursor-pointer" fontSize="large" />
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="border border-slate rounded-full w-24 flex items-center justify-around px-2">
-                <Menu />
-                {isLogin ? (
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage className="ring-4 ring-blue-600" src={imageUrl as string} />
-                  </Avatar>
-                ) : (
-                  <AccountCircle fontSize="large" />
-                )}
-              </DropdownMenuTrigger>
-              {isLogin ? (
-                <DropdownMenuContent className="w-[200px]">
-                  <div className="p-2">
-                    <DropdownMenuItem className="text-md font-medium py-2">
-                      <Link className="w-full" to="/setting/order">
-                        Pesanan
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-md font-medium py-2">
-                      <Link className="w-full" to="/setting/favorite">
-                        Favorit
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-md font-medium py-2">
-                      <Link className="w-full" to="/setting/history">
-                        Riwayat
-                      </Link>
-                    </DropdownMenuItem>
-                  </div>
-                  <DropdownMenuSeparator className="bg-slate-300" />
-                  <div className="p-2">
-                    <DropdownMenuItem className="text-md font-thin py-2">
-                      <Link className="w-full" to="">
-                        Sewakan Properti
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-md font-thin py-2">
-                      <Link className="w-full " to={"/setting/profile"}>
-                        Akun
-                      </Link>
-                    </DropdownMenuItem>
-                  </div>
-                  <DropdownMenuSeparator className="bg-slate-300" />
-                  <div className="p-2">
-                    <DropdownMenuItem className="flex lg:hidden">
-                      {/* <Brightness6 fontSize="medium" /> */}
-                      <div className="flex">
-                        <Switch
-                          className="items-center mr-4 flex lg:hidden cursor-pointer"
-                          onClick={() => setDarkMode(!darkMode)}
-                        ></Switch>
-                        <div className={darkMode ? "hidden" : "lg:visible text-yellow-400"}>
-                          <LightMode />
-                        </div>
-                        <div className={darkMode ? "lg:visible text-yellow-400" : "hidden"}>
-                          <DarkMode />
-                        </div>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="text-md font-thin cursor-pointer py-2" onClick={googleLogout}>
-                      Keluar
-                    </DropdownMenuItem>
-                  </div>
-                </DropdownMenuContent>
-              ) : (
-                <DropdownMenuContent className="w-[200px]">
-                  <div className="p-2">
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setIsEditDialogOpen(true);
-                        setRoute("Register");
-                      }}
-                      className="text-md py-2"
-                    >
-                      Daftar
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        setIsEditDialogOpen(true);
-                        setRoute("Login");
-                      }}
-                      className="text-md font-medium py-2"
-                    >
-                      Masuk
-                    </DropdownMenuItem>
-                  </div>
-                  <DropdownMenuSeparator className="bg-slate-300" />
-                  <div className="p-2">
-                    <DropdownMenuItem className="text-md font-thin py-2">Sewakan Properti</DropdownMenuItem>
-                  </div>
-                </DropdownMenuContent>
-              )}
-            </DropdownMenu>
-          </div>
-          {route === "Register" ? <Register /> : <Login />}
-        </Dialog>
       </div>
-      <div className={isFind ? "h-200 w-screen" : ""}>
-        {/* <div className="w-[600px] mx-auto">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
-              <LocationField form={form} />
-            </form>
-          </Form>
-        </div> */}
+
+      <div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
+            <SearchField />
+          </form>
+        </Form>
+      </div>
+
+      <div>
+        <Account />
       </div>
     </nav>
   );

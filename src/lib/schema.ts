@@ -76,3 +76,38 @@ export const changePasswordSchema = z
     message: "Password harus beda",
     path: ["newPassword"],
   });
+
+export const updateUserSchema = z.object({
+  name: z.string().min(4, "Please enter a valid value").optional().or(z.literal("")),
+  address: z.string().min(4, "Please enter a valid value").optional().or(z.literal("")),
+  birthdate: z.string().min(4, "Please enter a valid value").optional().or(z.literal("")),
+  gender: z.string().min(4, "Please enter a valid value").optional().or(z.literal("")),
+  password: z
+    .string()
+    .min(6, { message: "Minimal 6 karakter" })
+    .max(16, { message: "Maksimal 16 karakter" })
+    .optional()
+    .or(z.literal("")),
+  phoneNumber: z
+    .string()
+    .min(9, { message: "Minimal 9 karakter" })
+    .max(13, { message: "Maksimal 13 karakter" })
+    .optional()
+    .or(z.literal("")),
+});
+
+export const nameSchema = z.object({
+  name: z.string().min(3),
+});
+
+export const emailSchema = z.object({
+  email: z.string().email().min(3),
+});
+
+export const genderSchema = z.object({
+  gender: z.enum(["male", "female"]),
+});
+
+export const birthdateSchema = z.object({
+  birthdate: z.bigint(),
+});

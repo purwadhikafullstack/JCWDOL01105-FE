@@ -11,34 +11,24 @@ import { uploadImageSchema } from "@/lib/schema";
 import { AddAPhoto } from "@mui/icons-material";
 import { setRand } from "@/lib/features/globalReducer";
 import { random } from "@/lib/features/globalReducer";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { DialogDescription } from "@radix-ui/react-dialog";
-import { toast, Toaster } from "sonner";
+import Biodata from "@/components/profile/Biodata";
+import VerifyEmail from "@/components/profile/VerifyEmail";
 
 const Profile = () => {
   const { id, imageUrl } = useContext(AuthContext);
   const { data, isFetched, refetch } = useGetAPI(`/api/user/id/${id}`, "user-profile");
-  const [otp, setOtp] = useState("");
-  const { mutate } = usePostApi(`/api/user/id/${id}`);
-  const { mutate: otpRequest, isSuccess, data: request } = usePostApi(`/api/user/otp/request`);
-  const {
-    mutate: verify,
-    isSuccess: verifyIsSuccess,
-    isError: verifyIsError,
-    error: verifyError,
-  } = usePostApi(`/api/user/verify-email`);
+
   const dispathc = useAppDispatch();
   const rand = useAppSelector(random);
 
   const hiddenFileInput = useRef<HTMLInputElement>(null);
   const handleClick = () => {
-    if (hiddenFileInput.current !== null) hiddenFileInput.current.click();
+    if (hiddenFileInput.current) hiddenFileInput.current.click();
   };
 
   const formUpload = useForm({
     resolver: zodResolver(uploadImageSchema),
   });
-
   const handleChange = (name: any, value: React.ChangeEvent<HTMLInputElement> | File) => {
     formUpload.setValue(name, value);
   };
@@ -48,32 +38,9 @@ const Profile = () => {
     formData.append("file", values.file);
   };
 
-  const handleRequest = () => {
-    otpRequest({ email: data.email });
-  };
-
-  const handleVerify = () => {
-    verify({ email: data?.email, otp: otp });
-  };
-
   useEffect(() => {
-    if (verifyIsSuccess) {
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-      toast.success("Verifikasi berhasil");
-    }
-    if (verifyIsError) {
-      toast.error(verifyError?.response.data.message);
-    }
     refetch();
-  }, [refetch, verifyIsError, verifyIsSuccess]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast.error(request.message);
-    }
-  }, [request]);
+  }, [rand]);
 
   return (
     <div className="border rounded-xl p-10 flex flex-col sm:flex-row">
@@ -128,72 +95,14 @@ const Profile = () => {
             <p className="italic font-thin">
               {data.email_verified ? "Email telah diverifikasi" : "Email belum diverifikasi"}
             </p>
-            <Dialog>
-              <DialogTrigger
-                className={data?.email_verified ? "hidden" : "mx-auto hover:underline"}
-                onClick={() => handleRequest()}
-              >
-                Minta Verifikasi
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Masukkan Kode OTP</DialogTitle>
-                  <DialogDescription className="">
-                    Cek email Anda untuk mendapatkan kode OTP verifikasi email
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="flex items-end">
-                  <Input
-                    className="h-16 w-48 text-4xl text-slate-400 tracking-[8px]"
-                    type="text"
-                    placeholder="______"
-                    maxLength={6}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOtp(e.target.value)}
-                  />
-                  <p
-                    className="ml-2 font-medium italic hover:underline cursor-pointer text-sm"
-                    onClick={() => handleRequest()}
-                  >
-                    kirim ulang
-                  </p>
-                </div>
-
-                <Button onClick={() => handleVerify()}>Verifikasi</Button>
-              </DialogContent>
-              <Toaster richColors />
-            </Dialog>
+            <VerifyEmail data={data} />
           </div>
         )}
       </div>
 
       {isFetched && (
         <div className="w-full sm:w-2/3 sm:px-8 md:px-12 lg:px-16">
-          <div>
-            <div className="flex justify-end">
-              <p className="cursor-pointer hover:underline">Edit</p>
-            </div>
-
-            <div className="my-6">
-              <p className="text-lg font-medium">Nama Lengkap</p>
-              <p className="text-lg font-thin">{data.name}</p>
-            </div>
-            <div className="my-6">
-              <p className="text-lg font-medium">Alamat Email</p>
-              <p className="text-lg font-thin">{data.email}</p>
-            </div>
-            <div className="my-6">
-              <p className="text-lg font-medium">Alamat</p>
-              <p className="text-lg font-thin">{data.address ? data.address : "Tidak ada"}</p>
-            </div>
-            <div className="my-6">
-              <p className="text-lg font-medium">Jenis Kelamin</p>
-              <p className="text-lg font-thin">{data.gender ? data.gender : "Tidak ada"}</p>
-            </div>
-            <div className="my-6">
-              <p className="text-lg font-medium">Normor Telepone</p>
-              <p className="text-lg font-thin">{data.phone_number ? data.phone_number : "Tidak ada"}</p>
-            </div>
-          </div>
+          <Biodata data={data} />
         </div>
       )}
     </div>
