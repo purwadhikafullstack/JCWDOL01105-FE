@@ -1,7 +1,4 @@
-import { Separator } from "@/components/ui/separator";
-import { DropdownCalendar } from "@/components/ui/custom-calendar";
-import { Menu, AccountCircle, Brightness6, LightMode, DarkMode, Check } from "@mui/icons-material";
-import { Input } from "@/components/ui/input";
+import { Menu, AccountCircle, Brightness6, LightMode, DarkMode } from "@mui/icons-material";
 import { Dialog } from "@/components/ui/dialog";
 import {
   DropdownMenu,
@@ -21,13 +18,8 @@ import { Link } from "react-router-dom";
 const Account = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const { imageUrl, isLogin, loginGoogle } = useContext(AuthContext);
+  const { imageUrl, isLogin, logoutGoogle } = useContext(AuthContext);
   const [route, setRoute] = useState("");
-
-  const googleLogout = () => {
-    window.open(`${import.meta.env.VITE_BASE_URL}/auth/logout`, "_self");
-    sessionStorage.removeItem("token");
-  };
 
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
@@ -108,7 +100,7 @@ const Account = () => {
                     </div>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-thin cursor-pointer py-2" onClick={googleLogout}>
+                <DropdownMenuItem className="text-md font-thin cursor-pointer py-2" onClick={() => logoutGoogle()}>
                   Keluar
                 </DropdownMenuItem>
               </div>

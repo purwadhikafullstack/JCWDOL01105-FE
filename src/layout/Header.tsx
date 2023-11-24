@@ -2,24 +2,18 @@ import { Link } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { useGetAPI } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
-import image from "@/assets/images";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import SearchField from "@/components/navigation/SearchField";
 import Account from "@/components/navigation/Account";
+import image from "@/assets/images";
 
 const Header = () => {
   const { isLogin, loginGoogle } = useContext(AuthContext);
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", {
     withCredentials: true,
   });
-  const { imageUrl, isLogin, loginGoogle, role } = useContext(AuthContext);
-  const googleLogout = () => {
-    window.open(`${import.meta.env.VITE_BASE_URL}/auth/logout`, "_self");
-    sessionStorage.removeItem("token");
-  };
 
-  const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
   useEffect(() => {
     if (isSuccess) {
       console.log("this", data);
