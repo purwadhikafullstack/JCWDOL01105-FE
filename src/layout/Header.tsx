@@ -2,9 +2,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { useGetAPI } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import Register from "@/components/auth/Register";
-import Login from "@/components/auth/Login";
 import image from "@/assets/images";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -16,10 +13,6 @@ const Header = () => {
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", {
     withCredentials: true,
   });
-  const [route, setRoute] = useState("");
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [darkMode, setDarkMode] = useState(false);
   const { imageUrl, isLogin, loginGoogle, role } = useContext(AuthContext);
   const googleLogout = () => {
     window.open(`${import.meta.env.VITE_BASE_URL}/auth/logout`, "_self");
