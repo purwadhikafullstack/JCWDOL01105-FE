@@ -16,11 +16,22 @@ interface Profile {
   isLogin: boolean;
   token: string | null;
   loginGoogle: (payload: string) => void;
+  logoutGoogle: (payload: string) => void;
   login: (payload: string) => void;
   logout: () => void;
 }
 
-const init = { id: "", role: "", imageUrl: "", isLogin: false, token: "", login() {}, logout() {}, loginGoogle() {} };
+const init = {
+  id: "",
+  role: "",
+  imageUrl: "",
+  isLogin: false,
+  token: "",
+  login() {},
+  logout() {},
+  loginGoogle() {},
+  logoutGoogle() {},
+};
 
 export const AuthContext = createContext<Profile>(init);
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -44,6 +55,11 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     setRand(Math.random());
   };
 
+  const logoutGoogle = () => {
+    window.open(`${import.meta.env.VITE_BASE_URL}/auth/logout`, "_self");
+    sessionStorage.removeItem("token");
+  };
+
   const login = (payload: string) => {
     sessionStorage.setItem("token", payload);
     setTimeout(() => {
@@ -61,7 +77,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
 
   useEffect(() => {}, [rand]);
   return (
-    <AuthContext.Provider value={{ id, role, imageUrl, isLogin, token, loginGoogle, login, logout }}>
+    <AuthContext.Provider value={{ id, role, imageUrl, isLogin, token, loginGoogle, logoutGoogle, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

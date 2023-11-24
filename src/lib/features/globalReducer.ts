@@ -5,6 +5,7 @@ const initialState = {
   rand: Math.random(),
   home: false,
   click: false,
+  page: 1,
 };
 
 export const globalSlice = createSlice({
@@ -20,11 +21,15 @@ export const globalSlice = createSlice({
     setClick: (state, action) => {
       state.click = action.payload;
     },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
   },
 });
 
 export const random = (state: RootState) => state.rand;
 export const getHome = (state: RootState) => state.home;
 export const getClick = (state: RootState) => state.click;
-export const { setRand, setHome, setClick } = globalSlice.actions;
+export const getPage = (state: RootState) => state.page;
+export const { setRand, setHome, setClick, setPage } = globalSlice.actions;
 export default globalSlice.reducer;

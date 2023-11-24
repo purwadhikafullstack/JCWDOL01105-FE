@@ -96,6 +96,16 @@ export const updateUserSchema = z.object({
     .or(z.literal("")),
 });
 
+export const resetPasswordSchema = z
+  .object({
+    newPassword: z.string().min(6, { message: "Minimal 6 karakter" }).max(16, { message: "Maksimal 16 karakter" }),
+    confirmPassword: z.string().min(6, { message: "Minimal 6 karakter" }).max(16, { message: "Maksimal 16 karakter" }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Password tidak cocok",
+    path: ["confirmPassword"],
+  });
+
 export const nameSchema = z.object({
   name: z.string().min(3),
 });
