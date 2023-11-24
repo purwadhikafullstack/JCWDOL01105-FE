@@ -6,7 +6,6 @@ const App = lazy(() => import("../app/App"));
 const Home = lazy(() => import("../pages/Home"));
 const Setting = lazy(() => import("../layout/Setting"));
 const Profile = lazy(() => import("../pages/setting/Profile"));
-// const ProtectedRoute = lazy(() => import("../components/auth/ProtectedRoute"));
 const Privacy = lazy(() => import("../pages/setting/Privacy"));
 const ResetPassword = lazy(() => import("../components/auth/ResetPassword"));
 import AddProperty from "@/pages/tenantProperty/tenantProperty";
