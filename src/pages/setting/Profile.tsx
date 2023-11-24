@@ -1,6 +1,6 @@
 import { AuthContext } from "@/app/AuthContext";
-import { useContext, useEffect, useState, useRef } from "react";
-import { useGetAPI, usePostApi } from "@/lib/service";
+import { useContext, useEffect, useRef } from "react";
+import { useGetAPI } from "@/lib/service";
 import { Form, FormControl, FormItem, FormMessage, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -43,7 +43,7 @@ const Profile = () => {
   }, [rand]);
 
   return (
-    <div className="border rounded-xl p-10 flex flex-col sm:flex-row">
+    <div className="border rounded-xl p-10 flex flex-col sm:flex-row h-full">
       <div className="w-full mb-10 sm:w-1/3">
         <div>
           <img src={imageUrl as string} alt="" className="w-[250px] rounded-full mx-auto" />

@@ -119,7 +119,7 @@ const Login = () => {
           </div>
           <Separator className="bg-slate-300 w-full" />
 
-          <div className="p-8">
+          <div className="px-8 py-4">
             <Button
               className="bg-white hover:bg-white text-black border items-center flex w-full my-4 text-md"
               onClick={() => googleAuth()}

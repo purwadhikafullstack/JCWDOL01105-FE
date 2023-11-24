@@ -16,8 +16,8 @@ const Setting = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col lg:flex-row">
-        <div className="flex w-full mb-8 p-2 border rounded-xl items-center sm:justify-around md:flex-row lg:w-[260px] lg:mr-8 lg:flex-col lg:items-start ">
+      <div className="flex flex-col lg:flex-row h-[75vh]">
+        <div className="flex h-full w-full mb-8 p-2 border rounded-xl items-center sm:justify-around md:flex-row lg:w-[260px] lg:mr-8 lg:flex-col lg:items-start ">
           <Link to={"/setting/profile"} className="p-2 md:text-md lg:p-4 lg:text-2xl lg:w-full items-center">
             <AccountCircle sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="lg:mr-4 text-blue-500" />
             Profil
@@ -39,7 +39,7 @@ const Setting = () => {
             Privasi
           </Link>
         </div>
-        <div className="lg:w-4/5">{<Outlet />}</div>
+        <div className="lg:w-4/5 h-[75vh]">{<Outlet />}</div>
       </div>
     </ProtectedRoute>
   );

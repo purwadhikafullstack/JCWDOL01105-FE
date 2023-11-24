@@ -1,28 +1,38 @@
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Form, FormControl, FormMessage, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { emailSchema } from "@/lib/schema";
+import { editEmailSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { usePutApi } from "@/lib/service";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "@/app/AuthContext";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/lib/features/hook";
+import { setRand } from "@/lib/features/globalReducer";
 
 const FormEmail = ({ email }: { email: string }) => {
+  const dispatch = useAppDispatch();
+  const { id, bearer } = useContext(AuthContext);
   const initForm = {
     email: email,
   };
-  const form = useForm({ resolver: zodResolver(emailSchema), defaultValues: initForm });
-
-  const onSubmit = (values: any) => {
-    console.log("this", values);
+  const form = useForm({ resolver: zodResolver(editEmailSchema), defaultValues: initForm });
+  const { mutate, isSuccess, isError, error } = usePutApi(`/api/user/${id}`, bearer);
+  const onSubmit = (values: object) => {
+    mutate({ ...values });
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Sukses Mengedit");
+      dispatch(setRand(Math.random()));
+    }
+    if (isError) {
+      toast.error(error.response.data.message);
+    }
+  }, [isSuccess, isError]);
   return (
     <Dialog>
       <DialogTrigger>
@@ -31,10 +41,8 @@ const FormEmail = ({ email }: { email: string }) => {
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, (err: any) => console.log(err))} encType="multipart/form-data">
-            <DialogHeader>
-              <DialogTitle className="mb-4">Ubah Nama Lengkap</DialogTitle>
-              <DialogDescription>Pastikan data yang kamu input valid</DialogDescription>
-            </DialogHeader>
+            <DialogTitle className="mb-2">Ubah Nama Lengkap</DialogTitle>
+            <DialogDescription className="my-4">Pastikan data yang kamu input valid</DialogDescription>
             <FormField
               control={form.control}
               name="email"

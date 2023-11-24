@@ -41,7 +41,6 @@ export const loginSchema = z.object({
   // .refine(async (e) => {
   //   const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/user/${e}`);
   //   if (data.data !== null) {
-  //     console.log(data.data);
   //     const validateEmail = data.data.email;
   //     return validateEmail.includes(e);
   //   } else {
@@ -114,10 +113,26 @@ export const emailSchema = z.object({
   email: z.string().email().min(3),
 });
 
+export const editEmailSchema = z.object({
+  email: z
+    .string()
+    .email()
+    .min(3)
+    .refine(async (e) => {
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/user/email/${e}`);
+      if (data && data.data) {
+        const validateEmail = data.data.email;
+        return validateEmail.includes(!e);
+      } else {
+        return e === e;
+      }
+    }, "Email tidak tersedia"),
+});
+
 export const genderSchema = z.object({
   gender: z.enum(["male", "female"]),
 });
 
 export const birthdateSchema = z.object({
-  birthdate: z.bigint(),
+  birthdate: z.number(),
 });

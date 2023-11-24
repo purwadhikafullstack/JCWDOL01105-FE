@@ -15,6 +15,7 @@ interface Profile {
   imageUrl: string | null;
   isLogin: boolean;
   token: string | null;
+  bearer: any;
   loginGoogle: (payload: string) => void;
   logoutGoogle: (payload: string) => void;
   login: (payload: string) => void;
@@ -27,6 +28,7 @@ const init = {
   imageUrl: "",
   isLogin: false,
   token: "",
+  bearer: {},
   login() {},
   logout() {},
   loginGoogle() {},
@@ -49,6 +51,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   // sessionStorage.clear();
   const { id, imageUrl, role, isLogin, token } = getToken();
   const [rand, setRand] = useState(0);
+  const bearer = { headers: { Authorization: `Bearer ${token}` } };
 
   const loginGoogle = (payload: string) => {
     sessionStorage.setItem("token", payload);
@@ -77,7 +80,9 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
 
   useEffect(() => {}, [rand]);
   return (
-    <AuthContext.Provider value={{ id, role, imageUrl, isLogin, token, loginGoogle, logoutGoogle, login, logout }}>
+    <AuthContext.Provider
+      value={{ id, role, imageUrl, isLogin, token, bearer, loginGoogle, logoutGoogle, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
