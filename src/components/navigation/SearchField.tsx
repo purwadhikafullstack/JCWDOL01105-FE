@@ -35,7 +35,7 @@ const SearchField = () => {
 
   return (
     <Sheet>
-      <SheetTrigger className="flex rounded-full">
+      <SheetTrigger className="hidden md:flex rounded-full">
         <div className="border rounded-l-full p-3">
           <AddLocationAlt />
           Lokasi

@@ -51,13 +51,6 @@ const Biodata: React.FC<IData> = ({ data }) => {
           <FormBirthDate birthdate={data.birthdate} />
         </div>
       </div>
-
-      {/* <div className="my-6">
-        <p className="text-lg font-medium">Normor Telepone</p>
-        <div className="flex justify-between items-center">
-          <p className="text-lg font-thin">{data.phone_number ? data.phone_number : "Tidak ada"}</p>
-        </div>
-      </div> */}
     </div>
   );
 };

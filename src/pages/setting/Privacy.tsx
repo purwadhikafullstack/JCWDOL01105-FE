@@ -50,7 +50,7 @@ const Privacy = () => {
   }, [isSuccess, isError]);
 
   return (
-    <div className="border rounded-xl p-10 flex flex-row">
+    <div className="border rounded-xl p-10 flex flex-row h-full">
       <div className="w-full lg:w-1/2">
         <Toaster richColors />
         <Form {...form}>
