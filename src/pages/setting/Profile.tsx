@@ -1,6 +1,6 @@
 import { AuthContext } from "@/app/AuthContext";
 import { useContext, useEffect, useRef } from "react";
-import { useGetAPI } from "@/lib/service";
+import { useGetAPI, usePutApi } from "@/lib/service";
 import { Form, FormControl, FormItem, FormMessage, FormField } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
@@ -11,17 +11,18 @@ import { uploadImageSchema } from "@/lib/schema";
 import { AddAPhoto } from "@mui/icons-material";
 import { setRand } from "@/lib/features/globalReducer";
 import { random } from "@/lib/features/globalReducer";
+import { Toaster, toast } from "sonner";
 import Biodata from "@/components/profile/Biodata";
 import VerifyEmail from "@/components/profile/VerifyEmail";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 const Profile = () => {
-  const { id, imageUrl } = useContext(AuthContext);
-  const { data, isFetched, refetch } = useGetAPI(`/api/user/id/${id}`, "user-profile");
-
   const dispathc = useAppDispatch();
+  const { id, token } = useContext(AuthContext);
+  const { data, isFetched, refetch } = useGetAPI(`/api/user/id/${id}`, "user-profile");
   const rand = useAppSelector(random);
-
   const hiddenFileInput = useRef<HTMLInputElement>(null);
+
   const handleClick = () => {
     if (hiddenFileInput.current) hiddenFileInput.current.click();
   };
@@ -29,27 +30,49 @@ const Profile = () => {
   const formUpload = useForm({
     resolver: zodResolver(uploadImageSchema),
   });
-  const handleChange = (name: any, value: React.ChangeEvent<HTMLInputElement> | File) => {
-    formUpload.setValue(name, value);
+
+  const { mutate, isSuccess, isError } = usePutApi(`/api/user/upload-image/${id}`, {
+    headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
+  });
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target;
+    const selectedFiles = files as FileList;
+    formUpload.setValue("file", selectedFiles[0]);
   };
 
-  const onSubmitUpload = (values: any) => {
+  const onSubmitUpload = async (values: any) => {
     const formData = new FormData();
     formData.append("file", values.file);
+    mutate(values);
+    dispathc(setRand(Math.random()));
   };
 
   useEffect(() => {
+    if (isSuccess) {
+      toast.success("Sukses Upload Gambar");
+    }
+    if (isError) {
+      toast.success("Sukses Upload Gambar");
+    }
     refetch();
-  }, [rand]);
+  }, [isSuccess, isError, rand]);
 
   return (
     <div className="border rounded-xl p-10 flex flex-col sm:flex-row h-full">
+      <Toaster />
       <div className="w-full mb-10 sm:w-1/3">
         <div>
-          <img src={imageUrl as string} alt="" className="w-[250px] rounded-full mx-auto" />
+          {isFetched && (
+            <div className="flex justify-center">
+              <Avatar className="ring-4 ring-[#FC5185] w-[150px] h-[150px] lg:w-[250px] lg:h-[250px]">
+                <AvatarImage src={data.image_url as string} alt="" className=" rounded-full mx-auto" />
+              </Avatar>
+            </div>
+          )}
           <div className="flex mt-2">
             <Button
-              className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 mx-auto hidden"
+              className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 mx-auto"
               onClick={() => handleClick()}
             >
               <AddAPhoto fontSize="small" className="mr-2" />
@@ -75,15 +98,14 @@ const Profile = () => {
                         className="hidden"
                         type="file"
                         id="file"
-                        form={formUpload}
-                        onChange={(value) => handleChange("file", value.target.files[0])}
+                        onChange={(value) => handleChange(value)}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button className="mx-auto mt-2 hidden" type="submit" onClick={() => dispathc(setRand(Math.random()))}>
+              <Button className="mx-auto mt-2" type="submit" onClick={() => dispathc(setRand(Math.random()))}>
                 Submit
               </Button>
             </form>

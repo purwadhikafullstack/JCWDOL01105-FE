@@ -14,11 +14,19 @@ import { Switch } from "@/components/ui/switch";
 import Register from "@/components/auth/Register";
 import Login from "@/components/auth/Login";
 import { Link } from "react-router-dom";
+import { useGetAPI } from "@/lib/service";
+
+const ProfilePicture = () => {
+  const { id } = useContext(AuthContext);
+  const { data, isFetched } = useGetAPI(`/api/user/id/${id}`, "profile-picture");
+
+  return <Avatar className="ring-2 ring-[#FC5185] w-8 h-8">{isFetched && <AvatarImage src={data.image_url} />}</Avatar>;
+};
 
 const Account = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const { imageUrl, isLogin, logoutGoogle } = useContext(AuthContext);
+  const { isLogin, logoutGoogle } = useContext(AuthContext);
   const [route, setRoute] = useState("");
 
   useEffect(() => {
@@ -43,13 +51,7 @@ const Account = () => {
         <DropdownMenu>
           <DropdownMenuTrigger className="border border-slate rounded-full w-24 flex items-center justify-around p-2">
             <Menu />
-            {isLogin ? (
-              <Avatar className="w-8 h-8">
-                <AvatarImage className="ring-4 ring-blue-600" src={imageUrl as string} />
-              </Avatar>
-            ) : (
-              <AccountCircle fontSize="large" />
-            )}
+            {isLogin ? <ProfilePicture /> : <AccountCircle fontSize="large" />}
           </DropdownMenuTrigger>
           {isLogin ? (
             <DropdownMenuContent className="w-[200px]">

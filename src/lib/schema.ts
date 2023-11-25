@@ -52,11 +52,7 @@ export const loginSchema = z.object({
 
 export const uploadImageSchema = z.object({
   file: z
-    .object({
-      name: z.string(),
-      size: z.number(),
-      type: z.string(),
-    })
+    .any()
     .refine((files) => files?.size <= MAX_FILE_SIZE, `Ukuran gambar masksimal 1MB.`)
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.type), "Hanya format .jpg, .jpeg, .png"),
 });
