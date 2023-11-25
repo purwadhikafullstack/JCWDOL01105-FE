@@ -45,18 +45,22 @@ const Profile = () => {
     const formData = new FormData();
     formData.append("file", values.file);
     mutate(values);
-    dispathc(setRand(Math.random()));
   };
+
+  if (isSuccess) {
+    // dispathc(setRand(Math.random()));
+    // console.log(rand);
+  }
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Sukses Upload Gambar");
     }
     if (isError) {
-      toast.success("Sukses Upload Gambar");
+      toast.success("Gagal Upload Gambar");
     }
     refetch();
-  }, [isSuccess, isError, rand]);
+  }, [isSuccess, isError]);
 
   return (
     <div className="border rounded-xl p-10 flex flex-col sm:flex-row h-full">

@@ -20,8 +20,6 @@ export const usePostApi = (params: string, headers: AxiosRequestConfig = config)
 export const usePutApi = (params: string, headers: AxiosRequestConfig = config) => {
   return useMutation({
     mutationFn: async (data: unknown) => {
-      console.log("data", data);
-
       const res = await repositories.putApi(params, data, headers);
       return res.data;
     },

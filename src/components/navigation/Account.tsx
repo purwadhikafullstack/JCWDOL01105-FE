@@ -11,15 +11,24 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
-import Register from "@/components/auth/Register";
-import Login from "@/components/auth/Login";
 import { Link } from "react-router-dom";
 import { useGetAPI } from "@/lib/service";
+import { random } from "@/lib/features/globalReducer";
+import { useAppSelector } from "@/lib/features/hook";
+import Register from "@/components/auth/Register";
+import Login from "@/components/auth/Login";
 
 const ProfilePicture = () => {
   const { id } = useContext(AuthContext);
-  const { data, isFetched } = useGetAPI(`/api/user/id/${id}`, "profile-picture");
-
+  const { data, isFetched, refetch } = useGetAPI(`/api/user/id/${id}`, "profile-picture");
+  const rand = useAppSelector(random);
+  useEffect(() => {
+    setTimeout(() => {
+      refetch();
+    }, 200);
+  }, [rand, refetch]);
+  console.log("rand", rand);
+  console.log("image", isFetched && data.image_url);
   return <Avatar className="ring-2 ring-[#FC5185] w-8 h-8">{isFetched && <AvatarImage src={data.image_url} />}</Avatar>;
 };
 
@@ -40,7 +49,7 @@ const Account = () => {
     return () => {
       document.documentElement.classList.remove(String(mode));
     };
-  }, [darkMode, location]);
+  }, [darkMode]);
 
   return (
     <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
