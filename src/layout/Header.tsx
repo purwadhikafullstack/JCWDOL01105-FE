@@ -17,6 +17,7 @@ import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Register from "@/components/auth/Register";
 import Login from "@/components/auth/Login";
+import { useNavigate } from "react-router-dom";
 
 import image from "@/assets/images";
 
@@ -31,6 +32,8 @@ const Header = () => {
     sessionStorage.removeItem("token");
   };
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
+
+  const navigate= useNavigate();
 
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
@@ -138,7 +141,7 @@ const Header = () => {
                 <DropdownMenuSeparator className="bg-slate-300" />
                 <div className="p-2">
                   <DropdownMenuItem className="text-md font-thin py-2">
-                    <Link className="w-full" to="">
+                    <Link className="w-full" to="/tenant">
                       Sewakan Properti
                     </Link>
                   </DropdownMenuItem>
@@ -179,7 +182,8 @@ const Header = () => {
                 </div>
                 <DropdownMenuSeparator className="bg-slate-300" />
                 <div className="p-2">
-                  <DropdownMenuItem className="text-md font-thin py-2">Sewakan Properti</DropdownMenuItem>
+                  <DropdownMenuItem   onClick={() => {
+                      navigate("/tenant")}} className="text-md font-thin py-2">Sewakan Properti</DropdownMenuItem>
                 </div>
               </DropdownMenuContent>
             )}

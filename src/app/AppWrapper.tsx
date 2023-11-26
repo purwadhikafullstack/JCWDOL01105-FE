@@ -1,10 +1,11 @@
 import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
 import Loading from "@/components/Loading";
-import AddProperty from "@/pages/tenantProperty/tenantProperty";
+import AddProperty from "@/pages/tenantProperty/propertyAdder";
 import MainNavBarTenant from "@/components/mainNavBarTenant/mainNavBarTenant";
 import App from "./App";
 import TenantHome from "../pages/tenantHome";
+import PropertyEditor from "@/pages/propertyEditor/propertyEditor";
 
 // const Home = lazy(() => import("../pages/tenantHome"));
 
@@ -27,7 +28,7 @@ const AppWrapper = () => {
           <Route path="/" element={<Home />} />
             <Route path="/tenant" element={<TenantHome />} />
             <Route path="/tenant/propertyAdder" element={<AddProperty />} />
-            <Route path="/tenant/propertyEditor" element={""} />
+            <Route path= "/tenant/propertyEditor/:id" element={<PropertyEditor/>} />
         {/* <Routes>
           <Route path="/" element={<App />}>
             <Route path="/" element={<Home />} /> */}

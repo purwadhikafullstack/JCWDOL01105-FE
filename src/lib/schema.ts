@@ -61,3 +61,18 @@ export const uploadImageSchema = z.object({
     .refine((files) => files?.size <= MAX_FILE_SIZE, `Ukuran gambar masksimal 1MB.`)
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.type), "Hanya format .jpg, .jpeg, .png"),
 });
+
+
+export const formAddPropertySchema = z.object({
+
+  name: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  description: z.string().min(2, {
+    message: " Must be at least 2 characters.",
+  }),
+  image_url: z.string().min(2, {
+    message: " Must be at least 2 characters.",
+  }).max(255,{message: "Maximum 255 Char Length"}),
+
+})
