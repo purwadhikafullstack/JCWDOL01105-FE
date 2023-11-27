@@ -9,3 +9,11 @@ export const getPropertyData = async()=>{
 
     return await axios.get(`${URL}/api/propertyList`)
 }
+
+export const postPropertyData = async()=>{
+
+    console.log("exporting property data to",`${URL}`)
+
+    return await axios.post(`${URL}/api/propertyList`)
+}
+
