@@ -15,12 +15,25 @@ interface Profile {
   imageUrl: string | null;
   isLogin: boolean;
   token: string | null;
+  bearer: any;
   loginGoogle: (payload: string) => void;
+  logoutGoogle: (payload: string) => void;
   login: (payload: string) => void;
   logout: () => void;
 }
 
-const init = { id: "", role: "", imageUrl: "", isLogin: false, token: "", login() {}, logout() {}, loginGoogle() {} };
+const init = {
+  id: "",
+  role: "",
+  imageUrl: "",
+  isLogin: false,
+  token: "",
+  bearer: {},
+  login() {},
+  logout() {},
+  loginGoogle() {},
+  logoutGoogle() {},
+};
 
 export const AuthContext = createContext<Profile>(init);
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -38,10 +51,16 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   // sessionStorage.clear();
   const { id, imageUrl, role, isLogin, token } = getToken();
   const [rand, setRand] = useState(0);
+  const bearer = { headers: { Authorization: `Bearer ${token}` } };
 
   const loginGoogle = (payload: string) => {
     sessionStorage.setItem("token", payload);
     setRand(Math.random());
+  };
+
+  const logoutGoogle = () => {
+    window.open(`${import.meta.env.VITE_BASE_URL}/auth/logout`, "_self");
+    sessionStorage.removeItem("token");
   };
 
   const login = (payload: string) => {
@@ -53,13 +72,17 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   };
 
   const logout = () => {
-    sessionStorage.removeItem("token");
-    navigate("/");
+    setTimeout(() => {
+      sessionStorage.removeItem("token");
+      navigate("/");
+    }, 1000);
   };
 
   useEffect(() => {}, [rand]);
   return (
-    <AuthContext.Provider value={{ id, role, imageUrl, isLogin, token, loginGoogle, login, logout }}>
+    <AuthContext.Provider
+      value={{ id, role, imageUrl, isLogin, token, bearer, loginGoogle, logoutGoogle, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
