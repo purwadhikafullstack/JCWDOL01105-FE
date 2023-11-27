@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
-import { useGetAPI, useUpdateApi, usePostApi } from '@/lib/service';
+import { useGetAPI, usePutApi, usePostApi } from '@/lib/service';
 import { getRoomData } from '@/api/roomDataAPI';
 import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
 import {
@@ -67,7 +67,7 @@ const PropertyEditor: React.FC = () => {
 
     
 
-    const { mutate: mutateProperty } = useUpdateApi(`/api/propertyList/${id}`, config)
+    const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config)
 
     const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config)
 
