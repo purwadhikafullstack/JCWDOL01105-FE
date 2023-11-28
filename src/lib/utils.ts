@@ -18,7 +18,3 @@ export const queryLocation = (q: string) => {
   }).toString();
   return query;
 };
-
-export function FormatToIDR(price: number) {
-  return new Intl.NumberFormat("ID", { style: "currency", currency: "IDR" }).format(price);
-}

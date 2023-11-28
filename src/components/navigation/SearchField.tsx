@@ -25,7 +25,6 @@ const frameworks = [
     label: "Astro",
   },
 ];
-
 const SearchField = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
