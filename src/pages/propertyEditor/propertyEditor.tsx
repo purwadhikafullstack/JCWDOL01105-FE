@@ -257,7 +257,7 @@ const PropertyEditor: React.FC = () => {
                                             </FormItem>
                                         )}
                                     />
-                                    <Button type="submit" onClick={()=>{refetch()}}>Confirm</Button>
+                                    <Button type="submit">Confirm</Button>
                                 </form>
                             </Form>
 
