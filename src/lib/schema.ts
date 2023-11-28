@@ -57,6 +57,21 @@ export const uploadImageSchema = z.object({
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.type), "Hanya format .jpg, .jpeg, .png"),
 });
 
+export const formAddPropertySchema = z.object({
+  name: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  description: z.string().min(2, {
+    message: " Must be at least 2 characters.",
+  }),
+  image_url: z
+    .string()
+    .min(2, {
+      message: " Must be at least 2 characters.",
+    })
+    .max(255, { message: "Maximum 255 Char Length" }),
+});
+
 export const changePasswordSchema = z
   .object({
     oldPassword: z.string().min(6, { message: "Minimal 6 karakter" }).max(16, { message: "Maksimal 16 karakter" }),
