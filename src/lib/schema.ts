@@ -132,3 +132,7 @@ export const genderSchema = z.object({
 export const birthdateSchema = z.object({
   birthdate: z.number(),
 });
+
+export const checkinSchema = z.object({
+  dateRange: z.number(),
+});
