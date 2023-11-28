@@ -37,4 +37,5 @@ export const getClick = (state: RootState) => state.click;
 export const getPage = (state: RootState) => state.page;
 export const getGuest = (state: RootState) => state.guest;
 export const { setRand, setHome, setClick, setPage, setGuest } = globalSlice.actions;
+
 export default globalSlice.reducer;

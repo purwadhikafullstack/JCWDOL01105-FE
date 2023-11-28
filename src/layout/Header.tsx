@@ -9,6 +9,7 @@ import image from "@/assets/images";
 const Header = () => {
   const { loginGoogle } = useContext(AuthContext);
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
+  
   useEffect(() => {
     if (isSuccess) {
       loginGoogle(data);

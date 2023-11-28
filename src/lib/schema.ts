@@ -72,6 +72,7 @@ export const formAddPropertySchema = z.object({
     .max(255, { message: "Maximum 255 Char Length" }),
 });
 
+
 export const changePasswordSchema = z
   .object({
     oldPassword: z.string().min(6, { message: "Minimal 6 karakter" }).max(16, { message: "Maksimal 16 karakter" }),
