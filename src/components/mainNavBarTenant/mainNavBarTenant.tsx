@@ -13,6 +13,7 @@ import {
 
 import lawang_logo from "../../../public/lawang_logo.png"
 import React from "react";
+import { Bold } from "lucide-react";
 
 
 const MainNavBarTenant:React.FC = () => {
@@ -55,7 +56,10 @@ const MainNavBarTenant:React.FC = () => {
     //       </p>
     //     ))}
     // </div>
-
+    <>
+    <br/>
+    <h1>TENANT PAGE</h1>
+    <br/>
     <NavigationMenu>
     <NavigationMenuList>
       <NavigationMenuItem>
@@ -73,7 +77,7 @@ const MainNavBarTenant:React.FC = () => {
                       Home
                     </div>
                     <p className="text-sm leading-tight text-muted-foreground">
-                      Takes you to Home Page
+                      Takes you to Tenant Home Page
                     </p>
                   </a>
                 </NavigationMenuLink>
@@ -104,7 +108,7 @@ const MainNavBarTenant:React.FC = () => {
     </NavigationMenuList>
   </NavigationMenu>
   
-
+</>
 
 
 
