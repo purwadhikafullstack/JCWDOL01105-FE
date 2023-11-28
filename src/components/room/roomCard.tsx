@@ -10,6 +10,7 @@ import { useNavigate } from "react-router"
 } from "@/components/ui/card"
 
 import { useDeleteApi } from "@/lib/service"
+import { RoomEditor } from "./roomEditor"
   
 import { Button } from "@/components/ui/button"
 
@@ -32,28 +33,28 @@ import { Button } from "@/components/ui/button"
 const RoomCard: React.FC<CardProps>= ({rooms}:any)=> {
 
 console.log(rooms)
-    const navigate=useNavigate();
+    // const navigate=useNavigate();
     console.log(rooms.id);
 
-    // const config = {
-    //   headers: {
-    //     Accept: 'multipart/form-data'
-    //   }
-    // }
-//   const {mutate}=useDeleteApi(`/api/propertyList/${property.id}`,config)
+    const config = {
+      headers: {
+        Accept: 'multipart/form-data'
+      }
+    }
+  const {mutate}=useDeleteApi(`/api/roomList/${rooms.id}`,config)
 
-//   const handleDeleteClick = async () => {
-//     console.log("ini testing delete id :", property.id);
-//     try {
-//     //Sending the property.id to the server
-//       await mutate(property.id);
-//     }
-//     catch (error) {
-//       // Handle any errors that may occur during the API call
-//       console.error("Error editing property data:", error);
-//     }
+  const handleDeleteClick = async () => {
+    console.log("ini testing delete id :", rooms.id);
+    try {
+    //Sending the property.id to the server
+      await mutate(rooms.id);
+    }
+    catch (error) {
+      // Handle any errors that may occur during the API call
+      console.error("Error deleting property data:", error);
+    }
 
-//   }
+  }
 
 
   return (
@@ -69,8 +70,9 @@ console.log(rooms)
   Guest : {rooms.person}
   </CardContent>
   <CardFooter className="gridcol-3 gap-3">
-    <Button  onClick={()=>{navigate('/')}}>Room Editor</Button>
-    <Button  onClick={()=>{}}> Delete </Button>
+    {/* <Button  onClick={()=>{navigate('/')}}>Room Editor</Button> */}
+    <RoomEditor roomId={rooms.id}/>
+    <Button  onClick={()=>{handleDeleteClick()}}> Delete </Button>
   </CardFooter>
 </Card>
 

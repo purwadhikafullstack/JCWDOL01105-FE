@@ -65,13 +65,18 @@ const PropertyEditor: React.FC = () => {
         }
     }
 
+    const configGet = {headers:{
+
+        Authorization :"123"
+    }}
+
     
 
     const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config)
 
     const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config)
 
-    // const {data}=useGetAPI(`/api/roomList/${id}`,"get",config);
+    // const {data,isLoading,isError,refetch}=useGetAPI(`/api/roomList/${id}`,"room");
 
     // console.log(data);
 
@@ -90,7 +95,7 @@ const PropertyEditor: React.FC = () => {
       };
 
     const [roomData, setRoomData] = useState([]);
-    useEffect(() => { fetchRoomData() }, [])
+    useEffect(() => { fetchRoomData() }, [mutateAddRoom,])
     
 
     const onSubmit = async (values: any) => {
@@ -252,7 +257,7 @@ const PropertyEditor: React.FC = () => {
                                             </FormItem>
                                         )}
                                     />
-                                    <Button type="submit">Confirm</Button>
+                                    <Button type="submit" onClick={()=>{refetch()}}>Confirm</Button>
                                 </form>
                             </Form>
 
