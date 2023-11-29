@@ -7,6 +7,7 @@ const initialState = {
   click: false,
   page: 1,
   guest: 100,
+  query: { city: "", date: { from: "", to: "" } },
 };
 
 export const globalSlice = createSlice({
@@ -28,6 +29,9 @@ export const globalSlice = createSlice({
     setGuest: (state, action) => {
       state.guest = action.payload;
     },
+    setQuery: (state, action) => {
+      state.query = action.payload;
+    },
   },
 });
 
@@ -36,6 +40,6 @@ export const getHome = (state: RootState) => state.home;
 export const getClick = (state: RootState) => state.click;
 export const getPage = (state: RootState) => state.page;
 export const getGuest = (state: RootState) => state.guest;
-export const { setRand, setHome, setClick, setPage, setGuest } = globalSlice.actions;
-
+export const getQuery = (state: RootState) => state.query;
+export const { setRand, setHome, setClick, setPage, setGuest, setQuery } = globalSlice.actions;
 export default globalSlice.reducer;
