@@ -32,11 +32,14 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import RoomCard from '@/components/room/roomCard';
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
 const initialPropertyData = {
 
     name: "",
     description: "",
     image_url: "",
+    category_id: 1,
 }
 
 
@@ -65,38 +68,32 @@ const PropertyEditor: React.FC = () => {
         }
     }
 
-    const configGet = {headers:{
-
-        Authorization :"123"
-    }}
-
-    
 
     const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config)
 
     const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config)
 
-    // const {data,isLoading,isError,refetch}=useGetAPI(`/api/roomList/${id}`,"room");
+    const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/roomList/${id}`, "roomzzz");
 
-    // console.log(data);
+    console.log(isFetched && data);
 
 
-    const fetchRoomData = async () => {
-        try {
-          const result = await getRoomData(id)
-          console.log(result);
-          setRoomData(result.data.data);
-          console.log(roomData);
-        }
-        catch (error) {
-          console.error("Error Message :", error);
-        }
-  
-      };
+    // const fetchRoomData = async () => {
+    //     try {
+    //       const result = await getRoomData(id)
+    //       console.log(result);
+    //       setRoomData(result.data.data);
+    //       console.log(roomData);
+    //     }
+    //     catch (error) {
+    //       console.error("Error Message :", error);
+    //     }
 
-    const [roomData, setRoomData] = useState([]);
-    useEffect(() => { fetchRoomData() }, [mutateAddRoom,])
-    
+    //   };
+
+    // const [roomData, setRoomData] = useState([]);
+    // useEffect(() => { fetchRoomData() }, [mutateAddRoom,])
+
 
     const onSubmit = async (values: any) => {
         console.log("ini testing values :", values);
@@ -126,10 +123,11 @@ const PropertyEditor: React.FC = () => {
     }
 
     const displayCard = () => {
-
-        return roomData.map((room: any, index: number) => ( <RoomCard key={index} rooms={room} /> )
-        )
-      }
+        if (data && isFetched)
+            return data.map((room: any, index: number) => (<RoomCard key={index} rooms={room} />)
+            )
+        else { refetch() }
+    }
 
     return (
         <>
@@ -172,6 +170,32 @@ const PropertyEditor: React.FC = () => {
                             />
                             <FormField
                                 control={formProp.control}
+                                name="category_id"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Deskripsi Terbaru Properti Anda</FormLabel>
+                                        <FormControl>
+                                            <RadioGroup onValueChange={field.onChange} defaultValue={`${field.value}`}>
+                                                <div className="flex items-center space-x-2">
+                                                    <RadioGroupItem value="1" id="1" />
+                                                    <Label htmlFor="option-one">Villa</Label>
+                                                </div>
+                                                <div className="flex items-center space-x-2">
+                                                    <RadioGroupItem value="2" id="2" />
+                                                    <Label htmlFor="option-two">Hotel</Label>
+                                                </div>
+                                                <div className="flex items-center space-x-2">
+                                                    <RadioGroupItem value="3" id="3" />
+                                                    <Label htmlFor="option-two">Apartment</Label>
+                                                </div>
+                                            </RadioGroup>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={formProp.control}
                                 name="image_url"
                                 render={({ field }) => (
                                     <FormItem>
@@ -190,7 +214,7 @@ const PropertyEditor: React.FC = () => {
                 </TabsContent>
                 <TabsContent value="room" >
                     <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {displayCard()}
+                        {displayCard()}
                     </div>
                     <Sheet>
                         <SheetTrigger asChild>
@@ -257,7 +281,7 @@ const PropertyEditor: React.FC = () => {
                                             </FormItem>
                                         )}
                                     />
-                                    <Button type="submit">Confirm</Button>
+                                    <Button type="submit" onClick={() => { setTimeout(refetch, 50) }}>Confirm</Button>
                                 </form>
                             </Form>
 
