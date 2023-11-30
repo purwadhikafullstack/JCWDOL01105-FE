@@ -1,3 +1,4 @@
+import { DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormMessage, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,17 +12,16 @@ import { usePostApi } from "@/lib/service";
 import { Separator } from "../ui/separator";
 import icon from "@/assets/icons";
 
-interface ITab {
-  tab: boolean;
-  setTab: (b: boolean) => void;
-}
-
-const Register: React.FC<ITab> = ({ setTab, tab }) => {
+const RegisterDialog = () => {
   const [show, setShow] = useState(false);
 
   const googleAuth = () => {
     window.open(`${import.meta.env.VITE_AUTH_URL}/google/oauth`, "_self");
   };
+
+  // const facebookAuth = () => {
+  //   window.open(`${import.meta.env.VITE_AUTH_URL}/facebook/oauth`, "_self");
+  // };
 
   const initForm = {
     name: "",
@@ -49,7 +49,7 @@ const Register: React.FC<ITab> = ({ setTab, tab }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Register Sukses");
+      toast.success("RegisterDialog Sukses");
       form.reset(initForm);
     }
     if (isError) {
@@ -58,20 +58,14 @@ const Register: React.FC<ITab> = ({ setTab, tab }) => {
   }, [isSuccess, isError]);
 
   return (
-    <div>
+    <DialogContent className="max-w-[350px] rounded-xl sm:max-w-[500px] p-0">
       <Toaster richColors expand={false} />
-
-      <div className="mt-10">
-        <p className="text-2xl">Selamat Datang di Lawang</p>
-        <span className="text-slate-500 text-sm">
-          Belum memiliki akun{" "}
-          <span className="underline cursor-pointer" onClick={() => setTab(!tab)}>
-            di sini
-          </span>
-        </span>
-
-        <Separator className="bg-slate-300 my-4" />
-
+      <div className="px-8 pt-8">
+        <DialogTitle className="mb-2">Daftar</DialogTitle>
+        <DialogDescription className="my-4">Selamat Datang di Lawang</DialogDescription>
+      </div>
+      <Separator className="bg-slate-300 w-full" />
+      <div className="px-8 py-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
             <FormField
@@ -136,32 +130,35 @@ const Register: React.FC<ITab> = ({ setTab, tab }) => {
             </Button>
           </form>
         </Form>
-
-        <Separator className="bg-slate-300 mt-4" />
-
-        <div className="flex justify-between">
-          <Button
-            className="bg-white hover:bg-white text-black border items-center flex my-4 text-md flex-grow p-6"
-            onClick={() => googleAuth()}
-          >
-            <div className="flex items-center">
-              <img className="w-6" src={icon.google} alt="" />
-            </div>
-          </Button>
-          <Button className="bg-white hover:bg-white text-black border items-center flex my-4 text-md flex-grow p-6 mx-4">
-            <div className="flex items-center">
-              <img className="w-6" src={icon.facebook} alt="" />
-            </div>
-          </Button>
-          <Button className="bg-white hover:bg-white text-black border items-center flex my-4 text-md flex-grow p-6">
-            <div className="flex items-center">
-              <img className="w-6" src={icon.x} alt="" />
-            </div>
-          </Button>
-        </div>
       </div>
-    </div>
+      <Separator className="bg-slate-300 w-full" />
+      <div className="px-8 pb-4">
+        <Button
+          className="bg-white hover:bg-white text-black border items-center flex w-full text-md my-4"
+          onClick={() => googleAuth()}
+        >
+          <div className="flex w-full items-center">
+            <img className="w-6" src={icon.google} alt="" />
+            <span className="mx-auto">Daftar dengan Google</span>
+          </div>
+        </Button>
+
+        <Button className="bg-white hover:bg-white text-black border items-center flex w-full text-md my-4">
+          <div className="flex w-full items-center">
+            <img className="w-6" src={icon.facebook} alt="" />
+            <span className="mx-auto">Daftar dengan Facebook</span>
+          </div>
+        </Button>
+
+        <Button className="bg-white hover:bg-white text-black border items-center flex w-full text-md my-4">
+          <div className="flex w-full items-center">
+            <img className="w-6" src={icon.x} alt="" />
+            <span className="mx-auto">Daftar dengan X</span>
+          </div>
+        </Button>
+      </div>
+    </DialogContent>
   );
 };
 
-export default Register;
+export default RegisterDialog;
