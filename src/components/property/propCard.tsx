@@ -12,6 +12,7 @@ import { useNavigate } from "react-router"
 import { useDeleteApi } from "@/lib/service"
   
 import { Button } from "@/components/ui/button"
+import { Bold } from "lucide-react"
 
 
   interface CardProps {
@@ -20,7 +21,7 @@ import { Button } from "@/components/ui/button"
         name: string;
         description: string;
         image_url: string;
-
+        category: any
         // Add other properties as needed
     };
 }
@@ -59,6 +60,7 @@ console.log(property)
 <Card className="" >
   <CardHeader>
     <CardTitle>{property.name}</CardTitle>
+    <CardDescription >{property.category.category}</CardDescription>
     <CardDescription>{property.description}</CardDescription>
   </CardHeader>
   <CardContent>
