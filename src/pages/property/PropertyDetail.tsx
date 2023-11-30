@@ -19,15 +19,15 @@ interface IRoom {
 
 const PropertyDetail = () => {
   const guest = useAppSelector(getGuest);
-  console.log("guest", guest);
   const { id } = useParams();
   const { data, isFetched } = useGetAPI(`/api/property/${id}`, "property-detail");
-  // console.log(isFetched && data);
+
   return (
     <div>
       {isFetched && (
         <div className="w-11/12 mx-auto">
           <h1 className="text-4xl font-medium pb-4">{data.name}</h1>
+
           <div className="flex w-full">
             <img loading="lazy" className="w-1/2 mr-3 rounded-l-xl" src={data.image_url} />
             <div className="flex flex-col justify-between lg:mr-3">
@@ -39,6 +39,7 @@ const PropertyDetail = () => {
               <img className="rounded-br-xl" src={data.image_url} />
             </div>
           </div>
+
           <div className="flex items-center py-4">
             <div>
               <StarRate className="pb-1" />
@@ -46,7 +47,9 @@ const PropertyDetail = () => {
             <span>5.0</span>
             <span className="underline cursor-pointer ml-2">10 ulasan</span>
           </div>
+
           <Separator className="bg-slate-300" />
+
           <div className="flex py-4 items-center">
             <Avatar>
               <AvatarImage src={data.image_url} />
@@ -56,9 +59,13 @@ const PropertyDetail = () => {
               <p>Tuan rumah sejak 10 nov 2023</p>
             </div>
           </div>
+
           <Separator className="bg-slate-300" />
+
           <p className="my-10">{data.description}</p>
+
           <Separator className="bg-slate-300" />
+
           <div className="flex justify-between my-10">
             <div className="overflow-scroll h-[430px] mr-2 lg:mr-4 w-3/4">
               {data.rooms.map((room: IRoom) => {

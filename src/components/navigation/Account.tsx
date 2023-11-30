@@ -15,8 +15,8 @@ import { Link } from "react-router-dom";
 import { useGetAPI } from "@/lib/service";
 import { random } from "@/lib/features/globalReducer";
 import { useAppSelector } from "@/lib/features/hook";
-import Register from "@/components/auth/Register";
-import Login from "@/components/auth/Login";
+import RegisterDialog from "@/components/auth/RegisterDialog";
+import LoginDialog from "@/components/auth/LoginDialog";
 
 const ProfilePicture = () => {
   const { id } = useContext(AuthContext);
@@ -27,8 +27,6 @@ const ProfilePicture = () => {
       refetch();
     }, 200);
   }, [rand, refetch]);
-  console.log("rand", rand);
-  console.log("image", isFetched && data.image_url);
   return <Avatar className="ring-2 ring-[#FC5185] w-8 h-8">{isFetched && <AvatarImage src={data.image_url} />}</Avatar>;
 };
 
@@ -122,7 +120,7 @@ const Account = () => {
                 <DropdownMenuItem
                   onClick={() => {
                     setIsEditDialogOpen(true);
-                    setRoute("Register");
+                    setRoute("RegisterDialog");
                   }}
                   className="text-md py-2"
                 >
@@ -146,7 +144,7 @@ const Account = () => {
           )}
         </DropdownMenu>
       </div>
-      {route === "Register" ? <Register /> : <Login />}
+      {route === "RegisterDialog" ? <RegisterDialog /> : <LoginDialog />}
     </Dialog>
   );
 };
