@@ -45,7 +45,7 @@ const PropertyDetail = () => {
       </div>
 
       <div className="flex flex-col-reverse md:flex-row justify-around mx-auto  w-11/12">
-        <div className="w-full md:w-1/2 mt-12 md:mt-0 mr-10">
+        <div className="mt-12 md:mt-0 mr-10">
           <p className="text-2xl">Perjalanan Anda</p>
           <div>
             <div className="flex justify-between my-8">
@@ -129,7 +129,7 @@ const PropertyDetail = () => {
             <Card>
               <CardContent className="p-6">
                 <div>
-                  <img className="mx-w-[500px] rounded-xl mb-2" src={data.image_url} />
+                  <img className="rounded-xl mb-2" src={data.image_url} />
                   <p className="font-thin">{data.name}</p>
                   <div className="flex items-center">
                     <StarRate className="md:mb-1" fontSize={"sm"} />0
