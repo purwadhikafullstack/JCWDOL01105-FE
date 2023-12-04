@@ -3,6 +3,9 @@ import PropertyCard from "@/components/property/propCard";
 import { getPropertyData } from "@/api/propertyDataAPI";
 import MainNavBarTenant from "@/components/mainNavBarTenant/mainNavBarTenant";
 import { useGetAPI } from "@/lib/service";
+import ProtectedRouteTenant from "@/components/auth/ProtectedRouteTenant";
+import { useContext } from "react";
+import { AuthContext } from "@/app/AuthContext";
 
 const TenantHome = () => {
   // ///// TestAPI
@@ -29,8 +32,8 @@ const TenantHome = () => {
   // const [propData, setPropData] = useState([]);
 
   // useEffect(() => { fetchPropertyData() }, [])
-
-  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList`, "property");
+  const { id } = useContext(AuthContext);
+  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList/${id}`, "property");
 
   console.log(data);
 
@@ -44,7 +47,9 @@ const TenantHome = () => {
   }
 
   return (
+  <ProtectedRouteTenant>
     <>
+
       <MainNavBarTenant />
       <br />
 
@@ -53,6 +58,7 @@ const TenantHome = () => {
       </div>
       <br />
     </>
+  </ProtectedRouteTenant>
   );
 };
 

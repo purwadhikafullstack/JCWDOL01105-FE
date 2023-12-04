@@ -52,7 +52,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const { id, imageUrl, role, isLogin, token } = getToken();
   const [rand, setRand] = useState(0);
   const bearer = { headers: { Authorization: `Bearer ${token}` } };
-
+  
   const loginGoogle = (payload: string) => {
     sessionStorage.setItem("token", payload);
     setRand(Math.random());

@@ -58,17 +58,31 @@ export const uploadImageSchema = z.object({
 });
 
 
-export const formAddPropertySchema = z.object({
+export const formPropertySchema = z.object({
 
   name: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+    message: "Minimal 2 karakter",
+  }).max(25,{message:"Maksimum 25 karakter"}),
   description: z.string().min(2, {
-    message: " Must be at least 2 characters.",
-  }),
+    message: " Minimal 2 karakter",
+  }).max(50,{message:"Maksimum 25 karakter"}),
+  category_id : z.string(),
   image_url: z.string().min(2, {
-    message: " Must be at least 2 characters.",
-  }).max(255,{message: "Maximum 255 Char Length"}),
+    message: " Minimal 2 karakter",
+  }).max(255,{message: "Maksimum 255 karakter"}),
+
+})
+
+export const formRoomSchema = z.object({
+
+  name: z.string().min(2, {
+    message: "Minimal 2 karakter",
+  }).max(25,{message:"Maksimum 25 karakter"}),
+  price:z.number({required_error :"Harga sewa harus diisi"}).nonnegative(),
+  description: z.string().min(2, {
+    message: " Minimal 2 karakter",
+  }).max(25,{message:"Maksimum 25 karakter"}),
+  person: z.number({required_error :"Jumlah orang harus diisi"}).nonnegative(),
 
 })
 
