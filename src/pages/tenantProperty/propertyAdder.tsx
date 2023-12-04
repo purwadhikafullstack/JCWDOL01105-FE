@@ -38,6 +38,7 @@ import { AuthContext } from '@/app/AuthContext';
 const AddProperty: React.FC = () => {
 
 
+
   console.log("Proptery Adder");
 
   // const form = useForm({defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema)})

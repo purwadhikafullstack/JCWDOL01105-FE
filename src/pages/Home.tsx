@@ -1,9 +1,8 @@
-import SkeletonProduct from "@/components/product/SkeletonProduct";
 import Banner from "@/components/product/Banner";
 import { useEffect } from "react";
 import { setHome, getHome, setClick } from "@/lib/features/globalReducer";
 import { useAppSelector, useAppDispatch } from "@/lib/features/hook";
-import Google from "@/components/location/Google";
+import ProductList from "@/components/product/ProductList";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -17,8 +16,7 @@ const Home = () => {
     <>
       <div onClick={() => dispatch(setClick(false))}>
         <Banner />
-        <SkeletonProduct />
-        <Google />
+        <ProductList />
       </div>
     </>
   );

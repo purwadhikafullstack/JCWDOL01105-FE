@@ -57,7 +57,6 @@ export const uploadImageSchema = z.object({
     .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.type), "Hanya format .jpg, .jpeg, .png"),
 });
 
-
 export const formPropertySchema = z.object({
 
   name: z.string().min(2, {
@@ -160,4 +159,8 @@ export const genderSchema = z.object({
 
 export const birthdateSchema = z.object({
   birthdate: z.number(),
+});
+
+export const searchSchema = z.object({
+  location: z.any(),
 });

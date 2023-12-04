@@ -4,14 +4,12 @@ import { useGetAPI } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import SearchField from "@/components/navigation/SearchField";
 import Account from "@/components/navigation/Account";
-import { useNavigate } from "react-router-dom";
 import image from "@/assets/images";
 
 const Header = () => {
   const { loginGoogle } = useContext(AuthContext);
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
-
-  const navigate= useNavigate();
+  
   useEffect(() => {
     if (isSuccess) {
       loginGoogle(data);

@@ -8,6 +8,9 @@ const Setting = lazy(() => import("../layout/Setting"));
 const Profile = lazy(() => import("../pages/setting/Profile"));
 const Privacy = lazy(() => import("../pages/setting/Privacy"));
 const ResetPassword = lazy(() => import("../components/auth/ResetPassword"));
+const PropertyDetail = lazy(() => import("../pages/property/PropertyDetail"));
+const RoomDetail = lazy(() => import("../pages/property/RoomDetail"));
+
 const TenantHome = lazy(()=>import("../pages/tenantHome"));
 const PropertyEditor = lazy(()=>import("../pages/propertyEditor/propertyEditor"))
 const AddProperty = lazy(()=>import("../pages/tenantProperty/propertyAdder"))
@@ -24,6 +27,10 @@ const AppWrapper = () => {
           <Route path="" element={<App />}>
             <Route path="" element={<Home />} />
             <Route path="/tenantSignIn" element={<TenantSignIn />} />
+
+            <Route path="property/:id" element={<PropertyDetail />} />
+            <Route path="room/:id" element={<RoomDetail />} />
+
             <Route path="/tenant" element={<TenantHome />}/>
             <Route path= "tenant/propertyEditor/:id" element={<PropertyEditor/>} />
             <Route path="/tenant/propertyAdder" element={<AddProperty />} />

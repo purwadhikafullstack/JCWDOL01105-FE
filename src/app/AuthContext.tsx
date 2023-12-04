@@ -65,10 +65,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
 
   const login = (payload: string) => {
     sessionStorage.setItem("token", payload);
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-    console.log(payload);
+    setRand(Math.random());
   };
 
   const logout = () => {
