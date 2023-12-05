@@ -63,17 +63,17 @@ const Account = () => {
           {isLogin ? (
             <DropdownMenuContent className="w-[200px]">
               <div className="p-2">
-                <DropdownMenuItem className="text-md font-medium py-2">
+                <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">
                   <Link className="w-full" to="/setting/order">
                     Pesanan
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-medium py-2">
+                <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">
                   <Link className="w-full" to="/setting/favorite">
                     Favorit
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-medium py-2">
+                <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">
                   <Link className="w-full" to="/setting/history">
                     Riwayat
                   </Link>
@@ -122,7 +122,7 @@ const Account = () => {
                     setIsEditDialogOpen(true);
                     setRoute("RegisterDialog");
                   }}
-                  className="text-md py-2"
+                  className="text-md py-2 cursor-pointer"
                 >
                   Daftar
                 </DropdownMenuItem>
@@ -132,7 +132,7 @@ const Account = () => {
                     setIsEditDialogOpen(true);
                     setRoute("Login");
                   }}
-                  className="text-md font-medium py-2"
+                  className="text-md font-medium py-2 cursor-pointer"
                 >
                   Masuk
                 </DropdownMenuItem>
@@ -141,7 +141,7 @@ const Account = () => {
               <DropdownMenuSeparator className="bg-slate-300" />
 
               <div className="p-2">
-                <DropdownMenuItem className="text-md font-thin py-2">Sewakan Properti</DropdownMenuItem>
+                <DropdownMenuItem className="text-md font-thin py-2 cursor-pointer">Sewakan Properti</DropdownMenuItem>
               </div>
             </DropdownMenuContent>
           )}
