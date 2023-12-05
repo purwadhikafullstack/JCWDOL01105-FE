@@ -3,13 +3,17 @@ import { usePutApi } from "@/lib/service";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { uploadImageSchema } from "@/lib/schema";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { AddAPhoto } from "@mui/icons-material";
 import { DialogContent } from "../ui/dialog";
+import { useEffect } from "react";
+import { Toaster, toast } from "sonner";
+import { AuthContext } from "@/app/AuthContext";
 
-const UploadProvePayment = () => {
+const UploadProvePayment = ({ orderId }: { orderId: string }) => {
+  const { token } = useContext(AuthContext);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -20,9 +24,9 @@ const UploadProvePayment = () => {
     resolver: zodResolver(uploadImageSchema),
   });
 
-  // const { mutate, isSuccess, isError } = usePutApi(`/api/user/upload-image/${id}`, {
-  //   headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
-  // });
+  const { mutate, isSuccess, isError } = usePutApi(`/api/order/upload-image/${orderId}`, {
+    headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
+  });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
@@ -34,12 +38,21 @@ const UploadProvePayment = () => {
     const formData = new FormData();
     formData.append("file", values.file);
     console.log("values", values);
-    // mutate(values);
+    mutate(values);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Upload Gambar Sukses");
+    }
+    if (isError) {
+      toast.error("Upload Gambar Gagal");
+    }
+  }, [isSuccess, isError]);
+
   return (
-    <DialogContent>
-      {" "}
+    <DialogContent className="text-center">
+      <Toaster richColors />{" "}
       <div className="flex mt-2">
         <Button
           className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 mx-auto"

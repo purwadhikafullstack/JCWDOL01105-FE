@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router";
 import { ChevronLeft } from "@mui/icons-material";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import UploadProvePayment from "@/components/order/UploadProvePayment";
 
 const OrderDetail = () => {
@@ -15,6 +15,7 @@ const OrderDetail = () => {
 
   const [token, setToken] = useState("");
   const [timeLeft, setTimeLeft] = useState(0);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const checkIn = isFetched && new Date(order.start_date).toLocaleDateString();
   const checkOut = isFetched && new Date(order.end_date).toLocaleDateString();
@@ -79,69 +80,77 @@ const OrderDetail = () => {
   return (
     <div className="border rounded-xl md:h-full">
       {isFetched && (
-        <Dialog>
-          <div className="px-12 pt-4">
-            <div className="flex relative items-center mb-4">
-              <div
-                className="absolute left-[-40px] hover:bg-slate-100 rounded-full cursor-pointer"
-                onClick={() => navigate(-1)}
-              >
-                <ChevronLeft fontSize="large" />
-              </div>
-              <span className="text-2xl">kembali</span>
+        <div className="px-12 pt-4">
+          <div className="flex relative items-center mb-4">
+            <div
+              className="absolute left-[-40px] hover:bg-slate-100 rounded-full cursor-pointer"
+              onClick={() => navigate(-1)}
+            >
+              <ChevronLeft fontSize="large" />
             </div>
-            <div className="flex flex-col md:flex-row-reverse">
-              <div>
-                <img className="w-full rounded-xl" src={order.room.image_url} alt="" />
-              </div>
-              <div className="w-full relative mt-12 md:mt-0 md:pr-8">
-                <div className="flex justify-end">
-                  {order.status === "unpaid" ? (
-                    <span className={`border rounded-full px-4 py-1 bg-yellow-300 text-yellow-700 shadow-xl`}>
-                      {hours}:{minutes.toString().padStart(2, "0")}
-                    </span>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div>
-                  <p className="text-xl">ORDER ID</p>
-                  <p className="text-sm">{order.id}</p>
-                </div>
-                <div className="flex justify-between my-4"></div>
-                <div className="flex justify-between my-4">
-                  <p className="text-xl font-thin">Total harga</p>
-                  <p className="text-xl font-thin">{FormatToIDR(order.total_price)}</p>
-                </div>
-                <div className="flex justify-between my-4">
-                  <p className="text-xl font-thin">Tamu</p>
-                  <p className="text-xl font-thin">{order.guest} orang</p>
-                </div>
-                <div className="flex justify-between my-4">
-                  <p className="text-xl font-thin">Lama menginap</p>
-                  <p className="text-xl font-thin">{countDay} malam</p>
-                </div>
-                <div className="flex justify-between my-4">
-                  <p className="text-xl font-thin">Tanggal Check-In</p>
-                  <p className="text-xl font-thin">{checkIn}</p>
-                </div>
-                <div className="flex justify-between my-4">
-                  <p className="text-xl font-thin">Tanggal Check-out</p>
-                  <p className="text-xl font-thin">{checkOut}</p>
-                </div>
-                <Button className={`${order.status !== "unpaid" ? "hidden" : ""}`} onClick={() => transaction()}>
-                  Bayar sekarang
-                </Button>
-                <DialogTrigger>
-                  <Button className={`${order.status !== "unconfirm" ? "hidden" : ""}`} onClick={() => transaction()}>
-                    Upload bukti bayar
-                  </Button>
+            <span className="text-2xl">kembali</span>
+          </div>
+          <div className="flex flex-col md:flex-row-reverse">
+            <div>
+              <img className="w-full rounded-xl" src={order.room.image_url} alt="" />
+              <Dialog>
+                <DialogTrigger className={`${order.status === "unconfirm" ? "" : "hidden"} text-center w-full mt-4`}>
+                  <span className="underline font-thin cursor-pointer mx-auto">lihat bukti transaksi</span>
                 </DialogTrigger>
-                <UploadProvePayment />
+                <DialogContent>
+                  <img src={order.image_url} />
+                </DialogContent>
+              </Dialog>
+            </div>
+            <div className="w-full relative mt-12 md:mt-0 md:pr-8">
+              <div className="flex justify-end">
+                {order.status === "unpaid" ? (
+                  <span className={`border rounded-full px-4 py-1 bg-yellow-300 text-yellow-700 shadow-xl`}>
+                    {hours}:{minutes.toString().padStart(2, "0")}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div>
+                <p className="text-xl">ORDER ID</p>
+                <p className="text-sm">{order.id}</p>
+              </div>
+              <div className="flex justify-between my-4"></div>
+              <div className="flex justify-between my-4">
+                <p className="text-xl font-thin">Total harga</p>
+                <p className="text-xl font-thin">{FormatToIDR(order.total_price)}</p>
+              </div>
+              <div className="flex justify-between my-4">
+                <p className="text-xl font-thin">Tamu</p>
+                <p className="text-xl font-thin">{order.guest} orang</p>
+              </div>
+              <div className="flex justify-between my-4">
+                <p className="text-xl font-thin">Lama menginap</p>
+                <p className="text-xl font-thin">{countDay} malam</p>
+              </div>
+              <div className="flex justify-between my-4">
+                <p className="text-xl font-thin">Tanggal Check-In</p>
+                <p className="text-xl font-thin">{checkIn}</p>
+              </div>
+              <div className="flex justify-between my-4">
+                <p className="text-xl font-thin">Tanggal Check-out</p>
+                <p className="text-xl font-thin">{checkOut}</p>
+              </div>
+              <div className="text-center">
+                <Button className={`${order.status !== "unpaid" ? "hidden" : ""}`} onClick={() => transaction()}>
+                  Bayar Sekarang
+                </Button>
+                <Dialog>
+                  <DialogTrigger>
+                    <Button className={`${order.status !== "unconfirm" ? "hidden" : ""}`}>Upload Bukti Bayar</Button>
+                  </DialogTrigger>
+                  <UploadProvePayment orderId={String(id)} />
+                </Dialog>
               </div>
             </div>
           </div>
-        </Dialog>
+        </div>
       )}
     </div>
   );
