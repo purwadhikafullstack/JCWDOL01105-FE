@@ -12,9 +12,9 @@ import { AddAPhoto } from "@mui/icons-material";
 import { setRand } from "@/lib/features/globalReducer";
 import { random } from "@/lib/features/globalReducer";
 import { Toaster, toast } from "sonner";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import Biodata from "@/components/profile/Biodata";
 import VerifyEmail from "@/components/profile/VerifyEmail";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 const Profile = () => {
   const dispathc = useAppDispatch();

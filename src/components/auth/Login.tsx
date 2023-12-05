@@ -5,13 +5,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/lib/schema";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useContext, useEffect, useState } from "react";
 import { usePostApi } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
-import { Dialog } from "../ui/dialog";
 import SendMail from "./SendMail";
 import icon from "@/assets/icons";
 
@@ -39,7 +38,7 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
     defaultValues: initForm,
   });
 
-  const { mutate, data, isSuccess, isError, error } = usePostApi("/api/user/login");
+  const { mutate, data, isSuccess, isError } = usePostApi("/api/user/login");
   const onSubmit = (values: FormType) => {
     mutate({ ...values });
   };
@@ -51,13 +50,13 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error(error?.response?.data?.message);
+      toast.error("Login gagal");
+      // toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 
   return (
-    <Dialog>
-      <Toaster richColors expand={false} />
+    <div>
       {page === 1 && (
         <div className="mt-10">
           <p className="text-2xl">Selamat Datang di Lawang</p>
@@ -139,7 +138,7 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
         </div>
       )}
       {page === 2 && <SendMail setPage={setPage} page={page} />}
-    </Dialog>
+    </div>
   );
 };
 

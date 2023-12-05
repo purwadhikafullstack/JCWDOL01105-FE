@@ -1,16 +1,13 @@
-import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormMessage, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { emailSchema } from "@/lib/schema";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useEffect } from "react";
 import { usePostApi } from "@/lib/service";
-import { KeyboardBackspace } from "@mui/icons-material";
-import { useAppDispatch, useAppSelector } from "@/lib/features/hook";
-import { getPage, setPage } from "@/lib/features/globalReducer";
+import { ChevronLeft } from "@mui/icons-material";
 import { Separator } from "../ui/separator";
 
 interface ISendMail {
@@ -40,20 +37,25 @@ const SendMail: React.FC<ISendMail> = ({ page, setPage }) => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error(error?.response?.data?.message);
+      toast.error("Mengirim Email Gagal");
+      // toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 
   return (
     <div className="mt-10">
-      <Toaster richColors expand={false} />
-
-      <div className="inline-block cursor-pointer mb-2" onClick={() => setPage(page - 1)}>
-        <KeyboardBackspace />
-        <span className="ml-2">Kembali</span>
+      <div className="flex relative mb-6">
+        <div
+          className="absolute left-[-40px] cursor-pointer mb-2 hover:bg-slate-200 rounded-full p-2"
+          onClick={() => setPage(page - 1)}
+        >
+          <ChevronLeft />
+        </div>
+        <span className="text-2xl mt-1">Kembali</span>
       </div>
-      <DialogTitle className="mb-2">Reset Password</DialogTitle>
-      <DialogDescription className="mb-6">Kirim alamat email untuk medapatkan link reset password</DialogDescription>
+
+      <p className="text-xl">Reset Password</p>
+      <p className="mb-6">Kirim alamat email untuk medapatkan link reset password</p>
 
       <Separator className="bg-slate-300 my-4" />
 
