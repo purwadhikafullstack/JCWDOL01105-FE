@@ -82,7 +82,7 @@ const Account = () => {
               <DropdownMenuSeparator className="bg-slate-300" />
               <div className="p-2">
                 <DropdownMenuItem className="text-md font-thin py-2">
-                  <Link className="w-full" to="">
+                  <Link className="w-full" to="/tenantSignIn">
                     Sewakan Properti
                   </Link>
                 </DropdownMenuItem>
@@ -139,7 +139,7 @@ const Account = () => {
               <DropdownMenuSeparator className="bg-slate-300" />
               <div className="p-2">
                 <DropdownMenuItem className="text-md font-thin py-2"   onClick={() => {
-                   navigate("/tenant")
+                   navigate("/tenantSignIn")
                   }}>Sewakan Properti</DropdownMenuItem>
               </div>
             </DropdownMenuContent>
