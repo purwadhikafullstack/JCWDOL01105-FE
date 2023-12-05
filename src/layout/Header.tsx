@@ -9,7 +9,7 @@ import image from "@/assets/images";
 const Header = () => {
   const { loginGoogle } = useContext(AuthContext);
   const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
-  
+
   useEffect(() => {
     if (isSuccess) {
       loginGoogle(data);
@@ -17,7 +17,7 @@ const Header = () => {
   }, [data]);
 
   return (
-    <nav className="h-[10vh] dark:bg-background flex px-4 md:px-12 py-4 lg:px-20 justify-between border-b sticky z-10 top-0 w-full bg-white items-center">
+    <nav className="h-[12dvh] dark:bg-background flex px-4 md:px-12 py-4 lg:px-20 justify-between border-b sticky z-10 top-0 w-full bg-white items-center">
       <div>
         <Link className="flex items-center" to={"/"}>
           <img className="w-12" src={image.logo} alt="logo" />

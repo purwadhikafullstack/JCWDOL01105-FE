@@ -36,7 +36,7 @@ const RegisterDialog = () => {
     defaultValues: initForm,
   });
 
-  const { mutate, isSuccess, isError, error } = usePostApi("/api/user/register");
+  const { mutate, isSuccess, isError } = usePostApi("/api/user/register");
   const onSubmit = (values: FormType) => {
     mutate({
       name: values.name,
@@ -49,11 +49,12 @@ const RegisterDialog = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("RegisterDialog Sukses");
+      toast.success("Register Sukses");
       form.reset(initForm);
     }
     if (isError) {
-      toast.error(error?.response?.data.message);
+      toast.error("Register gagal");
+      // toast.error(error?.response?.data.message);
     }
   }, [isSuccess, isError]);
 

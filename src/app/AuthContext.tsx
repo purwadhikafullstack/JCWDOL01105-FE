@@ -12,12 +12,11 @@ interface Token {
 interface Profile {
   id: string | null;
   role: string | null;
-  imageUrl: string | null;
   isLogin: boolean;
   token: string | null;
   bearer: any;
   loginGoogle: (payload: string) => void;
-  logoutGoogle: (payload: string) => void;
+  logoutGoogle: () => void;
   login: (payload: string) => void;
   logout: () => void;
 }
@@ -25,7 +24,6 @@ interface Profile {
 const init = {
   id: "",
   role: "",
-  imageUrl: "",
   isLogin: false,
   token: "",
   bearer: {},
@@ -42,14 +40,14 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     const token = typeof window !== "undefined" ? sessionStorage.getItem("token") : false;
     if (token) {
       const payload: Token = jwtDecode(token);
-      const data = { id: payload.id, role: payload.role, imageUrl: payload.image_url, isLogin: true, token: token };
+      const data = { id: payload.id, role: payload.role, isLogin: true, token: token };
       return data;
     } else {
-      return { id: null, role: null, imageUrl: null, isLogin: false, token: null };
+      return { id: null, role: null, isLogin: false, token: null };
     }
   };
   // sessionStorage.clear();
-  const { id, imageUrl, role, isLogin, token } = getToken();
+  const { id, role, isLogin, token } = getToken();
   const [rand, setRand] = useState(0);
   const bearer = { headers: { Authorization: `Bearer ${token}` } };
 
@@ -77,9 +75,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
 
   useEffect(() => {}, [rand]);
   return (
-    <AuthContext.Provider
-      value={{ id, role, imageUrl, isLogin, token, bearer, loginGoogle, logoutGoogle, login, logout }}
-    >
+    <AuthContext.Provider value={{ id, role, isLogin, token, bearer, loginGoogle, logoutGoogle, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

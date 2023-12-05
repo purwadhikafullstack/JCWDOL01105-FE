@@ -1,15 +1,10 @@
 "use client";
 
-import React, { type FC, useState, useEffect, useRef } from "react";
+import { type FC, useState, useEffect, useRef } from "react";
 import { Button } from "./button";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Calendar } from "./calendar";
 import { DateInput } from "./date-input";
-import { Label } from "./label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 import { Switch } from "./switch";
-import { ChevronUpIcon, ChevronDownIcon, CheckIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
 
 export interface DateRangePickerProps {
   /** Click handler for applying the updates from DateRangePicker2. */
@@ -28,15 +23,9 @@ export interface DateRangePickerProps {
   locale?: string;
   /** Option for showing compare feature */
   showCompare?: boolean;
+  /** Option for disable date */
+  bookDate: { start_date: number; end_date: number }[];
 }
-
-const formatDate = (date: Date, locale: string = "en-us"): string => {
-  return date.toLocaleDateString(locale, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-};
 
 interface DateRange {
   from: Date;
@@ -51,17 +40,17 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
   initialCompareFrom,
   initialCompareTo,
   onUpdate,
-  align = "end",
-  locale = "en-US",
   showCompare = true,
+  bookDate,
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [range, setRange] = useState<DateRange>({
     from: new Date(new Date(initialDateFrom).setHours(0, 0, 0, 0)),
-    to: initialDateTo
-      ? new Date(new Date(initialDateTo).setHours(0, 0, 0, 0))
-      : new Date(new Date(initialDateFrom).setHours(0, 0, 0, 0)),
+    to:
+      // initialDateTo
+      // ? new Date(new Date(initialDateTo).setHours(0, 0, 0, 0))
+      new Date(new Date(initialDateFrom).setHours(0, 0, 0, 0)),
   });
   const [rangeCompare, setRangeCompare] = useState<DateRange | undefined>(
     initialCompareFrom
@@ -77,8 +66,7 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
   // Refs to store the values of range and rangeCompare when the date picker is opened
   const openedRangeRef = useRef<DateRange | undefined>();
   const openedRangeCompareRef = useRef<DateRange | undefined>();
-
-  // const [selectedPreset, setSelectedPreset] = useState<string | undefined>(undefined);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const [isSmallScreen, setIsSmallScreen] = useState(typeof window !== "undefined" ? window.innerWidth < 960 : false);
 
@@ -122,39 +110,48 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
     );
   };
 
-  useEffect(() => {
-    // checkPreset();
-  }, [range]);
-
-  const PresetButton = ({
-    preset,
-    label,
-    isSelected,
-  }: {
-    preset: string;
-    label: string;
-    isSelected: boolean;
-  }): JSX.Element => (
-    <Button
-      className={cn(isSelected && "pointer-events-none")}
-      variant="ghost"
-      onClick={() => {
-        // setPreset(preset);
-      }}
-    >
-      <>
-        <span className={cn("pr-2 opacity-0", isSelected && "opacity-70")}>
-          <CheckIcon width={18} height={18} />
-        </span>
-        {label}
-      </>
-    </Button>
-  );
+  useEffect(() => {}, [range]);
 
   // Helper function to check if two date ranges are equal
   const areRangesEqual = (a?: DateRange, b?: DateRange) => {
     if (!a || !b) return a === b; // If either is undefined, return true if both are undefined
     return a.from.getTime() === b.from.getTime() && (!a.to || !b.to || a.to.getTime() === b.to.getTime());
+  };
+
+  const today = new Date().getTime();
+  const oneDay = 24 * 36 * 1e5;
+
+  // const handleSelect = (value: { from?: Date; to?: Date }) => {
+  //   if (value?.from != null) {
+  //     if (bookDate.length > 0) {
+  //       for (let i = 0; i < bookDate.length; i++) {
+  //         if (
+  //           value.from < new Date(bookDate[i].start_date) &&
+  //           value.to &&
+  //           value.to > new Date(bookDate[i].end_date - oneDay)
+  //         ) {
+  //           setIsDisabled(true);
+  //           setRange({ from: value.from, to: value?.to });
+  //         } else {
+  //           setIsDisabled(false);
+  //           setRange({ from: value.from, to: value?.to });
+  //           setRange({ from: value.from, to: value?.to });
+  //         }
+  //       }
+  //     } else {
+  //       return setRange({ from: value.from, to: value?.to });
+  //     }
+  //   }
+  // };
+
+  const hadleDisable = (date: Date) => {
+    if (date < new Date(today - oneDay)) return true;
+    for (let i = 0; i < bookDate.length; i++) {
+      if (date >= new Date(bookDate[i].start_date) && date < new Date(bookDate[i].end_date)) {
+        return true;
+      }
+    }
+    return false;
   };
 
   useEffect(() => {
@@ -163,7 +160,6 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
       openedRangeCompareRef.current = rangeCompare;
     }
   }, [isOpen]);
-
   return (
     <div>
       <div className="flex py-2">
@@ -195,7 +191,6 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
                     id="compare-mode"
                   />
                 )}
-                {/* <Label htmlFor="compare-mode">Compare</Label> */}
               </div>
               <div className="flex flex-col gap-2">
                 <div className="flex gap-2">
@@ -267,13 +262,29 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
                 mode="range"
                 onSelect={(value: { from?: Date; to?: Date } | undefined) => {
                   if (value?.from != null) {
-                    setRange({ from: value.from, to: value?.to });
+                    if (bookDate.length > 0) {
+                      for (let i = 0; i < bookDate.length; i++) {
+                        if (
+                          value.from < new Date(bookDate[i].start_date) &&
+                          value.to &&
+                          value.to > new Date(bookDate[i].end_date - oneDay)
+                        ) {
+                          setIsDisabled(true);
+                          setRange({ from: value.from, to: value?.to });
+                        } else {
+                          setIsDisabled(false);
+                          setRange({ from: value.from, to: value?.to });
+                        }
+                      }
+                    } else {
+                      return setRange({ from: value.from, to: value?.to });
+                    }
                   }
                 }}
-                disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
+                disabled={(date) => hadleDisable(date)}
                 selected={range}
                 numberOfMonths={isSmallScreen ? 1 : 2}
-                defaultMonth={new Date(new Date().setMonth(new Date().getMonth() + 1 - (isSmallScreen ? 0 : 1)))}
+                defaultMonth={new Date(new Date().setMonth(new Date().getMonth()))}
               />
             </div>
           </div>
@@ -299,6 +310,7 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
               onUpdate?.({ range, rangeCompare });
             }
           }}
+          disabled={isDisabled}
         >
           Update
         </Button>

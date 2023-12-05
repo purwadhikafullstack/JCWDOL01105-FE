@@ -33,8 +33,8 @@ const ProfilePicture = () => {
 const Account = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const { isLogin, logoutGoogle } = useContext(AuthContext);
   const [route, setRoute] = useState("");
+  const { isLogin, logoutGoogle } = useContext(AuthContext);
 
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
@@ -95,7 +95,6 @@ const Account = () => {
               <DropdownMenuSeparator className="bg-slate-300" />
               <div className="p-2">
                 <DropdownMenuItem className="flex lg:hidden">
-                  {/* <Brightness6 fontSize="medium" /> */}
                   <div className="flex">
                     <Switch
                       className="items-center mr-4 flex lg:hidden cursor-pointer"
@@ -109,6 +108,7 @@ const Account = () => {
                     </div>
                   </div>
                 </DropdownMenuItem>
+
                 <DropdownMenuItem className="text-md font-thin cursor-pointer py-2" onClick={() => logoutGoogle()}>
                   Keluar
                 </DropdownMenuItem>
@@ -126,6 +126,7 @@ const Account = () => {
                 >
                   Daftar
                 </DropdownMenuItem>
+
                 <DropdownMenuItem
                   onClick={() => {
                     setIsEditDialogOpen(true);
@@ -136,7 +137,9 @@ const Account = () => {
                   Masuk
                 </DropdownMenuItem>
               </div>
+
               <DropdownMenuSeparator className="bg-slate-300" />
+
               <div className="p-2">
                 <DropdownMenuItem className="text-md font-thin py-2">Sewakan Properti</DropdownMenuItem>
               </div>

@@ -1,10 +1,8 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { FormatToIDR } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "../ui/dialog";
-import { AuthContext } from "@/app/AuthContext";
-import Login from "../auth/LoginDialog";
+import { Dialog } from "../ui/dialog";
 import { Link } from "react-router-dom";
 
 interface IDataProps {
@@ -13,15 +11,13 @@ interface IDataProps {
     name: string;
     price: string;
     description: string;
-    person: number;
+    guest: number;
     image_url: string;
   };
 }
 
 const Room: React.FC<IDataProps> = ({ data }) => {
-  const { isLogin } = useContext(AuthContext);
   const [fullDescription, setFullDescription] = useState(false);
-  const [page, setPage] = useState(1);
 
   return (
     <Dialog>
@@ -58,7 +54,7 @@ const Room: React.FC<IDataProps> = ({ data }) => {
               )}
             </CardContent>
             <CardFooter className="font-thin flex justify-between items-end">
-              <p>Maksimal tamu {data.person}</p>
+              <p>Maksimal tamu {data.guest}</p>
               <Link to={`/room/${data.id}`}>
                 <Button size={"sm"}>Selanjutnya</Button>
               </Link>
