@@ -35,7 +35,6 @@ const Account = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [route, setRoute] = useState("");
   const { isLogin, logoutGoogle } = useContext(AuthContext);
-
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
     localStorage.setItem("mode", mode);

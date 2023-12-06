@@ -47,6 +47,12 @@ const ProductList = () => {
           )}
         </div>
       )}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 m-auto">
+        {isFetched && products.map((data: IData) => <Product key={data.id} data={data} />)}
+      </div>
+      <div className="flex justify-center h-20">
+        <Button onClick={() => setLimit(limit + 4)}>Load More</Button>
+      </div>
     </div>
   );
 };

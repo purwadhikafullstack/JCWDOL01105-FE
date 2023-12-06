@@ -96,6 +96,7 @@ export const formRoomSchema = z.object({
   person: z.number({ required_error: "Jumlah orang harus diisi" }).nonnegative(),
 });
 
+
 export const changePasswordSchema = z
   .object({
     oldPassword: z.string().min(6, { message: "Minimal 6 karakter" }).max(16, { message: "Maksimal 16 karakter" }),

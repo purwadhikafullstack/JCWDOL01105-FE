@@ -9,6 +9,7 @@ import { Label } from "./label";
 import { Switch } from "./switch";
 import { ChevronUpIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
+
 export interface DateRangePickerProps {
   /** Click handler for applying the updates from DateRangePicker. */
   onUpdate?: (values: { range: DateRange; rangeCompare?: DateRange }) => void;
@@ -147,6 +148,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
         setIsOpen(open);
       }}
     >
+      
       <div className="flex flex-col md:flex-row items-center">
         <div>
           <Label className="mr-2 text-[12px]">CHECK-IN</Label>
@@ -292,6 +294,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                   )}
                 </div>
               </div>
+              
               <div>
                 <Calendar
                   mode="range"

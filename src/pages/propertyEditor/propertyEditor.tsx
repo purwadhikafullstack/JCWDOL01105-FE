@@ -65,7 +65,12 @@ const PropertyEditor: React.FC = () => {
 
   const { data } = useGetAPI(`/api/roomList/${id}`, "get", config);
 
-  console.log(data);
+
+    const formProp = useForm({ defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema) })
+    const formRoom = useForm({ defaultValues: initialRoomData, resolver: zodResolver(formRoomSchema) })
+    const { id } = useParams();
+    console.log(id);
+ 
 
   const fetchRoomData = async () => {
     try {

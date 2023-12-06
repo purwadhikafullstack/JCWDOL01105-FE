@@ -35,7 +35,6 @@ const PropertyDetail = () => {
   const { data: room, isFetched, refetch: refetchRoom } = useGetAPI(`/api/room/${id}`, "room-detail");
   const { data: bookOrder, refetch } = useGetAPI(`/api/order/book-order/${id}`, "book-order");
   const { mutate, isSuccess, isError, error } = usePostApi("/api/order/book");
-
   const date = useAppSelector(getDate);
   const startDate = new Date(date.from).getTime();
   const endDate = new Date(date.to).getTime();
@@ -171,6 +170,7 @@ const PropertyDetail = () => {
 
         <div>
           {isFetched && (
+
             <Card className="max-w-[500px]">
               <CardContent className="p-6">
                 <div>
@@ -190,6 +190,7 @@ const PropertyDetail = () => {
                     {FormatToIDR(room.price)} x {countDay} malam
                   </p>
                   <p className="font-thin">{FormatToIDR(room.price * countDay)}</p>
+
                 </div>
 
                 <Separator className="bg-slate-300 my-6" />

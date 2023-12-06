@@ -7,6 +7,7 @@ interface IData {
 
 const Product: React.FC<IData> = ({ data }) => {
   return (
+
     <Link className="w-full md:max-w-[320px] mx-2 mb-4" to={`/property/${data.id}`}>
       <Card className="h-full">
         <CardContent className="w-full p-4">
