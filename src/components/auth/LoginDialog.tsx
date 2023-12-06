@@ -41,7 +41,7 @@ const LoginDialog = () => {
     defaultValues: initForm,
   });
 
-  const { mutate, data, isSuccess, isError } = usePostApi("/api/user/login");
+  const { mutate, data, isSuccess, isError, error } = usePostApi("/api/user/login");
   const onSubmit = (values: FormType) => {
     mutate({ ...values });
   };

@@ -3,8 +3,8 @@ import { useAppSelector } from "@/lib/features/hook";
 import { getQuery } from "@/lib/features/globalReducer";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import Product from "./Product";
 import { Apartment } from "@mui/icons-material";
+import Product from "./Product";
 
 interface IData {
   id: string;

@@ -1,4 +1,4 @@
-import { DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+
 import { Form, FormControl, FormMessage, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +12,7 @@ import { usePostApi } from "@/lib/service";
 import { Separator } from "../ui/separator";
 import icon from "@/assets/icons";
 
-const RegisterDialog = () => {
+const RegisterTenant = () => {
   const [show, setShow] = useState(false);
 
   const googleAuth = () => {
@@ -43,7 +43,7 @@ const RegisterDialog = () => {
       email: values.email,
       password: values.password,
       phoneNumber: values.phoneNumber,
-      role: "user",
+      role: "tenant",
     });
   };
 
@@ -53,17 +53,21 @@ const RegisterDialog = () => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error("Register gagal");
-      // toast.error(error?.response?.data.message);
+      toast.error(error?.response?.data.message);
     }
   }, [isSuccess, isError]);
 
   return (
-    <DialogContent className="max-w-[350px] rounded-xl sm:max-w-[500px] p-0">
-      <Toaster richColors expand={false} />
-      <div className="px-8 pt-8">
-        <DialogTitle className="mb-2">Daftar</DialogTitle>
-        <DialogDescription className="my-4">Selamat Datang di Lawang</DialogDescription>
+    // <DialogContent className="max-w-[350px] rounded-xl sm:max-w-[500px] p-0">
+    //   <Toaster richColors expand={false} />
+    //   <div className="px-8 pt-8">
+    //     <DialogTitle className="mb-2">Daftar Sebagai Tenant</DialogTitle>
+    //     <DialogDescription className="my-4">Selamat Datang Para Tenant!</DialogDescription>
+    //   </div>
+    <>
+    <div className="space-y-1">
+        <h4 className="text-sm font-medium leading-none">Register as Tenant</h4>
+        <br/>
       </div>
       <Separator className="bg-slate-300 w-full" />
       <div className="px-8 py-4">
@@ -94,7 +98,6 @@ const RegisterDialog = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="password"
@@ -158,8 +161,9 @@ const RegisterDialog = () => {
           </div>
         </Button>
       </div>
-    </DialogContent>
+    
+    </>
   );
 };
 
-export default RegisterDialog;
+export default RegisterTenant;

@@ -11,7 +11,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetAPI } from "@/lib/service";
 import { random } from "@/lib/features/globalReducer";
 import { useAppSelector } from "@/lib/features/hook";
@@ -82,7 +82,7 @@ const Account = () => {
               <DropdownMenuSeparator className="bg-slate-300" />
               <div className="p-2">
                 <DropdownMenuItem className="text-md font-thin py-2">
-                  <Link className="w-full" to="">
+                  <Link className="w-full" to="/tenantSignIn">
                     Sewakan Properti
                   </Link>
                 </DropdownMenuItem>
