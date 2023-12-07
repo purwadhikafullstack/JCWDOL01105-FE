@@ -65,11 +65,10 @@ const OrderDetail = () => {
   }, [isSuccess, order, token]);
 
   useEffect(() => {
-    const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-    const midtransClientKey = "SB-Mid-client-ua4G3MNRZB0VnKx_";
+    const midtransUrl = import.meta.env.VITE_MIDTRANS_URL;
     let script = document.createElement("script");
     script.src = midtransUrl;
-    script.setAttribute("data-client-key", midtransClientKey);
+    script.setAttribute("data-client-key",import.meta.env.VITE_MIDTRANS_CLIENT_KEY);
     script.async = true;
     document.body.appendChild(script);
     return () => {
