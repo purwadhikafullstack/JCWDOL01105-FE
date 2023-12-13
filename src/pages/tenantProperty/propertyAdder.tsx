@@ -20,15 +20,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { AddAPhoto } from "@mui/icons-material";
-import { useGetAPI, usePostApi } from "@/lib/service";
+import { useGetAPI, usePostApi, usePutApi } from "@/lib/service";
+import { useNavigate } from 'react-router';
+import { after } from 'node:test';
+import { AuthContext } from '@/app/AuthContext';
 
-const initialPropertyData = {
-
-  name: "",
-  description: "",
-  image_url: "",
-  category_id: "1",
-}
 
 import { useNavigate } from 'react-router';
 import { after } from 'node:test';
@@ -42,9 +38,9 @@ const AddProperty: React.FC = () => {
   console.log("Proptery Adder");
 
   // const form = useForm({defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema)})
-  const form = useForm({ defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema) })
-  const formUpload =useForm({resolver:zodResolver(uploadImageSchema)});
-  const { id } = useContext(AuthContext);
+  const form = useForm({ resolver: zodResolver(formPropertySchema) })
+  // const formUpload =useForm({resolver:zodResolver(uploadImageSchema)});
+  const {id,token} = useContext(AuthContext);
   // const {reset} = useForm();
   // const form = {formState : formState, reset : reset, setValue : setValue, handleSubmit : handleSubmit, control : control}
   // const { isDirty, isValid } = formState;
@@ -59,45 +55,60 @@ const AddProperty: React.FC = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
     const selectedFiles = files as FileList;
-    formUpload.setValue("file", selectedFiles[0]);
+    form.setValue("file", selectedFiles[0]);
+    // const fileValue = selectedFiles.length > 0 ? selectedFiles[0] : null;
+    // form.setValue("file", fileValue!);
   };
 
 
   const config = {
     headers: {
-      Accept: 'multipart/form-data'
-    }
+      "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`
+    },
   }
 
 
-  const { mutate, isSuccess, isError } = usePostApi(`/api/propertyList/${id}`, config)
+  const { mutate, isSuccess, isError } = usePostApi(`/api/propertyList`, config)
+  // const { mutate:mutateImage, isSuccess:imageSuccess, isError:imageError } = usePostApi(`/api/propertyList/${id}`, config)
+
   const navigate = useNavigate();
 
   const onSubmit = async (values: any) => {
-    console.log(values);
+    // console.log(values);
     try {
       // Call the mutate function to make the POST request
+      const formData = new FormData();
+      formData.append("file", values.file);
       await mutate({ ...values });
       console.log(isSuccess, "inidia");
 
-      form.reset();
-      // form.setValue("name","");
-      // form.setValue("description","");
-      // form.setValue("image_url","");
     }
     catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error posting property data:", error);
+    } finally {
+
+      console.log(isSuccess)
+      console.log(isError)
+
     }
 
   }
 
-  const afterSubmit = () => {
+  useEffect(() => {
+    
     if (isSuccess) {
-      console.log("loglog")
+      form.reset();
       setTimeout(() => { navigate("/tenant") }, 50)
     }
-  }
+  }, [isSuccess, isError])
+
+  // const afterSubmit = () => {
+  //   if (isSuccess) {
+  //     console.log("loglog")
+  //     setTimeout(() => { navigate("/tenant") }, 50)
+  //   }
+  // }
 
   return (
     <ProtectedRouteTenant>
@@ -138,7 +149,7 @@ const AddProperty: React.FC = () => {
                 <FormItem>
                   <FormLabel>Pilih Kategori Properti</FormLabel>
                   <FormControl>
-                    <RadioGroup onValueChange={field.onChange} defaultValue={`${field.value}`}>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={""}>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="1" id="1" />
                         <Label htmlFor="option-one">Villa</Label>
@@ -157,34 +168,37 @@ const AddProperty: React.FC = () => {
                 </FormItem>
               )}
             />
-            <div className="flex mt-2">
-            <Button
-              className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 mx-auto"
-              onClick={() => handleClick()}
-            >
-              <AddAPhoto fontSize="small" className="mr-2" />
-              upload
-            </Button>
-          </div>
-         <FormField
-                control={formUpload.control}
-                name="file"
-                render={() => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        ref={hiddenFileInput}
-                        className="hidden"
-                        type="file"
-                        id="file"
-                        onChange={(value) => handleChange(value)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            <Button type="submit" onClick={afterSubmit}>Submit</Button>
+            <div>
+              <FormLabel>Pilih Gambar Properti</FormLabel>
+              <div className="flex mt-2">
+                <Button type="button"
+                  className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 "
+                  onClick={() => handleClick()}
+                >
+                  <AddAPhoto fontSize="small" className="mr-2" />
+                  Upload
+                </Button>
+              </div>
+            </div>
+            <FormField
+              control={form.control}
+              name="file"
+              render={() => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      ref={hiddenFileInput}
+                      className="hidden"
+                      type="file"
+                      id="file"
+                      onChange={(value) => handleChange(value)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" >Submit</Button>
           </form>
         </Form>
       </>

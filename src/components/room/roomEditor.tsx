@@ -18,6 +18,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 
+
 import { useForm } from "react-hook-form"
 import { usePutApi } from "@/lib/service"
 
@@ -53,7 +54,7 @@ export const RoomEditor:React.FC<RoomEditorProps>=(roomId:any)=>{
     return(
         <Sheet>
         <SheetTrigger asChild>
-            <Button >Edit Room</Button>
+            <Button >Edit </Button>
         </SheetTrigger>
         <SheetContent>
             <SheetHeader>

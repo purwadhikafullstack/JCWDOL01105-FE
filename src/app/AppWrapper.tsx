@@ -1,6 +1,7 @@
 import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
 import Loading from "@/components/Loading";
+import PropSpecialPrice from "@/pages/tenantProperty/propertySpecialPrice";
 
 const App = lazy(() => import("../app/App"));
 const Home = lazy(() => import("../pages/Home"));
@@ -38,6 +39,11 @@ const AppWrapper = () => {
 
             <Route path="property/:id" element={<PropertyDetail />} />
             <Route path="room/:id" element={<RoomDetail />} />
+
+            <Route path="/tenant" element={<TenantHome />}/>
+            <Route path= "tenant/propertyEditor/:id" element={<PropertyEditor/>}/>
+            <Route path="/tenant/propertyAdder" element={<AddProperty />} />
+            
 
             <Route path="/setting" element={<Setting />}>
               <Route path="profile" element={<Profile />} />
