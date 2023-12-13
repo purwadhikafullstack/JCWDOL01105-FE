@@ -26,6 +26,9 @@ import { after } from 'node:test';
 import { AuthContext } from '@/app/AuthContext';
 
 
+import { useNavigate } from 'react-router';
+import { after } from 'node:test';
+import { AuthContext } from '@/app/AuthContext';
 
 
 const AddProperty: React.FC = () => {
@@ -77,6 +80,7 @@ const AddProperty: React.FC = () => {
       const formData = new FormData();
       formData.append("file", values.file);
       await mutate({ ...values });
+      console.log(isSuccess, "inidia");
 
     }
     catch (error) {
