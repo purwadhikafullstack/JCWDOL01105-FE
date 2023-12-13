@@ -1,5 +1,11 @@
+import OrderList from "@/components/order/OrderList";
+
 const Order = () => {
-  return <div></div>;
+  return (
+    <>
+      <OrderList />
+    </>
+  );
 };
 
 export default Order;

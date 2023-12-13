@@ -49,11 +49,12 @@ const RegisterDialog = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("RegisterDialog Sukses");
+      toast.success("Register Sukses");
       form.reset(initForm);
     }
     if (isError) {
-      toast.error(error?.response?.data.message);
+      toast.error("Register gagal");
+      // toast.error(error?.response?.data.message);
     }
   }, [isSuccess, isError]);
 

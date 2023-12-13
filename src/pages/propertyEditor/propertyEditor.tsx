@@ -1,26 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { useForm } from 'react-hook-form';
-import { useGetAPI, usePutApi, usePostApi } from '@/lib/service';
-import { getRoomData } from '@/api/roomDataAPI';
-import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { useForm } from "react-hook-form";
+import { useGetAPI, usePutApi, usePostApi } from "@/lib/service";
+import { getRoomData } from "@/api/roomDataAPI";
+import MainNavBarTenant from "@/components/mainNavBarTenant/mainNavBarTenant";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 import {
     Form,
@@ -47,30 +35,58 @@ const initialPropertyData = {
 
 
 const initialRoomData = {
-
-    name: "",
-    price: 0,
-    description: "",
-    person: 0,
-}
-
+  name: "",
+  price: 0,
+  description: "",
+  person: 0,
+};
 
 const PropertyEditor: React.FC = () => {
+  console.log("Property Editor");
 
+  const formProp = useForm({ defaultValues: initialPropertyData });
+  const formRoom = useForm({ defaultValues: initialRoomData });
+  const { id } = useParams();
+  console.log(id);
 
-    console.log("Property Editor");
+  const config = {
+    headers: {
+      Accept: "multipart/form-data",
+    },
+  };
 
+  const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config);
     const formProp = useForm({ defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema) })
     const formRoom = useForm({ defaultValues: initialRoomData, resolver: zodResolver(formRoomSchema) })
     const { id } = useParams();
     console.log(id);
 
-    const config = {
-        headers: {
-            Accept: 'multipart/form-data'
-        }
-    }
+  const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config);
 
+  const { data } = useGetAPI(`/api/roomList/${id}`, "get", config);
+
+
+    const formProp = useForm({ defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema) })
+    const formRoom = useForm({ defaultValues: initialRoomData, resolver: zodResolver(formRoomSchema) })
+    const { id } = useParams();
+    console.log(id);
+ 
+
+  const fetchRoomData = async () => {
+    try {
+      const result = await getRoomData(id);
+      console.log(result);
+      setRoomData(result.data.data);
+      console.log(roomData);
+    } catch (error) {
+      console.error("Error Message :", error);
+    }
+  };
+
+  const [roomData, setRoomData] = useState([]);
+  useEffect(() => {
+    fetchRoomData();
+  }, []);
     const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config)
 
     const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config)
@@ -89,6 +105,16 @@ const PropertyEditor: React.FC = () => {
             console.error("Error editing property data:", error);
         }
 
+  const onSubmit = async (values: any) => {
+    console.log("ini testing values :", values);
+    try {
+      //Form Mutate data for property editor form
+      await mutateProperty({ ...values });
+      //Form Reset
+      formProp.reset();
+    } catch (error) {
+      // Handle any errors that may occur during the API call
+      console.error("Error editing property data:", error);
     }
     const onSubmitRooms = async (values: any) => {
         try {
@@ -101,6 +127,7 @@ const PropertyEditor: React.FC = () => {
             console.error("Error adding room to property:", error);
         }
     }
+  };
 
     const displayCard = () => {
         if (data && isFetched)
@@ -274,6 +301,3 @@ const PropertyEditor: React.FC = () => {
 }
 
 export default PropertyEditor;
-
-
-

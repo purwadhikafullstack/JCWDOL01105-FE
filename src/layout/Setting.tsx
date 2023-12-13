@@ -17,7 +17,7 @@ const Setting = () => {
   return (
     <ProtectedRoute>
       <div className="flex flex-col lg:flex-row h-[75vh]">
-        <div className="flex h-full w-full mb-8 p-2 border rounded-xl items-center sm:justify-around md:flex-row lg:w-[260px] lg:mr-8 lg:flex-col lg:items-start ">
+        <div className="flex lg:h-full w-full mb-8 p-2 border rounded-xl items-center sm:justify-around md:flex-row lg:w-[260px] lg:mr-8 lg:flex-col lg:items-start ">
           <Link to={"/setting/profile"} className="p-2 md:text-md lg:p-4 lg:text-2xl lg:w-full items-center">
             <AccountCircle sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="lg:mr-4 text-blue-500" />
             Profil
@@ -26,11 +26,11 @@ const Setting = () => {
             <Favorite sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="lg:mr-4 text-rose-500" />
             Favorit
           </Link>
-          <Link to={"/setting/favorite"} className="p-2 md:text-md lg:p-4 lg:text-2xl lg:w-full items-center">
+          <Link to={"/setting/order"} className="p-2 md:text-md lg:p-4 lg:text-2xl lg:w-full items-center">
             <Subject sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="lg:mr-4 " />
             Pesanan
           </Link>
-          <Link to={"/setting/favorite"} className="p-2 md:text-md lg:p-4 lg:text-2xl lg:w-full items-center">
+          <Link to={"/setting/history"} className="p-2 md:text-md lg:p-4 lg:text-2xl lg:w-full items-center">
             <History sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="lg:mr-4 " />
             Riwayat
           </Link>

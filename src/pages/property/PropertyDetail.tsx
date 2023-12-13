@@ -7,20 +7,25 @@ import FormCheckin from "@/components/product/FormCheckin";
 import Room from "@/components/product/Room";
 import { useAppSelector } from "@/lib/features/hook";
 import { getGuest } from "@/lib/features/globalReducer";
+import { useEffect } from "react";
 
 interface IRoom {
   id: number;
   name: string;
   price: string;
   description: string;
-  person: number;
+  guest: number;
   image_url: string;
 }
 
 const PropertyDetail = () => {
   const guest = useAppSelector(getGuest);
   const { id } = useParams();
-  const { data, isFetched } = useGetAPI(`/api/property/${id}`, "property-detail");
+  const { data, isFetched, refetch } = useGetAPI(`/api/property/${id}`, "property-detail");
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <div>
@@ -69,7 +74,7 @@ const PropertyDetail = () => {
           <div className="flex justify-between my-10">
             <div className="overflow-scroll h-[430px] mr-2 lg:mr-4 w-3/4">
               {data.rooms.map((room: IRoom) => {
-                if (room.person <= guest) {
+                if (room.guest <= guest) {
                   return <Room key={room.id} data={room} />;
                 }
               })}

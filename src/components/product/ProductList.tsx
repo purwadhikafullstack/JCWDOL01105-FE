@@ -1,9 +1,10 @@
 import { useGetAPI } from "@/lib/service";
-import Product from "./Product";
 import { useAppSelector } from "@/lib/features/hook";
 import { getQuery } from "@/lib/features/globalReducer";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { Apartment } from "@mui/icons-material";
+import Product from "./Product";
 
 interface IData {
   id: string;
@@ -25,6 +26,27 @@ const ProductList = () => {
 
   return (
     <div>
+      {isFetched && (
+        <div>
+          {products.length > 0 ? (
+            <div>
+              <div className="flex flex-grow flex-wrap justify-center">
+                {products.map((data: IData) => {
+                  return <Product key={data.id} data={data} />;
+                })}{" "}
+              </div>
+              <div className="flex justify-center h-20">
+                <Button onClick={() => setLimit(limit + 4)}>Load More</Button>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center mt-20">
+              <Apartment sx={{ fontSize: "200px" }} />
+              <p className="text-4xl">Property not Found</p>
+            </div>
+          )}
+        </div>
+      )}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 m-auto">
         {isFetched && products.map((data: IData) => <Product key={data.id} data={data} />)}
       </div>

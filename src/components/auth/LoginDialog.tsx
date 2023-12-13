@@ -48,12 +48,15 @@ const LoginDialog = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("LoginDialog Sukses");
+      toast.success("Login Sukses");
       login(data.data);
       form.reset(initForm);
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     }
     if (isError) {
-      toast.error(error?.response?.data?.message);
+      toast.error("Email atau password tidak sesuai");
     }
   }, [isSuccess, isError]);
 
