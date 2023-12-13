@@ -1,16 +1,17 @@
-import { AuthContextTenant } from "@/app/AuthContextTenant";
 import { AuthContext } from "@/app/AuthContext";
 import { useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 
 const ProtectedRouteTenant = ({ children }: { children: React.ReactNode }) => {
-    const { isLogin, role, token, id } = useContext(AuthContext);
-    const navigate = useNavigate();
+    const { isLogin, role,} = useContext(AuthContext);
+
     if (isLogin && role == "tenant") {
-      
+        
         return <div>{children}</div>;
-    } else {
+
+    }     
+    else {
         return <Navigate to={"/tenantSignIn"} />;
     }
 };

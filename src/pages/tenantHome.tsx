@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import PropertyCard from "@/components/property/propCard";
-import { getPropertyData } from "@/api/propertyDataAPI";
 import MainNavBarTenant from "@/components/mainNavBarTenant/mainNavBarTenant";
 import { useGetAPI } from "@/lib/service";
 import ProtectedRouteTenant from "@/components/auth/ProtectedRouteTenant";
@@ -8,7 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
 
 const TenantHome = () => {
-  // ///// TestAPI
+  // ///// TestA
   // const { data: user, isFetched } = useQuery({
   //   queryKey: ["user"],
   //   queryFn: async () => {
@@ -32,18 +30,28 @@ const TenantHome = () => {
   // const [propData, setPropData] = useState([]);
 
   // useEffect(() => { fetchPropertyData() }, [])
-  const { id } = useContext(AuthContext);
-  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList/${id}`, "property");
+ 
 
-  console.log(data);
+
+  const {token} = useContext(AuthContext);
+  const config = {
+    headers: {
+       Authorization: `Bearer ${token}`
+    },
+  }
+  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList`, "property",config);
+
+
 
   const displayCard = () => {
 
     if (data && isFetched) {
-      return data.map((property: any, index: number) => (<PropertyCard key={index} property={property} />)
+      return data.map((property: any, index: number) => (<PropertyCard key={index} refetch={refetch} property={property} />)
       )
     }
-    else (refetch())
+    else {
+      //refetch()
+    return null;}
   }
 
   return (
@@ -53,11 +61,7 @@ const TenantHome = () => {
       <MainNavBarTenant />
       <br />
 
-      <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-        {displayCard()}
-      </div>
-      <br />
-      <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+      <div className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-4 lg:w-screen ">
         {displayCard()}
       </div>
       <br />

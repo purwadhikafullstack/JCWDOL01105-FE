@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
+import { useRef } from 'react';
 import { useGetAPI, usePutApi, usePostApi } from '@/lib/service';
-import { getRoomData } from '@/api/roomDataAPI';
+import { AddAPhoto } from '@mui/icons-material';
 import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
 import {
     Tabs,
@@ -25,7 +25,6 @@ import {
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -36,14 +35,17 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { formPropertySchema, formRoomSchema } from '@/lib/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ProtectedRouteTenant from '@/components/auth/ProtectedRouteTenant';
+import { useContext } from 'react';
+import { AuthContext } from '@/app/AuthContext';
+import PropSpecialPrice from '../tenantProperty/propertySpecialPrice';
+import RoomAdderForm from '@/components/room/roomAdder';
+// const initialPropertyData = {
 
-const initialPropertyData = {
-
-    name: "",
-    description: "",
-    image_url: "",
-    category_id: "1",
-}
+//     name: "",
+//     description: "",
+//     image_url: "",
+//     category_id: "1",
+// }
 
 
 const initialRoomData = {
@@ -54,32 +56,32 @@ const initialRoomData = {
     person: 0,
 }
 
-
 const PropertyEditor: React.FC = () => {
 
 
     console.log("Property Editor");
 
-    const formProp = useForm({ defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema) })
-    const formRoom = useForm({ defaultValues: initialRoomData, resolver: zodResolver(formRoomSchema) })
+    const { token } = useContext(AuthContext)
+    const formProp = useForm({ resolver: zodResolver(formPropertySchema) })
     const { id } = useParams();
     console.log(id);
 
+
     const config = {
         headers: {
-            Accept: 'multipart/form-data'
-        }
+            "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`
+        },
     }
 
     const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config)
 
-    const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config)
-
-    const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/roomList/${id}`, "roomzzz");
+    const { data, isFetched, refetch } = useGetAPI(`/api/roomList/${id}`, "room");
 
     const onSubmit = async (values: any) => {
         try {
             //Form Mutate data for property editor form
+            const formData = new FormData();
+            formData.append("file", values.file);
             await mutateProperty({ ...values });
             //Form Reset
             formProp.reset();
@@ -90,18 +92,7 @@ const PropertyEditor: React.FC = () => {
         }
 
     }
-    const onSubmitRooms = async (values: any) => {
-        try {
-            //Form Mutate data for property editor form
-            await mutateAddRoom({ ...values });
-            //Form Reset
-            formRoom.reset();
-        } catch (error) {
-            // Handle any errors that may occur during the API call
-            console.error("Error adding room to property:", error);
-        }
-    }
-
+   
     const displayCard = () => {
         if (data && isFetched)
             return data.map((room: any, index: number) => (<RoomCard key={index} rooms={room} />)
@@ -109,18 +100,34 @@ const PropertyEditor: React.FC = () => {
         else { refetch() }
     }
 
+
+    const hiddenFileInput = useRef<HTMLInputElement>(null);
+
+    const handleClick = () => {
+        if (hiddenFileInput.current) hiddenFileInput.current.click();
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { files } = event.target;
+        const selectedFiles = files as FileList;
+        formProp.setValue("file", selectedFiles[0]);
+        // const fileValue = selectedFiles.length > 0 ? selectedFiles[0] : null;
+        // form.setValue("file", fileValue!);
+    };
+
     return (
 
         <ProtectedRouteTenant>
             <div >
                 <MainNavBarTenant />
                 <br />
-                <Tabs defaultValue="propertyEditor" className="w-[400px] h-screen flex items-center justify-center ">
+                <Tabs defaultValue="propertyEditor" className="w-[900px]  ">
                     <TabsList>
-                        <TabsTrigger value="propertyEditor">Property Editor</TabsTrigger>
-                        <TabsTrigger value="room">Ruangan</TabsTrigger>
+                        <TabsTrigger value="propertyEditor" className='w-[300px] p-2 '>Property Editor</TabsTrigger>
+                        <TabsTrigger value="room" className='w-[300px] p-2 '>Ruangan</TabsTrigger>
+                        <TabsTrigger value="specialPrice" className='w-[300px] p-2 '>Pengaturan Harga</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="property">
+                    <TabsContent value="propertyEditor">
                         <Form {...formProp}>
                             <form onSubmit={formProp.handleSubmit(onSubmit)} className="space-y-8" encType="multipart/form-data">
                                 <FormField
@@ -175,14 +182,31 @@ const PropertyEditor: React.FC = () => {
                                         </FormItem>
                                     )}
                                 />
+                                <div>
+                                    <FormLabel>Pilih Gambar Properti</FormLabel>
+                                    <div className="flex mt-2">
+                                        <Button type="button"
+                                            className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 "
+                                            onClick={() => handleClick()}
+                                        >
+                                            <AddAPhoto fontSize="small" className="mr-2" />
+                                            Upload
+                                        </Button>
+                                    </div>
+                                </div>
                                 <FormField
                                     control={formProp.control}
-                                    name="image_url"
-                                    render={({ field }) => (
+                                    name="file"
+                                    render={() => (
                                         <FormItem>
-                                            <FormLabel>URL Terbaru Gambar Properti Anda</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Masukkan Link Gambar Properti Anda" {...field} />
+                                                <Input
+                                                    ref={hiddenFileInput}
+                                                    className="hidden"
+                                                    type="file"
+                                                    id="file"
+                                                    onChange={(value) => handleChange(value)}
+                                                />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -200,76 +224,23 @@ const PropertyEditor: React.FC = () => {
                             <SheetTrigger asChild>
                                 <Button >Add Rooms</Button>
                             </SheetTrigger>
-                            <SheetContent>
+                            <SheetContent className='w-600'>
                                 <SheetHeader>
                                     <SheetTitle>Room Details</SheetTitle>
                                     <SheetDescription>
                                         Here you can add rooms to your property to rent to users in our platform.
                                     </SheetDescription>
                                 </SheetHeader>
-                                <Form {...formRoom}>
-                                    <form onSubmit={formRoom.handleSubmit(onSubmitRooms)} className="space-y-8" encType="multipart/form-data">
-                                        <FormField
-                                            control={formRoom.control}
-                                            name="name"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Nama Ruangan</FormLabel>
-                                                    <FormControl>
-                                                        <Input placeholder="Nama Ruangan" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={formRoom.control}
-                                            name="price"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Harga Sewa Normal/ Malam</FormLabel>
-                                                    <FormControl>
-                                                        <Input placeholder="" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={formRoom.control}
-                                            name="description"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Deskripsi Ruangan</FormLabel>
-                                                    <FormControl>
-                                                        <Input placeholder="Deskripsikan ruangan yang Anda Sewakan" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={formRoom.control}
-                                            name="person"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Jumlah Tamu</FormLabel>
-                                                    <FormControl>
-                                                        <Input placeholder="" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <Button type="submit" onClick={() => { setTimeout(refetch, 50) }}>Confirm</Button>
-                                    </form>
-                                </Form>
+                            <RoomAdderForm/>
                             </SheetContent>
                         </Sheet>
                     </TabsContent>
+                    <TabsContent value="specialPrice">
+                        <PropSpecialPrice />
+                    </TabsContent>
                 </Tabs>
             </div>
-        </ProtectedRouteTenant>
+        </ProtectedRouteTenant >
     );
 }
 
