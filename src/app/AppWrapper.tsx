@@ -7,18 +7,18 @@ const App = lazy(() => import("../app/App"));
 const Home = lazy(() => import("../pages/Home"));
 const Setting = lazy(() => import("../layout/Setting"));
 const Profile = lazy(() => import("../pages/setting/Profile"));
+const Order = lazy(() => import("../pages/setting/Order"));
 const Privacy = lazy(() => import("../pages/setting/Privacy"));
 const ResetPassword = lazy(() => import("../components/auth/ResetPassword"));
 const PropertyDetail = lazy(() => import("../pages/property/PropertyDetail"));
 const RoomDetail = lazy(() => import("../pages/property/RoomDetail"));
 
-const TenantHome = lazy(()=>import("../pages/tenantHome"));
-const PropertyEditor = lazy(()=>import("../pages/propertyEditor/propertyEditor"))
-const AddProperty = lazy(()=>import("../pages/tenantProperty/propertyAdder"))
-const TenantSignIn =lazy(()=>import("../pages/tenantProperty/tenantSignIn"))
-
-
-
+const OrderDetail = lazy(() => import("../pages/setting/OrderDetail"));
+const TransactionSuccess = lazy(() => import("../pages/TransactionSuccess"));
+const TenantHome = lazy(() => import("../pages/tenantHome"));
+const PropertyEditor = lazy(() => import("../pages/propertyEditor/propertyEditor"));
+const AddProperty = lazy(() => import("../pages/tenantProperty/propertyAdder"));
+const TenantSignIn = lazy(() => import("../pages/tenantProperty/tenantSignIn"));
 
 const AppWrapper = () => {
   return (
@@ -27,6 +27,14 @@ const AppWrapper = () => {
         <Routes>
           <Route path="" element={<App />}>
             <Route path="" element={<Home />} />
+
+            <Route path="property/:id" element={<PropertyDetail />} />
+            <Route path="room/:id" element={<RoomDetail />} />
+            <Route path="transaction-success" element={<TransactionSuccess />} />
+
+            <Route path="/tenant" element={<TenantHome />} />
+            <Route path="/tenant/propertyAdder" element={<AddProperty />} />
+            <Route path="/tenant/propertyEditor/:id" element={<PropertyEditor />} />
             <Route path="/tenantSignIn" element={<TenantSignIn />} />
 
             <Route path="property/:id" element={<PropertyDetail />} />
@@ -40,6 +48,8 @@ const AppWrapper = () => {
             <Route path="/setting" element={<Setting />}>
               <Route path="profile" element={<Profile />} />
               <Route path="privacy" element={<Privacy />} />
+              <Route path="order" element={<Order />} />
+              <Route path="order/:id" element={<OrderDetail />} />
             </Route>
           </Route>
           <Route path="/reset-password" element={<ResetPassword />} />
