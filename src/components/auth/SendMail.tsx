@@ -37,7 +37,8 @@ const SendMail: React.FC<ISendMail> = ({ page, setPage }) => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error(error?.response?.data?.message);
+      toast.error("Mengirim Email Gagal");
+      // toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 

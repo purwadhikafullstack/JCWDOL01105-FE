@@ -119,7 +119,6 @@ const PropertyDetail = () => {
               <p className="text-xl">Cari Lokasi di Peta</p>
               <Map />
             </div>
-
             <iframe
               className="w-full rounded-2xl h-[400px]"
               src={`https://maps.google.com/maps?q=${data.location.lat},${data.location.lng}&hl=id&z=15&amp&output=embed`}
