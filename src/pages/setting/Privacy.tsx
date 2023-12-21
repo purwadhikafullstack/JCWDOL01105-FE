@@ -18,7 +18,7 @@ const Privacy = () => {
 
   const { mutate, isSuccess, isError, error } = usePostApi("/api/user/update-password", bearer);
   const { data, isFetched } = useGetAPI("/api/user/id", "user-privacy", bearer);
-  console.log(isFetched && data.password === null);
+
   const initForm = {
     oldPassword: "",
     newPassword: "",

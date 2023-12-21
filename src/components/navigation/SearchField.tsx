@@ -42,10 +42,11 @@ const SearchField = () => {
     dispatch(
       setQuery({
         city: location,
-        date: { from: date?.from?.toLocaleDateString(), to: date?.to?.toLocaleDateString() },
+        date: { from: date?.from?.setHours(14, 0, 0, 0), to: date?.to?.setHours(12, 0, 0, 0) },
       })
     );
     setOpen(false);
+    setLocation("");
   };
 
   useEffect(() => {

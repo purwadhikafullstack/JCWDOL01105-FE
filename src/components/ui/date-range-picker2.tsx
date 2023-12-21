@@ -230,6 +230,7 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
                     setRange({ from: value.from, to: value?.to });
                   }
                 }}
+                disabled={(date) => new Date() > date}
                 selected={range}
                 numberOfMonths={isSmallScreen ? 1 : 2}
                 defaultMonth={new Date(new Date().setMonth(new Date().getMonth()))}

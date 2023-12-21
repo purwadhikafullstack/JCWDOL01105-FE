@@ -26,3 +26,7 @@ export const parseDate = (date: DateRange) => {
   }
   return `${momentDate} - ${moment(date.to).locale("id").format("ll")}`;
 };
+
+export const formatDateLL = (date: number) => {
+  return `${moment(date).locale("id").format("LT")} - ${moment(date).locale("id").format("ll")} `;
+};

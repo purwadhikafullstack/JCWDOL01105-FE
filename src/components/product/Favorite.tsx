@@ -51,9 +51,9 @@ const PropertyFavorite: React.FC<IData & IStatus> = ({ data, status }) => {
     <div className="mb-4">
       {status === true && (
         <Card className="h-full w-full md:max-w-[320px] mx-2">
-          <CardContent className="w-full p-4">
+          <CardContent className="w-full p-0">
             <div className="relative">
-              <img loading="lazy" className="w-full md:w-[300px] h-[200px]" src={data.image_url} alt="" />
+              <img loading="lazy" className="w-full rounded-t-md h-[200px]" src={data.image_url} alt="" />
               {isLogin ? (
                 <FavoriteComponent />
               ) : (
@@ -65,11 +65,13 @@ const PropertyFavorite: React.FC<IData & IStatus> = ({ data, status }) => {
                 </Dialog>
               )}
             </div>
-            <Link to={`/property/${data.id}`}>
-              <CardTitle className="my-1 text-md ">{maxTitle}</CardTitle>
-              <CardDescription>{data.location.city}</CardDescription>
-              <span>{lowestRoomPrice}</span>
-            </Link>
+            <div className="p-4">
+              <Link to={`/property/${data.id}`}>
+                <CardTitle className="my-1 text-md ">{maxTitle}</CardTitle>
+                <CardDescription>{data.location.city}</CardDescription>
+                <span>{lowestRoomPrice}</span>
+              </Link>
+            </div>
           </CardContent>
         </Card>
       )}
