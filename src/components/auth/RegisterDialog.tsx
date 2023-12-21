@@ -49,7 +49,8 @@ const RegisterDialog = () => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error(error?.response?.data.message);
+      toast.error("Register gagal");
+      // toast.error(error?.response?.data.message);
     }
   }, [isSuccess, isError]);
 

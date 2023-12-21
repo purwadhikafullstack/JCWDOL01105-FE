@@ -38,7 +38,7 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
     defaultValues: initForm,
   });
 
-  const { mutate, data, isSuccess, isError, error } = usePostApi("/api/user/login");
+  const { mutate, data, isSuccess, isError } = usePostApi("/api/user/login");
   const onSubmit = (values: FormType) => {
     mutate({ ...values });
   };
@@ -50,7 +50,8 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error(error?.response?.data?.message);
+      toast.error("Login gagal");
+      // toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 

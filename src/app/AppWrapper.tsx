@@ -13,7 +13,6 @@ const Favorite = lazy(() => import("../pages/setting/Favorite"));
 const ResetPassword = lazy(() => import("../components/auth/ResetPassword"));
 const PropertyDetail = lazy(() => import("../pages/property/PropertyDetail"));
 const RoomDetail = lazy(() => import("../pages/property/RoomDetail"));
-
 const OrderDetail = lazy(() => import("../pages/setting/OrderDetail"));
 const TransactionSuccess = lazy(() => import("../pages/TransactionSuccess"));
 const TenantHome = lazy(() => import("../pages/tenantHome"));
