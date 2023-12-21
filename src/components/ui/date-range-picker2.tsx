@@ -118,29 +118,6 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
     return a.from.getTime() === b.from.getTime() && (!a.to || !b.to || a.to.getTime() === b.to.getTime());
   };
 
-  // const handleSelect = (value: { from?: Date; to?: Date }) => {
-  //   if (value?.from != null) {
-  //     if (bookDate.length > 0) {
-  //       for (let i = 0; i < bookDate.length; i++) {
-  //         if (
-  //           value.from < new Date(bookDate[i].start_date) &&
-  //           value.to &&
-  //           value.to > new Date(bookDate[i].end_date - oneDay)
-  //         ) {
-  //           setIsDisabled(true);
-  //           setRange({ from: value.from, to: value?.to });
-  //         } else {
-  //           setIsDisabled(false);
-  //           setRange({ from: value.from, to: value?.to });
-  //           setRange({ from: value.from, to: value?.to });
-  //         }
-  //       }
-  //     } else {
-  //       setRange({ from: value.from, to: value?.to });
-  //     }
-  //   }
-  // };
-
   useEffect(() => {
     if (isOpen) {
       openedRangeRef.current = range;
