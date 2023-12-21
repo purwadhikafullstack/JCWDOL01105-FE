@@ -6,19 +6,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { changePasswordSchema } from "@/lib/schema";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { usePostApi } from "@/lib/service";
+import { useGetAPI, usePostApi } from "@/lib/service";
 import { Toaster, toast } from "sonner";
 import { AuthContext } from "@/app/AuthContext";
 
 const Privacy = () => {
-  const { id, token, logout } = useContext(AuthContext);
+  const { bearer, logout } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [show3, setShow3] = useState(false);
 
-  const headers = { headers: { Authorization: `Bearer ${token}` } };
-  const { mutate, isSuccess, isError, error } = usePostApi("/api/user/update-password", headers);
-
+  const { mutate, isSuccess, isError, error } = usePostApi("/api/user/update-password", bearer);
+  const { data, isFetched } = useGetAPI("/api/user/id", "user-privacy", bearer);
+  console.log(isFetched && data.password === null);
   const initForm = {
     oldPassword: "",
     newPassword: "",
@@ -34,7 +34,6 @@ const Privacy = () => {
       oldPassword: values.oldPassword,
       newPassword: values.newPassword,
       confirmPassword: values.confirmPassword,
-      userId: String(id),
     });
   };
 
@@ -129,9 +128,11 @@ const Privacy = () => {
                 </FormItem>
               )}
             />
-            <Button className="mx-auto mt-2 text-xl font-semibold" type="submit">
-              Submit
-            </Button>
+            {isFetched && (
+              <Button className="mx-auto mt-2 text-xl font-semibold" type="submit" disabled={data.password === null}>
+                Submit
+              </Button>
+            )}
           </form>
         </Form>
       </div>

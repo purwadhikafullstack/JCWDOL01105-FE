@@ -2,6 +2,10 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { repositories } from "./repositories";
 import { AxiosRequestConfig } from "axios";
 
+interface ErrorResponse {
+  response: { data: { message: string } };
+}
+
 const config = {};
 
 export const useGetAPI = (params: string, query: string, headers: AxiosRequestConfig = config) => {
@@ -14,6 +18,11 @@ export const usePostApi = (params: string, headers: AxiosRequestConfig = config)
       const res = await repositories.postApi(params, data, headers);
       return res.data;
     },
+    onError(error: ErrorResponse) {
+      if (error.response?.data) {
+        return error;
+      }
+    },
   });
 };
 
@@ -22,6 +31,11 @@ export const usePutApi = (params: string, headers: AxiosRequestConfig = config) 
     mutationFn: async (data: unknown) => {
       const res = await repositories.putApi(params, data, headers);
       return res.data;
+    },
+    onError(error: ErrorResponse) {
+      if (error.response?.data) {
+        return error;
+      }
     },
   });
 };

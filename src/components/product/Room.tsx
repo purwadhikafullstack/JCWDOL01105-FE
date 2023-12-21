@@ -23,7 +23,7 @@ const Room: React.FC<IDataProps> = ({ data }) => {
     <Dialog>
       <Card className="mb-4 shadow-lg">
         <div className="flex flex-col xl:flex-row">
-          <img className="h-[200px] rounded-xl" src={data.image_url} />
+          <img className="h-[205px] rounded-xl" src={data.image_url} />
           <div className="w-full">
             <CardHeader>
               <div className="flex justify-between items-end">
@@ -32,25 +32,32 @@ const Room: React.FC<IDataProps> = ({ data }) => {
               </div>
             </CardHeader>
             <CardContent>
-              {data.description.length > 20 ? (
-                fullDescription ? (
-                  <div>
-                    {data.description}
-                    <span className="font-thin cursor-pointer" onClick={() => setFullDescription(false)}>
-                      sembunyikan
-                    </span>
-                  </div>
-                ) : (
-                  <div>
-                    {data.description.substring(0, 80)}
-                    <span className="font-thin cursor-pointer" onClick={() => setFullDescription(true)}>
-                      {" "}
-                      ...selanjutnya
-                    </span>
-                  </div>
-                )
+              {data.description.length > 100 ? (
+                <span>
+                  {fullDescription ? (
+                    <div>
+                      <span>{data.description}</span>
+                      <span
+                        className="hover:cursor-pointer ml-2 font-thin italic"
+                        onClick={() => setFullDescription(false)}
+                      >
+                        sembunyikan
+                      </span>
+                    </div>
+                  ) : (
+                    <div>
+                      <span>{data.description.substring(0, 100) + "..."}</span>
+                      <span
+                        className="hover:cursor-pointer ml-2 font-thin italic"
+                        onClick={() => setFullDescription(true)}
+                      >
+                        tampilkan
+                      </span>
+                    </div>
+                  )}
+                </span>
               ) : (
-                <p> {data.description}</p>
+                <span>{data.description}</span>
               )}
             </CardContent>
             <CardFooter className="font-thin flex justify-between items-end">

@@ -2,6 +2,8 @@ import React, { createContext } from "react";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { auth, provider } from "@/lib/firebase.config";
+import { signInWithPopup } from "firebase/auth";
 
 interface Token {
   id: string;
@@ -50,10 +52,10 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const { id, role, isLogin, token } = getToken();
   const [rand, setRand] = useState(0);
   const bearer = { headers: { Authorization: `Bearer ${token}` } };
-  
+
   const loginGoogle = (payload: string) => {
     sessionStorage.setItem("token", payload);
-    setRand(Math.random());
+    navigate("/");
   };
 
   const logoutGoogle = () => {
@@ -67,13 +69,12 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   };
 
   const logout = () => {
-    setTimeout(() => {
-      sessionStorage.removeItem("token");
-      navigate("/");
-    }, 1000);
+    sessionStorage.removeItem("token");
+    navigate("/");
   };
 
   useEffect(() => {}, [rand]);
+
   return (
     <AuthContext.Provider value={{ id, role, isLogin, token, bearer, loginGoogle, logoutGoogle, login, logout }}>
       {children}

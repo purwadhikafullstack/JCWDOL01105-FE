@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/features/hook";
 import { Button } from "@/components/ui/button";
 import { uploadImageSchema } from "@/lib/schema";
 import { AddAPhoto } from "@mui/icons-material";
-import { setRand } from "@/lib/features/globalReducer";
+import { getHome, setRand } from "@/lib/features/globalReducer";
 import { random } from "@/lib/features/globalReducer";
 import { Toaster, toast } from "sonner";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -18,8 +18,8 @@ import VerifyEmail from "@/components/profile/VerifyEmail";
 
 const Profile = () => {
   const dispathc = useAppDispatch();
-  const { id, token } = useContext(AuthContext);
-  const { data, isFetched, refetch } = useGetAPI(`/api/user/id/${id}`, "user-profile");
+  const { bearer, token } = useContext(AuthContext);
+  const { data, isFetched, refetch } = useGetAPI(`/api/user/id`, "user-profile", bearer);
   const rand = useAppSelector(random);
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
@@ -31,7 +31,7 @@ const Profile = () => {
     resolver: zodResolver(uploadImageSchema),
   });
 
-  const { mutate, isSuccess, isError } = usePutApi(`/api/user/upload-image/${id}`, {
+  const { mutate, isSuccess, isError } = usePutApi(`/api/user/upload-image`, {
     headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` },
   });
 
@@ -49,11 +49,6 @@ const Profile = () => {
     
   };
 
-  if (isSuccess) {
-    // dispathc(setRand(Math.random()));
-    // console.log(rand);
-  }
-
   useEffect(() => {
     if (isSuccess) {
       toast.success("Sukses Upload Gambar");
@@ -62,7 +57,7 @@ const Profile = () => {
       toast.success("Gagal Upload Gambar");
     }
     refetch();
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, rand]);
 
   return (
     <div className="border rounded-xl p-10 flex flex-col sm:flex-row h-full">
