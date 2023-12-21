@@ -147,7 +147,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
         setIsOpen(open);
       }}
     >
-      <div className="flex flex-col md:flex-row items-center">
+      <div className="flex flex-col md:flex-row items-center md:space-x-2">
         <div>
           <Label className="mr-2 text-[12px]">CHECK-IN</Label>
           <PopoverTrigger asChild className="w-full h-16 lg:h-12 mb-4 md:mb-0 mr-0 md:mr-4 items-center">

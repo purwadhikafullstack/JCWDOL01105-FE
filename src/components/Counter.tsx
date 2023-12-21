@@ -3,10 +3,12 @@ import { Button } from "./ui/button";
 interface ICounter {
   state?: string;
   count: number;
+  total: number;
+  max: number;
   setCount: (n: number) => void;
 }
 
-const Counter: React.FC<ICounter> = ({ state, count, setCount }) => {
+const Counter: React.FC<ICounter> = ({ state, count, setCount, total, max }) => {
   const decrement = () => {
     if (state === "kids" && count > 0) {
       setCount(count - 1);
@@ -16,7 +18,9 @@ const Counter: React.FC<ICounter> = ({ state, count, setCount }) => {
   };
 
   const increment = () => {
-    setCount(count + 1);
+    if (total < max) {
+      setCount(count + 1);
+    }
   };
 
   return (

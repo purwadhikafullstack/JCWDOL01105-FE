@@ -18,17 +18,16 @@ interface IData {
 }
 
 const VerifyEmail: React.FC<IData> = ({ data }) => {
-  const { id, token } = useContext(AuthContext);
+  const { bearer } = useContext(AuthContext);
   const [otp, setOtp] = useState("");
-  const { mutate } = usePostApi(`/api/user/id/${id}`);
-  const { mutate: otpRequest, isSuccess, data: request } = usePostApi(`/api/user/otp/request`);
+  const { mutate: otpRequest, isError: isOtpError, error: otpError } = usePostApi(`/api/user/otp/request`, bearer);
 
   const {
     mutate: verify,
-    isSuccess: verifyIsSuccess,
-    isError: verifyIsError,
+    isSuccess: isVerifySuccess,
+    isError: isVerifyError,
     error: verifyError,
-  } = usePostApi(`/api/user/verify-email`, { headers: { Authorization: `Bearer ${token}` } });
+  } = usePostApi(`/api/user/verify-email`, bearer);
   const handleRequest = () => {
     otpRequest({ email: data.email });
   };
@@ -38,22 +37,22 @@ const VerifyEmail: React.FC<IData> = ({ data }) => {
   };
 
   useEffect(() => {
-    if (verifyIsSuccess) {
+    if (isVerifySuccess) {
       setTimeout(() => {
         window.location.reload();
       }, 1000);
       toast.success("Verifikasi berhasil");
     }
-    if (verifyIsError) {
+    if (isVerifyError) {
       toast.error(verifyError?.response.data.message);
     }
-  }, [verifyIsError, verifyIsSuccess]);
+  }, [isVerifyError, isVerifySuccess]);
 
   useEffect(() => {
-    if (isSuccess) {
-      toast(request.message);
+    if (isOtpError) {
+      toast.error(otpError?.response.data.message);
     }
-  }, [request]);
+  }, [isOtpError]);
 
   return (
     <Dialog>

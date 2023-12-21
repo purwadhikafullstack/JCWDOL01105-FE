@@ -1,30 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { useGetAPI, usePostApi } from "@/lib/service";
 import { FormatToIDR } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router";
 import { ChevronLeft } from "@mui/icons-material";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import CountdownTimer from "../../components/order/Countdown";
 import UploadProvePayment from "@/components/order/UploadProvePayment";
+import { AuthContext } from "@/app/AuthContext";
 
 const OrderDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: order, isFetched, refetch } = useGetAPI(`/api/order/id/${id}`, "order-detail");
+  const { bearer } = useContext(AuthContext);
+  const { data: order, isFetched, refetch } = useGetAPI(`/api/order/id/${id}`, `order-${id}`, bearer);
+  const { mutate, data: transactionOrder, isSuccess } = usePostApi(`api/order/transaction`, bearer);
 
   const [token, setToken] = useState("");
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const checkIn = isFetched && new Date(order.start_date).toLocaleDateString();
   const checkOut = isFetched && new Date(order.end_date).toLocaleDateString();
   const countDay = isFetched && Math.round(Math.abs(order.start_date - order.end_date) / (24 * 36 * 1e5));
-  const hours = Math.floor(timeLeft / 60);
-  const minutes = Math.floor(timeLeft % 60);
-
-  const { mutate, data: transactionOrder, isSuccess } = usePostApi(`api/order/transaction`);
-  const { mutate: expiredOrder } = usePostApi(`api/order/expired`);
 
   const transaction = () => {
     const payload = isFetched && {
@@ -32,27 +29,6 @@ const OrderDetail = () => {
     };
     mutate(payload);
   };
-
-  useEffect(() => {
-    if (isFetched) {
-      const expiresTime = order.expired - new Date().getTime();
-      if (expiresTime > 0) {
-        setTimeLeft(expiresTime / 6e4);
-      } else {
-        expiredOrder({ orderId: id });
-      }
-    }
-  }, [isFetched]);
-
-  useEffect(() => {
-    if (!timeLeft) return;
-
-    const intervalId = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
-    }, 6e4);
-
-    return () => clearInterval(intervalId);
-  }, [timeLeft]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -104,13 +80,7 @@ const OrderDetail = () => {
             </div>
             <div className="w-full relative mt-12 md:mt-0 md:pr-8">
               <div className="flex justify-end">
-                {order.status === "unpaid" ? (
-                  <span className={`border rounded-full px-4 py-1 bg-yellow-300 text-yellow-700 shadow-xl`}>
-                    {hours}:{minutes.toString().padStart(2, "0")}
-                  </span>
-                ) : (
-                  ""
-                )}
+                {order.status === "unpaid" ? <CountdownTimer orderDate={order.createdAt} /> : ""}
               </div>
               <div>
                 <p className="text-xl">ORDER ID</p>
@@ -142,8 +112,8 @@ const OrderDetail = () => {
                   Bayar Sekarang
                 </Button>
                 <Dialog>
-                  <DialogTrigger>
-                    <Button className={`${order.status !== "unconfirm" ? "hidden" : ""}`}>Upload Bukti Bayar</Button>
+                  <DialogTrigger className={`${order.status !== "unconfirm" ? "hidden" : ""}`}>
+                    Upload Bukti Bayar
                   </DialogTrigger>
                   <UploadProvePayment orderId={String(id)} />
                 </Dialog>

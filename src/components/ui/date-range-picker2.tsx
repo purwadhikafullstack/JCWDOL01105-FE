@@ -41,7 +41,6 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
   initialCompareTo,
   onUpdate,
   showCompare = true,
-  bookDate,
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -139,20 +138,10 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
   //         }
   //       }
   //     } else {
-  //       return setRange({ from: value.from, to: value?.to });
+  //       setRange({ from: value.from, to: value?.to });
   //     }
   //   }
   // };
-
-  const hadleDisable = (date: Date) => {
-    if (date < new Date(today - oneDay)) return true;
-    for (let i = 0; i < bookDate.length; i++) {
-      if (date >= new Date(bookDate[i].start_date) && date < new Date(bookDate[i].end_date)) {
-        return true;
-      }
-    }
-    return false;
-  };
 
   useEffect(() => {
     if (isOpen) {
@@ -160,6 +149,7 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
       openedRangeCompareRef.current = rangeCompare;
     }
   }, [isOpen]);
+
   return (
     <div>
       <div className="flex py-2">
@@ -262,26 +252,9 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
                 mode="range"
                 onSelect={(value: { from?: Date; to?: Date } | undefined) => {
                   if (value?.from != null) {
-                    if (bookDate.length > 0) {
-                      for (let i = 0; i < bookDate.length; i++) {
-                        if (
-                          value.from < new Date(bookDate[i].start_date) &&
-                          value.to &&
-                          value.to > new Date(bookDate[i].end_date - oneDay)
-                        ) {
-                          setIsDisabled(true);
-                          setRange({ from: value.from, to: value?.to });
-                        } else {
-                          setIsDisabled(false);
-                          setRange({ from: value.from, to: value?.to });
-                        }
-                      }
-                    } else {
-                      return setRange({ from: value.from, to: value?.to });
-                    }
+                    setRange({ from: value.from, to: value?.to });
                   }
                 }}
-                disabled={(date) => hadleDisable(date)}
                 selected={range}
                 numberOfMonths={isSmallScreen ? 1 : 2}
                 defaultMonth={new Date(new Date().setMonth(new Date().getMonth()))}
