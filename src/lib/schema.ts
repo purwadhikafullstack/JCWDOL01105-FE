@@ -108,7 +108,7 @@ export const changePasswordSchema = z
     path: ["confirmPassword"],
   })
   .refine((data) => data.oldPassword !== data.newPassword, {
-    message: "Password harus beda",
+    message: "Password harus berbeda",
     path: ["newPassword"],
   });
 
@@ -152,14 +152,16 @@ export const emailSchema = z.object({
 export const editEmailSchema = z.object({
   email: z
     .string()
-    .email()
-    .min(3)
+    .min(3, { message: "Minimal 3 karakter" })
+    .max(50, { message: "Maksimal 50 karakter" })
+    .email("Email tidak valid")
     .refine(async (e) => {
       const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/user/email/${e}`);
       if (data && data.data) {
         const validateEmail = data.data.email;
         return validateEmail.includes(!e);
       } else {
+        console.log("thius", data);
         return e === e;
       }
     }, "Email tidak tersedia"),
@@ -170,9 +172,9 @@ export const genderSchema = z.object({
 });
 
 export const birthdateSchema = z.object({
-  birthdate: z.number(),
+  birthdate: z.date(),
 });
 
 export const searchSchema = z.object({
-  location: z.any(),
+  location: z.string(),
 });

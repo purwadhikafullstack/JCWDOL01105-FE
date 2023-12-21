@@ -11,7 +11,6 @@ import { usePostApi } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
-import { Dialog } from "../ui/dialog";
 import SendMail from "./SendMail";
 import icon from "@/assets/icons";
 
@@ -39,7 +38,7 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
     defaultValues: initForm,
   });
 
-  const { mutate, data, isSuccess, isError } = usePostApi("/api/user/login");
+  const { mutate, data, isSuccess, isError, error } = usePostApi("/api/user/login");
   const onSubmit = (values: FormType) => {
     mutate({ ...values });
   };
@@ -51,8 +50,7 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error("Login gagal");
-      // toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 

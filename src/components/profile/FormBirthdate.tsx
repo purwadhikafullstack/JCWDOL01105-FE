@@ -1,5 +1,5 @@
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Form, FormMessage, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Form, FormMessage, FormField, FormItem } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { DropdownCalendar } from "../ui/dropdown-calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -19,14 +19,20 @@ import { setRand } from "@/lib/features/globalReducer";
 
 const FormBirthDate = ({ birthdate }: { birthdate: any }) => {
   const dispatch = useAppDispatch();
-  const { id, bearer } = useContext(AuthContext);
+
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [open, setOpen] = useState(false);
+
+  const { bearer } = useContext(AuthContext);
+  const { mutate, isSuccess, isError } = usePutApi(`/api/user/update`, bearer);
+
   const initForm = {
     birthdate: birthdate ? birthdate : new Date(),
   };
+
   const form = useForm({ resolver: zodResolver(birthdateSchema), defaultValues: initForm });
-  const [date, setDate] = useState<Dater>(new Date());
-  const { mutate, isSuccess, isError } = usePutApi(`/api/user/${id}`, bearer);
-  const onSubmit = (values: object) => {
+
+  const onSubmit = () => {
     mutate({ birthdate: date?.getTime() });
   };
 
@@ -34,6 +40,9 @@ const FormBirthDate = ({ birthdate }: { birthdate: any }) => {
     if (isSuccess) {
       toast.success("Sukses Mengedit");
       dispatch(setRand(Math.random()));
+      setTimeout(() => {
+        setOpen(false);
+      }, 500);
     }
     if (isError) {
       toast.error("Gagal Mengedit");
@@ -41,13 +50,13 @@ const FormBirthDate = ({ birthdate }: { birthdate: any }) => {
   }, [isSuccess, isError]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <p className="italic hover:underline hover:cursor-pointer font-medium">Ubah</p>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[400px]">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit, (err: any) => console.log(err))} encType="multipart/form-data">
+          <form onSubmit={form.handleSubmit(onSubmit, (err: any) => console.log(err))}>
             <DialogTitle className="mb-2">Ubah Tanggal Lahir</DialogTitle>
             <DialogDescription className="my-4">Pastikan data yang kamu input valid</DialogDescription>
             <FormField
@@ -59,25 +68,23 @@ const FormBirthDate = ({ birthdate }: { birthdate: any }) => {
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
-                        className={cn(
-                          "w-[300px] justify-start text-left font-normal",
-                          !date && "text-muted-foreground"
-                        )}
+                        className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}
                       >
                         <CalendarMonth className="mr-2 h-4 w-4" />
                         {date ? format(date, "PPP") : <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
+                    <PopoverContent className="p-0">
                       <DropdownCalendar
                         mode="single"
                         captionLayout="dropdown"
                         selected={date}
-                        onSelect={setDate}
+                        onSelect={(date) => setDate(date)}
                         {...field}
                         initialFocus
                         fromYear={1960}
                         toYear={new Date().getFullYear()}
+                        disabled={(date) => new Date() < date}
                       />
                     </PopoverContent>
                   </Popover>
