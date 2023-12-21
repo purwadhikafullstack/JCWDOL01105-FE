@@ -80,24 +80,17 @@ const PropertyEditor: React.FC = () => {
 
   const { data } = useGetAPI(`/api/roomList/${id}`, "get", config);
 
-  const { id } = useParams();
-  console.log(id);
 
     const { token } = useContext(AuthContext)
     const formProp = useForm({ resolver: zodResolver(formPropertySchema) })
     const { id } = useParams();
     console.log(id);
 
-  const fetchRoomData = async () => {
-    try {
-      const result = await getRoomData(id);
-      console.log(result);
-      setRoomData(result.data.data);
-      console.log(roomData);
-    } catch (error) {
-      console.error("Error Message :", error);
+    const config = {
+        headers: {
+            Accept: 'multipart/form-data'
+        }
     }
-  };
 
     const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config)
 
@@ -278,7 +271,6 @@ const PropertyEditor: React.FC = () => {
             </div>
         </ProtectedRouteTenant >
     );
-  };
-};
+}
 
 export default PropertyEditor;

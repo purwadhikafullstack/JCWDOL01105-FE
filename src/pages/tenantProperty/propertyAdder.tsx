@@ -1,33 +1,46 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import MainNavBarTenant from "@/components/mainNavBarTenant/mainNavBarTenant";
-import { formPropertySchema, uploadImageSchema } from "@/lib/schema";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@/components/ui/button"
+import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
+import { formPropertySchema, uploadImageSchema } from '@/lib/schema';
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import ProtectedRouteTenant from "@/components/auth/ProtectedRouteTenant";
 
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { AddAPhoto } from "@mui/icons-material";
 import { useGetAPI, usePostApi, usePutApi } from "@/lib/service";
-import { useNavigate } from "react-router";
-import { after } from "node:test";
-import { AuthContext } from "@/app/AuthContext";
+import { useNavigate } from 'react-router';
+import { after } from 'node:test';
+import { AuthContext } from '@/app/AuthContext';
 
-import { useNavigate } from "react-router";
-import { after } from "node:test";
-import { AuthContext } from "@/app/AuthContext";
+
+import { useNavigate } from 'react-router';
+import { after } from 'node:test';
+import { AuthContext } from '@/app/AuthContext';
+
 
 const AddProperty: React.FC = () => {
+
+
+
   console.log("Proptery Adder");
 
   // const form = useForm({defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema)})
-  const form = useForm({ resolver: zodResolver(formPropertySchema) });
+  const form = useForm({ resolver: zodResolver(formPropertySchema) })
   // const formUpload =useForm({resolver:zodResolver(uploadImageSchema)});
-  const { id, token } = useContext(AuthContext);
+  const {id,token} = useContext(AuthContext);
   // const {reset} = useForm();
   // const form = {formState : formState, reset : reset, setValue : setValue, handleSubmit : handleSubmit, control : control}
   // const { isDirty, isValid } = formState;
@@ -47,14 +60,15 @@ const AddProperty: React.FC = () => {
     // form.setValue("file", fileValue!);
   };
 
+
   const config = {
     headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`
     },
-  };
+  }
 
-  const { mutate, isSuccess, isError } = usePostApi(`/api/propertyList`, config);
+
+  const { mutate, isSuccess, isError } = usePostApi(`/api/propertyList`, config)
   // const { mutate:mutateImage, isSuccess:imageSuccess, isError:imageError } = usePostApi(`/api/propertyList/${id}`, config)
 
   const navigate = useNavigate();
@@ -67,23 +81,27 @@ const AddProperty: React.FC = () => {
       formData.append("file", values.file);
       await mutate({ ...values });
       console.log(isSuccess, "inidia");
-    } catch (error) {
+
+    }
+    catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error posting property data:", error);
     } finally {
-      console.log(isSuccess);
-      console.log(isError);
+
+      console.log(isSuccess)
+      console.log(isError)
+
     }
-  };
+
+  }
 
   useEffect(() => {
+    
     if (isSuccess) {
       form.reset();
-      setTimeout(() => {
-        navigate("/tenant");
-      }, 50);
+      setTimeout(() => { navigate("/tenant") }, 50)
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError])
 
   // const afterSubmit = () => {
   //   if (isSuccess) {
@@ -153,8 +171,7 @@ const AddProperty: React.FC = () => {
             <div>
               <FormLabel>Pilih Gambar Properti</FormLabel>
               <div className="flex mt-2">
-                <Button
-                  type="button"
+                <Button type="button"
                   className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 "
                   onClick={() => handleClick()}
                 >
@@ -181,12 +198,12 @@ const AddProperty: React.FC = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" >Submit</Button>
           </form>
         </Form>
       </>
     </ProtectedRouteTenant>
   );
-};
+}
 
 export default AddProperty;

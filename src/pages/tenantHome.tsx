@@ -15,6 +15,7 @@ const TenantHome = () => {
   //   },
   // });
 
+
   // const fetchPropertyData = async () => {
   //   try {
   //     const result = await getPropertyData()
@@ -29,36 +30,43 @@ const TenantHome = () => {
   // const [propData, setPropData] = useState([]);
 
   // useEffect(() => { fetchPropertyData() }, [])
+ 
 
-  const { token } = useContext(AuthContext);
+
+  const {token} = useContext(AuthContext);
   const config = {
     headers: {
-      Authorization: `Bearer ${token}`,
+       Authorization: `Bearer ${token}`
     },
-  };
-  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList`, "property", config);
+  }
+  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList`, "property",config);
+
+
 
   const displayCard = () => {
+
     if (data && isFetched) {
-      return data.map((property: any, index: number) => (
-        <PropertyCard key={index} refetch={refetch} property={property} />
-      ));
-    } else {
-      //refetch()
-      return null;
+      return data.map((property: any, index: number) => (<PropertyCard key={index} refetch={refetch} property={property} />)
+      )
     }
-  };
+    else {
+      //refetch()
+    return null;}
+  }
 
   return (
-    <ProtectedRouteTenant>
-      <>
-        <MainNavBarTenant />
-        <br />
+  <ProtectedRouteTenant>
+    <>
 
-        <div className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-4 lg:w-screen ">{displayCard()}</div>
-        <br />
-      </>
-    </ProtectedRouteTenant>
+      <MainNavBarTenant />
+      <br />
+
+      <div className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-4 lg:w-screen ">
+        {displayCard()}
+      </div>
+      <br />
+    </>
+  </ProtectedRouteTenant>
   );
 };
 
