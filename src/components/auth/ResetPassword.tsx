@@ -29,7 +29,7 @@ const ResetPassword = () => {
     defaultValues: initForm,
   });
 
-  const { mutate, isSuccess, isError } = usePostApi("/api/user/reset-password");
+  const { mutate, isSuccess, isError, error } = usePostApi("/api/user/reset-password");
   const onSubmit = (values: FormType) => {
     mutate({
       newPassword: values.newPassword,
@@ -48,8 +48,7 @@ const ResetPassword = () => {
       }, 1000);
     }
     if (isError) {
-      toast.error("Reset password gagal");
-      // toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 

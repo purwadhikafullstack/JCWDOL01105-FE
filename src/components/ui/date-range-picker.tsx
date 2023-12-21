@@ -292,6 +292,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                   )}
                 </div>
               </div>
+
               <div>
                 <Calendar
                   mode="range"

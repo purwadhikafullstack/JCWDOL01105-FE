@@ -45,12 +45,13 @@ const PropertyDetail = () => {
 
   const onSubmit = () => {
     const data = {
-      startDate: new Date(date.from).getTime(),
-      endDate: new Date(date.to).getTime(),
+      startDate: date.from,
+      endDate: date.to,
       guest: totalGuest,
       totalPrice: totalPrice,
       roomId: isFetched && room.id,
     };
+    console.log("data", data);
     mutate(data);
   };
 
