@@ -57,42 +57,25 @@ const initialRoomData = {
 }
 
 const PropertyEditor: React.FC = () => {
-  console.log("Property Editor");
 
-  const formProp = useForm({ defaultValues: initialPropertyData });
-  const formRoom = useForm({ defaultValues: initialRoomData });
-  const { id } = useParams();
-  console.log(id);
 
-  const config = {
-    headers: {
-      Accept: "multipart/form-data",
-    },
-  };
-
-  const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config);
-    const formProp = useForm({ defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema) })
-    const formRoom = useForm({ defaultValues: initialRoomData, resolver: zodResolver(formRoomSchema) })
-    const { id } = useParams();
-    console.log(id);
-
-  const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config);
-
-  const { data } = useGetAPI(`/api/roomList/${id}`, "get", config);
-
+    console.log("Property Editor");
 
     const { token } = useContext(AuthContext)
     const formProp = useForm({ resolver: zodResolver(formPropertySchema) })
     const { id } = useParams();
     console.log(id);
 
+
     const config = {
         headers: {
-            Accept: 'multipart/form-data'
-        }
+            "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`
+        },
     }
 
     const { mutate: mutateProperty } = usePutApi(`/api/propertyList/${id}`, config)
+
+   
 
     const { data, isFetched, refetch } = useGetAPI(`/api/roomList/${id}`, "room");
 
@@ -110,16 +93,6 @@ const PropertyEditor: React.FC = () => {
             console.error("Error editing property data:", error);
         }
 
-  const onSubmit = async (values: any) => {
-    console.log("ini testing values :", values);
-    try {
-      //Form Mutate data for property editor form
-      await mutateProperty({ ...values });
-      //Form Reset
-      formProp.reset();
-    } catch (error) {
-      // Handle any errors that may occur during the API call
-      console.error("Error editing property data:", error);
     }
    
     const displayCard = () => {
@@ -274,3 +247,6 @@ const PropertyEditor: React.FC = () => {
 }
 
 export default PropertyEditor;
+
+
+

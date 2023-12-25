@@ -19,6 +19,7 @@ const TenantHome = lazy(() => import("../pages/tenantHome"));
 const PropertyEditor = lazy(() => import("../pages/propertyEditor/propertyEditor"));
 const AddProperty = lazy(() => import("../pages/tenantProperty/propertyAdder"));
 const TenantSignIn = lazy(() => import("../pages/tenantProperty/tenantSignIn"));
+const TransactionsPage = lazy(()=> import ("../pages/tenantTransactions/transactionsPage"))
 
 const AppWrapper = () => {
   return (
@@ -35,15 +36,11 @@ const AppWrapper = () => {
             <Route path="/tenant" element={<TenantHome />} />
             <Route path="/tenant/propertyAdder" element={<AddProperty />} />
             <Route path="/tenant/propertyEditor/:id" element={<PropertyEditor />} />
+            <Route path="/tenant/transactions" element={<TransactionsPage />} />
             <Route path="/tenantSignIn" element={<TenantSignIn />} />
 
             <Route path="property/:id" element={<PropertyDetail />} />
             <Route path="room/:id" element={<RoomDetail />} />
-
-            <Route path="/tenant" element={<TenantHome />}/>
-            <Route path= "tenant/propertyEditor/:id" element={<PropertyEditor/>}/>
-            <Route path="/tenant/propertyAdder" element={<AddProperty />} />
-            
 
             <Route path="/setting" element={<Setting />}>
               <Route path="profile" element={<Profile />} />

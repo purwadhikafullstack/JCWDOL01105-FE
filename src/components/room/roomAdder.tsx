@@ -18,7 +18,7 @@ import { formRoomSchema } from "@/lib/schema"
 import { useParams } from "react-router"
 import { AddAPhoto } from "@mui/icons-material"
 import { ScrollArea } from "@/components/ui/scroll-area"
-
+import { useState } from "react"
 
 const RoomAdderForm: React.FC = () => {
 
@@ -42,7 +42,9 @@ const RoomAdderForm: React.FC = () => {
     };
     const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config)
     const onSubmitRooms = async (values: any) => {
+        console.log("tes1")
         try {
+            console.log("tes2")
             //Form Mutate data for property editor form
             // const formData = new FormData();
             // formData.append("file", values.file);
@@ -55,6 +57,31 @@ const RoomAdderForm: React.FC = () => {
             console.error("Error adding room to property:", error);
         }
     }
+    const [inputValue, setInputValue] = useState('');
+    const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value;
+        // Remove non-numeric characters
+        const numericValue = rawValue.replace(/[^0-9.]/g, '');
+
+        // Parse the numeric value
+        const parsedValue = parseFloat(numericValue);
+
+        // Check if the parsing is successful
+        if (!isNaN(parsedValue)) {
+            // Format the numeric value as currency
+            const formattedValue = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'IDR',
+            }).format(parsedValue);
+      
+            // Update the input value with the formatted currency
+            setInputValue(formattedValue);
+        }
+         else {
+            // If parsing fails, update with raw numeric value
+            setInputValue(numericValue);
+        }
+    };
 
     return (
         <ScrollArea className="h-[500px] w-[400px] rounded-md border p-5">
@@ -88,7 +115,7 @@ const RoomAdderForm: React.FC = () => {
                                             if (!isNaN(parsedValue)) {
                                                 field.onChange(parsedValue);
                                             }
-                                        }} />
+                                        }}/>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -109,7 +136,7 @@ const RoomAdderForm: React.FC = () => {
                         />
                         <FormField
                             control={formRoom.control}
-                            name="person"
+                            name="guest"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Jumlah Tamu</FormLabel>
@@ -164,9 +191,9 @@ const RoomAdderForm: React.FC = () => {
                                 <FormItem className="break-normal">
                                     <FormLabel>Informasi Peraturan Kamar</FormLabel>
                                     <FormControl >
-                                        <Input 
-                                         style={{ resize: 'none', whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
-                                         className="h-[150px] break-normal" placeholder="" {...field} />
+                                        <Input
+                                            style={{ resize: 'none', whiteSpace: 'pre-wrap', overflowWrap: 'break-word' }}
+                                            className="h-[150px] break-normal" placeholder="" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

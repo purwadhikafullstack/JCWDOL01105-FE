@@ -152,7 +152,7 @@ const LoginTenant = () => {
                     </div>
                 </Button>
             </div>
-            {page === 2 && <SendMail />}
+            {/* {page === 2 && <SendMail />} */}
         </>
     );
 };

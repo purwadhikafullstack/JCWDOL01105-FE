@@ -106,7 +106,7 @@ export const RoomEditor:React.FC<RoomEditorProps>=(roomId:any)=>{
                     />
                     <FormField
                         control={formRoom.control}
-                        name="person"
+                        name="guest"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Jumlah Tamu</FormLabel>

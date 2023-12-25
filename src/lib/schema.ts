@@ -85,7 +85,7 @@ export const formRoomSchema = z.object({
   description: z.string().min(2, {
     message: " Minimal 2 karakter",
   }).max(50,{message:"Maksimum 50 karakter"}),
-  person: z.number({required_error :"Jumlah orang harus diisi"}).nonnegative(),
+  guest: z.number({required_error :"Jumlah orang harus diisi"}).nonnegative(),
   file: z
   .any()
   .refine((files) => files?.size <= MAX_FILE_SIZE, `Ukuran gambar masksimal 1MB.`)
