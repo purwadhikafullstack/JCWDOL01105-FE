@@ -11,7 +11,6 @@ import { usePostApi } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
-import { Dialog } from "../ui/dialog";
 import SendMail from "./SendMail";
 import icon from "@/assets/icons";
 

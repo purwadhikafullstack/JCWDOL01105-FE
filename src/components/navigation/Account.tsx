@@ -11,7 +11,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetAPI } from "@/lib/service";
 import { random } from "@/lib/features/globalReducer";
 import { useAppSelector } from "@/lib/features/hook";
@@ -19,9 +19,10 @@ import RegisterDialog from "@/components/auth/RegisterDialog";
 import LoginDialog from "@/components/auth/LoginDialog";
 
 const ProfilePicture = () => {
-  const { id } = useContext(AuthContext);
-  const { data, isFetched, refetch } = useGetAPI(`/api/user/id/${id}`, "profile-picture");
+  const { bearer } = useContext(AuthContext);
+  const { data, isFetched, refetch } = useGetAPI(`/api/user/id`, "profile-picture", bearer);
   const rand = useAppSelector(random);
+
   useEffect(() => {
     setTimeout(() => {
       refetch();
@@ -34,6 +35,7 @@ const Account = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [route, setRoute] = useState("");
+
   const { isLogin, logoutGoogle } = useContext(AuthContext);
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
@@ -63,13 +65,13 @@ const Account = () => {
             <DropdownMenuContent className="w-[200px]">
               <div className="p-2">
                 <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">
-                  <Link className="w-full" to="/setting/order">
-                    Pesanan
+                  <Link className="w-full" to="/setting/favorite">
+                    Favorit
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">
-                  <Link className="w-full" to="/setting/favorite">
-                    Favorit
+                  <Link className="w-full" to="/setting/order">
+                    Transaksi
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">

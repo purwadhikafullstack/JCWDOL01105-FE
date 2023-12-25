@@ -1,19 +1,12 @@
 import { Link } from "react-router-dom";
-import { useEffect, useContext } from "react";
-import { useGetAPI } from "@/lib/service";
-import { AuthContext } from "@/app/AuthContext";
 import SearchField from "@/components/navigation/SearchField";
 import Account from "@/components/navigation/Account";
 import image from "@/assets/images";
+import { useAppSelector } from "@/lib/features/hook";
+import { getHome } from "@/lib/features/globalReducer";
 
 const Header = () => {
-  const { loginGoogle } = useContext(AuthContext);
-  const { data, isSuccess } = useGetAPI("/auth/login/success", "credential", { withCredentials: true });
-  useEffect(() => {
-    if (isSuccess) {
-      loginGoogle(data);
-    }
-  }, [data]);
+  const home = useAppSelector(getHome);
 
   return (
     <nav className="h-[12dvh] dark:bg-background flex px-4 md:px-12 py-4 lg:px-20 justify-between border-b sticky z-10 top-0 w-full bg-white items-center">
@@ -26,7 +19,7 @@ const Header = () => {
         </Link>
       </div>
 
-      <div>
+      <div className={home ? "" : "hidden"}>
         <SearchField />
       </div>
 

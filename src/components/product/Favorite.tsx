@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { Favorite } from "@mui/icons-material";
+import { Favorite as FavoriteIcon } from "@mui/icons-material";
 import { usePostApi } from "@/lib/service";
 import { useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
@@ -14,66 +14,67 @@ interface IData {
   data: {
     id: string;
     name: string;
-    description: string;
     image_url: string;
     location: { city: string };
-    favorites: { status: boolean; userId: string }[];
     rooms: { price: number }[];
   };
 }
 
-const Product: React.FC<IData> = ({ data }) => {
+interface IStatus {
+  status: boolean;
+}
+
+const PropertyFavorite: React.FC<IData & IStatus> = ({ data, status }) => {
   const dispatch = useAppDispatch();
   const { id, bearer, isLogin } = useContext(AuthContext);
   const { mutate } = usePostApi("/api/property/favorite", bearer);
 
   const handleFavorite = () => {
     if (isLogin) {
-      mutate({ propertyId: data.id });
+      mutate({ userId: id, propertyId: data.id });
       dispatch(setRand(Math.random()));
     }
   };
 
-  const find = data.favorites.find((favorite) => favorite.userId === id) ? true : false;
-  const favorite = find ? data.favorites.find((favorite) => favorite.userId === id)?.status : false;
   const lowestRoomPrice =
-    data.rooms.length > 0 ? FormatToIDR(Math.min(...data.rooms.map((room) => room.price))) : "Ruangan Tidak Tersedia";
+    data.rooms.length > 0 ? FormatToIDR(Math.min(...data.rooms.map((room) => room.price))) : "Kamar Tidak Tersedia";
 
   const FavoriteComponent = () => (
     <span onClick={() => handleFavorite()} className="hover:cursor-pointer absolute right-2 top-2">
-      <Favorite className={`${favorite ? "text-[#FC5185]" : ""}`} />
+      <FavoriteIcon className={"text-[#FC5185]"} />
     </span>
   );
 
   const maxTitle = data.name.length > 30 ? data.name.substring(0, 30) + "..." : data.name;
+
   return (
     <div className="mb-4">
-      <Card className="h-full w-full md:max-w-[320px] shadow-lg mx-2">
-        <CardContent className="w-full p-0">
-          <div className="relative h-[200px]">
-            <img loading="lazy" className="w-full rounded-t-md h-[200px]" src={data.image_url} alt="" />
-            {isLogin ? (
-              <FavoriteComponent />
-            ) : (
-              <Dialog>
-                <DialogTrigger>
-                  <FavoriteComponent />
-                </DialogTrigger>
-                <LoginDialog />
-              </Dialog>
-            )}
-          </div>
-          <div className="p-4">
-            <Link to={`/property/${data.id}`} className="">
-              <CardTitle className="text-md ">{maxTitle}</CardTitle>
+      {status === true && (
+        <Card className="h-full w-full md:max-w-[320px] mx-2">
+          <CardContent className="w-full p-4">
+            <div className="relative">
+              <img loading="lazy" className="w-full md:w-[300px] h-[200px]" src={data.image_url} alt="" />
+              {isLogin ? (
+                <FavoriteComponent />
+              ) : (
+                <Dialog>
+                  <DialogTrigger>
+                    <FavoriteComponent />
+                  </DialogTrigger>
+                  <LoginDialog />
+                </Dialog>
+              )}
+            </div>
+            <Link to={`/property/${data.id}`}>
+              <CardTitle className="my-1 text-md ">{maxTitle}</CardTitle>
               <CardDescription>{data.location.city}</CardDescription>
               <span>{lowestRoomPrice}</span>
             </Link>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
 
-export default Product;
+export default PropertyFavorite;

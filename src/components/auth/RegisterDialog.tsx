@@ -19,10 +19,6 @@ const RegisterDialog = () => {
     window.open(`${import.meta.env.VITE_AUTH_URL}/google/oauth`, "_self");
   };
 
-  // const facebookAuth = () => {
-  //   window.open(`${import.meta.env.VITE_AUTH_URL}/facebook/oauth`, "_self");
-  // };
-
   const initForm = {
     name: "",
     email: "",

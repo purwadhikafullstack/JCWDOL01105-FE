@@ -6,7 +6,7 @@ import { nameSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { usePutApi } from "@/lib/service";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/app/AuthContext";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/lib/features/hook";
@@ -14,13 +14,17 @@ import { setRand } from "@/lib/features/globalReducer";
 
 const FormName = ({ name }: { name: string }) => {
   const dispatch = useAppDispatch();
-  const { id, bearer } = useContext(AuthContext);
+
+  const [open, setOpen] = useState(false);
+
+  const { bearer } = useContext(AuthContext);
+  const { mutate, isSuccess, isError } = usePutApi(`/api/user/update`, bearer);
+
   const initForm = {
     name: name,
   };
 
   const form = useForm({ resolver: zodResolver(nameSchema), defaultValues: initForm });
-  const { mutate, isSuccess, isError } = usePutApi(`/api/user/${id}`, bearer);
   const onSubmit = (values: object) => {
     mutate({ ...values });
   };
@@ -29,6 +33,9 @@ const FormName = ({ name }: { name: string }) => {
     if (isSuccess) {
       toast.success("Sukses Mengedit");
       dispatch(setRand(Math.random()));
+      setTimeout(() => {
+        setOpen(false);
+      }, 500);
     }
     if (isError) {
       toast.error("Gagal Mengedit");
@@ -36,7 +43,7 @@ const FormName = ({ name }: { name: string }) => {
   }, [isSuccess, isError]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
         <p className="italic hover:underline hover:cursor-pointer font-medium">Ubah</p>
       </DialogTrigger>
