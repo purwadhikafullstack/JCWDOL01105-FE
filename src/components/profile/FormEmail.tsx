@@ -22,7 +22,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 
-const FormEmail = ({ email }: { email: string }) => {
+const FormEmail = ({ email, password }: { email: string; password: string }) => {
   const dispatch = useAppDispatch();
 
   const [open, setOpen] = useState(false);
@@ -79,7 +79,10 @@ const FormEmail = ({ email }: { email: string }) => {
             />
             <div className="flex">
               <AlertDialog>
-                <AlertDialogTrigger className="text-center w-full">
+                <AlertDialogTrigger
+                  className={`${!password ? "text-slate-300" : ""} text-center w-full`}
+                  disabled={!password}
+                >
                   <span className="text-xl font-semibold mx-auto">Simpan</span>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -96,7 +99,7 @@ const FormEmail = ({ email }: { email: string }) => {
                 </AlertDialogContent>
               </AlertDialog>
             </div>
-            <Button type="submit" className="hidden" ref={hiddenFileInput}>
+            <Button type="submit" className="hidden" ref={hiddenFileInput} disabled={!password}>
               Submit
             </Button>
           </form>

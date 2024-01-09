@@ -8,6 +8,7 @@ interface IData {
   data: {
     name: string;
     email: string;
+    password: string;
     birthdate: Date;
     gender: string;
     phone_number: string;
@@ -35,7 +36,7 @@ const Biodata: React.FC<IData> = ({ data }) => {
         <p className="font-medium">Alamat Email</p>
         <div className="flex justify-between items-center">
           <p className="font-thin">{data.email}</p>
-          <FormEmail email={data.email} />
+          <FormEmail email={data.email} password={data.password} />
         </div>
       </div>
 
