@@ -2,6 +2,8 @@ import React, { createContext } from "react";
 import { useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import { auth, provider } from "@/lib/firebase.config";
+import { signInWithPopup } from "firebase/auth";
 
 interface Token {
   id: string;
