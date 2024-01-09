@@ -41,7 +41,7 @@ const OrderList = () => {
             style={{ display: "flex", flexDirection: "column-reverse" }}
             loader={<div></div>}
           >
-            <div className="flex flex-grow flex-wrap justify-center overflow-scroll h-[75vh]">
+            <div className="flex flex-grow flex-wrap justify-center overflow-scroll h-[80vh]">
               {" "}
               {data.rows.map((order: IOrder) => (
                 <Order key={order.id} order={order} />

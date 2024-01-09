@@ -65,16 +65,16 @@ const PropertyDetail = () => {
       setTotalPrice(room.price * countDay);
     }
     dispatch(setHome(false));
-  }, [isSuccess, isError, date, room]);
+  }, [isSuccess, isError]);
 
   useEffect(() => {
     refetchRoom();
+    bookOrderRefetch();
     if (bookOrderFetched && bookOrder === "exist") {
       toast("Kamar Tidak Tersedia");
     } else {
       toast("Silakan Melakukan Pemesanan");
     }
-    bookOrderRefetch();
   }, [bookOrder, date]);
 
   useEffect(() => {

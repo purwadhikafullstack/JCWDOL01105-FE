@@ -1,21 +1,18 @@
-import { Form, FormControl, FormMessage, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registeSchema } from "@/lib/schema";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Toaster, toast } from "sonner";
 import { useEffect, useState } from "react";
 import { usePostApi } from "@/lib/service";
 import { Separator } from "../ui/separator";
-import { LoginOauth } from "../Component";
+import { FormInput, FormInputPassword, LoginOauth } from "../Component";
 import { useAppDispatch } from "@/lib/features/hook";
 import { setRand } from "@/lib/features/globalReducer";
 
 const Register = () => {
   const dispatch = useAppDispatch();
-  const [show, setShow] = useState(false);
 
   const googleAuth = () => {
     window.open(`${import.meta.env.VITE_AUTH_URL}/google/oauth`, "_self");
@@ -63,62 +60,10 @@ const Register = () => {
       <div className="space-y-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="text" id="name" placeholder="Nama lengkap" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="text" id="email" placeholder="Alamat email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <FormItem className="flex relative">
-                      <Input type={`${show ? "text" : "password"}`} id="password" placeholder="Password" {...field} />
-                      <FormLabel className="absolute right-2" onClick={() => setShow(!show)}>
-                        {show ? <Visibility /> : <VisibilityOff />}
-                      </FormLabel>
-                    </FormItem>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type="text" id="phoneNumber" placeholder="Nomor telepon" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormInput form={form} name="name" desc="Nama lengkap" />
+            <FormInput form={form} name="email" desc="Alamat email" />
+            <FormInputPassword form={form} name="password" />
+            <FormInput form={form} name="phoneNumber" desc="Nomor telepon" />
 
             <Button type="submit" className="w-full">
               Submit

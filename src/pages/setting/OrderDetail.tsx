@@ -22,6 +22,7 @@ import { random, setRand } from "@/lib/features/globalReducer";
 import { Link } from "react-router-dom";
 import CountdownTimer from "../../components/order/Countdown";
 import UploadProvePayment from "@/components/order/UploadProvePayment";
+import { OrderStatus } from "@/components/Component";
 
 const OrderDetail = () => {
   const navigate = useNavigate();
@@ -113,15 +114,19 @@ const OrderDetail = () => {
               </Dialog>
             </div>
             <div className="w-full relative mt-12 xl:mt-0 xl:pr-8 space-y-4 font-thin">
-              <div className="flex justify-end text-base ">
-                {order.status === "unpaid" ? <CountdownTimer orderDate={order.createdAt} /> : ""}
-              </div>
-              <div>
+              <div className="flex justify-between">
                 <p className="font-normal">ORDER ID</p>
-                <Link to={`/room/${order.room.id}`}>
-                  <p className="font-bold text-sm">{order.id}</p>
-                </Link>
+                {order.status !== "unpaid" ? (
+                  <OrderStatus status={order.status} />
+                ) : (
+                  <CountdownTimer orderDate={order.createdAt} />
+                )}
               </div>
+
+              <Link to={`/room/${order.room.id}`}>
+                <p className="font-bold text-sm">{order.id}</p>
+              </Link>
+
               <div className="flex justify-between">
                 <p>Total harga</p>
                 <p>{FormatToIDR(order.total_price)}</p>

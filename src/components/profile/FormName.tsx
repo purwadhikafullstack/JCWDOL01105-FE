@@ -11,7 +11,7 @@ import { AuthContext } from "@/app/AuthContext";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/lib/features/hook";
 import { setRand } from "@/lib/features/globalReducer";
-import { TriggerBiodataUpdate } from "../Component";
+import { FormInput, TriggerBiodataUpdate } from "../Component";
 
 const FormName = ({ name }: { name: string }) => {
   const dispatch = useAppDispatch();
@@ -48,21 +48,14 @@ const FormName = ({ name }: { name: string }) => {
       <TriggerBiodataUpdate />
       <DialogContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit, (err: any) => console.log(err))} encType="multipart/form-data">
-            <DialogTitle className="mb-2">Ubah Nama Lengkap</DialogTitle>
-            <DialogDescription className="my-4">Pastikan data yang kamu input valid</DialogDescription>
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="mb-3">
-                  <FormControl>
-                    <Input type="text" id={`${name}`} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form
+            onSubmit={form.handleSubmit(onSubmit, (err: any) => console.log(err))}
+            encType="multipart/form-data"
+            className="space-y-4"
+          >
+            <DialogTitle>Ubah Nama Lengkap</DialogTitle>
+            <DialogDescription>Pastikan data yang kamu input valid</DialogDescription>
+            <FormInput form={form} name="name" />
             <div className="flex">
               <Button type="submit" className="text-xl font-semibold mx-auto">
                 Simpan
