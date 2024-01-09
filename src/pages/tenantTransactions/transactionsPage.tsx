@@ -1,4 +1,4 @@
-import { useGetAPI, usePutApi, usePostApi } from '@/lib/service';
+import { useGetAPI} from '@/lib/service';
 import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
 import {
     Tabs,
@@ -6,17 +6,6 @@ import {
     TabsList,
     TabsTrigger,
 } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet"
 
 import SalesChart from '@/components/transactions/salesChart';
 import Occupancy from '@/components/transactions/occupancy';
@@ -29,11 +18,8 @@ import OrderCard from '@/components/transactions/orderCards';
 
 const TransactionsPage: React.FC = () => {
 
-
     console.log("Transaction Page");
-
     const { token } = useContext(AuthContext)
-
     const config = {
         headers: {
             "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`
@@ -42,18 +28,13 @@ const TransactionsPage: React.FC = () => {
 
     const { data, isFetched, refetch } = useGetAPI(`/api/orderList`, "orders", config);
     const { data:dataChart, isFetched:isFetchedChart, refetch: refetchChart } = useGetAPI(`/api/orderList/chartData`, "ordersChart", config);
-
-
     const displayCard = () => {
         if (data && isFetched)
             return data.map((orders: any, index: number) => (<OrderCard key={index} order={orders} />)
             )
         else { refetch() }
     }
-
-
     return (
-
         <ProtectedRouteTenant>
             <div >
                 <MainNavBarTenant />

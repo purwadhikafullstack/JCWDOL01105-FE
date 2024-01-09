@@ -65,7 +65,7 @@ export const formPropertySchema = z.object({
   description: z.string().min(2, {
     message: " Minimal 2 karakter",
   }).max(50,{message:"Maksimum 25 karakter"}),
-  category_id : z.string(),
+  categoryId : z.string(),
   // image_url: z.string().min(2, {
   //   message: " Minimal 2 karakter",
   // }).max(255,{message: "Maksimum 255 karakter"}),
@@ -73,6 +73,7 @@ export const formPropertySchema = z.object({
   .any()
   .refine((files) => files?.size <= MAX_FILE_SIZE, `Ukuran gambar masksimal 1MB.`)
   .refine((files) => ACCEPTED_IMAGE_TYPES.includes(files?.type), "Hanya format .jpg, .jpeg, .png"),
+  location:z.string({required_error :"Lokasi harus diisi"}),
 
 })
 

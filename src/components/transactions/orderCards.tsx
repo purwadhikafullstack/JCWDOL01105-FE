@@ -47,7 +47,7 @@ const OrderCard: React.FC<CardProps> = ({ order }: any) => {
 
     fromReparsed.setTime(Number(order.start_date))
     toReparsed.setTime(Number(order.end_date))
-    
+
     console.log(fromReparsed.toString());
     console.log(toReparsed.toString());
 
@@ -74,7 +74,7 @@ const OrderCard: React.FC<CardProps> = ({ order }: any) => {
     //   }, [order.status]);
 
     const handleConfirm = () => {
-        mutate({ status: "sussess" });
+        mutate({ status: "success" });
     }
     const handleReject = () => {
         mutate({ status: "rejected" });
@@ -94,17 +94,30 @@ const OrderCard: React.FC<CardProps> = ({ order }: any) => {
         <Card className="w-full object-cover " >
             <CardHeader>
                 <CardTitle className="break-words overflow-hidden whitespace-nowrap overflow-ellipsis">Order ID : {order.id}</CardTitle>
-                <CardDescription >Status : {order.status}</CardDescription>
+                <CardDescription >Status :     <div className="flex justify-end my-2">
+                    <p
+                        className={`${order.status === "unpaid"
+                                ? "bg-yellow-300"
+                                : order.status === "unconfirm"
+                                    ? "bg-yellow-600"
+                                    : order.status === "success"
+                                        ? "bg-green-600"
+                                        : "bg-[#D80032]"
+                            } text-slate-100 border rounded-full  px-3 py-1 shadow-xl`}
+                    >
+                        {order.status}
+                    </p>
+                </div></CardDescription>
                 <CardDescription>Tanggal booking : <div className="font-bold"> {fromReparsed.toString().substring(0, 15)} </div> s/d <div className="font-bold">{toReparsed.toString().substring(0, 15)}</div></CardDescription>
                 <CardDescription >Amount : {FormatToIDR(order.total_price)}</CardDescription>
             </CardHeader>
             <CardContent>
-                <img className="h-[172px] w-full" src={order.image_url} />
+                <img className="h-[172px] w-full rounded-xl" src={order.image_url} />
             </CardContent>
             <CardFooter className="gridcol-3 gap-2 w-full object-cover">
 
-                {!(order.status === "sussess" || order.status === "rejected" || order.status === "cancel") && <Button className="text-sm" onClick={handleConfirm} disabled={buttonDisabler}>Confirm</Button>}
-                {!(order.status === "sussess" || order.status === "rejected" || order.status === "cancel") && <Button variant="destructive" onClick={handleReject} disabled={buttonDisabler}>Reject</Button>}
+                {!(order.status === "success" || order.status === "rejected" || order.status === "cancel") && <Button className="text-sm" onClick={handleConfirm} disabled={buttonDisabler}>Confirm</Button>}
+                {!(order.status === "success" || order.status === "rejected" || order.status === "cancel") && <Button variant="destructive" onClick={handleReject} disabled={buttonDisabler}>Reject</Button>}
                 {(order.status === "unpaid") && <Button variant="destructive" onClick={handleCancel} disabled={buttonDisabler}>Cancel</Button>}
 
             </CardFooter>

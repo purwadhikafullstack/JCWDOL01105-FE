@@ -38,6 +38,7 @@ const ProductList = () => {
     }, 100);
   }, [query, params, limit, rand]);
 
+  console.log(!isLoading&&products);
   return (
     <div>
       {isLoading ? (

@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 const ProtectedRouteTenant = ({ children }: { children: React.ReactNode }) => {
     const { isLogin, role,} = useContext(AuthContext);
 
-    if (isLogin && role == "tenant") {
+    if (isLogin && role === "tenant") {
         
         return <div>{children}</div>;
 

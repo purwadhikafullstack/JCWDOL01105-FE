@@ -1,63 +1,31 @@
 
-import { useContext } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useGetAPI, usePostApi } from "@/lib/service";
+import { useContext, useEffect } from "react";
+import { useGetAPI } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { useState } from "react";
 import { Calendar } from "../ui/calendar";
-import { useParams } from "react-router";
-import { CircleBackslashIcon } from "@radix-ui/react-icons";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
+
+import OccupancyCard from "./occupancyCard";
 
 const Occupancy = () => {
 
 
     const [date, setDate] = useState<Date>(new Date());
-    const [footerValue, setFooter] = useState("")
     const { token } = useContext(AuthContext);
-    const form = useForm();
-    const handleFooter = () => {
-        if (date) {
-            setFooter(`You picked ${date}`)
-
-        }
-        else if (date === undefined) {
-            setFooter("Pick a Date")
-        }
-    }
     const config = {
         headers: {
             Accept: "multipart/form-data", Authorization: `Bearer ${token}`
         },
     }
 
-    const currentDate=new Date();
+    const currentDate = new Date();
 
-    const dateBigInt = Date.parse(date ? date.toISOString() : currentDate.toISOString());
+    const dateBigInt = Date.parse(date ? new Date(date.setHours(14,0,0,0)).toISOString() : currentDate.toISOString());
+    console.log(date)
     console.log(dateBigInt);
 
 
     const { data, isFetched, refetch } = useGetAPI(`/api/roomList/occupancyData/${dateBigInt}`, "occupancy-disable", config);
-    // const { data: dataOrder, isFetched: isFetchedOrder, refetch: refetchOrder } = useGetAPI(`/api/occupancyOrder`, "occupancy-order", config);
-    // const { data: dataSpecial, isFetched: isFetchedSpecial, refetch: refetchSpecial } = useGetAPI(`/api/occupancySpecial`, "occupancy-special", config);
-
     const handleDatePick = (selectedDate: Date) => {
         if (new Date() > selectedDate) {
             return true;
@@ -70,24 +38,45 @@ const Occupancy = () => {
         }
     };
 
+    console.log(data);
+    const propertiesArray = data ? Object.values(data) : [];
+    useEffect(()=>{refetch()},[date])
+    const displayCard = () => {
+        if (data && isFetched) {
+            return propertiesArray.map((properties: any, index: number) => (
+                <OccupancyCard key={index} property={properties ?? {}} />
+            ));
+        } else {
+            refetch();
+            return null; // You might want to return something, or nothing, when data is not fetched
+        }
+    };
+
     return (
         <>
-
-            <Calendar
-                mode="single"
-                selected={date}
-                onSelect={(selectedDate) => {
-                    // Update the date state
-                    setDate(selectedDate as Date);
-                    refetch();
-                }}
-                fromYear={1960}
-                toYear={2030}
-                disabled={handleDatePick}
-                className="right-0"
-                footer={footerValue}
-            // Add any other props or styles you need
-            />
+            <div className="flex w-screen">
+                {/* Calendar */}
+                <div className="flex-shrink-0">
+                    <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={(selectedDate) => {
+                            // Update the date state
+                            setDate(selectedDate as Date);
+                            refetch();
+                        }}
+                        fromYear={1960}
+                        toYear={2030}
+                        disabled={handleDatePick}
+                        className="right-0"
+                    // Add any other props or styles you need
+                    />
+                    {/* <OccupancyCard property={data}/> */}
+                </div>
+                <div className="grid w-[300px] gap-3 p-4 md:w-[500px] md:grid-cols-4 lg:w-screen ">
+                    {displayCard()}
+                </div>
+            </div>
 
         </>
 

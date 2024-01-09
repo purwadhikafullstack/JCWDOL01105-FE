@@ -1,5 +1,4 @@
 import * as React from "react"
-import { useNavigate } from "react-router"
 import {
   Card,
   CardContent,
@@ -71,7 +70,7 @@ const RoomCard: React.FC<CardProps> = ({ rooms }: any) => {
         <CardDescription>Guest : {rooms.guest}</CardDescription>
       </CardHeader>
       <CardContent>
-        <img src={rooms.image_url} alt={rooms.description} />
+        <img className="h-[152px] w-full rounded-xl"src={rooms.image_url} alt={rooms.description} />
       </CardContent>
       <CardContent className="gridcol-1 gap-3 w-">
        <div className="font-bold"> Rules :</div> {rooms.room_info}

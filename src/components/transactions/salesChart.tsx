@@ -12,92 +12,72 @@ import {
 } from "@/components/ui/select"
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button"
 import { FormatToIDR } from "@/lib/utils";
 import DisplayCard from "./displayCard";
 
-// const data = [
-//     {
-//       name: "Jan",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Feb",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Mar",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Apr",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "May",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Jun",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Jul",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Aug",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Sep",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Oct",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Nov",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//     {
-//       name: "Dec",
-//       total: Math.floor(Math.random() * 5000) + 1000,
-//     },
-//   ]
-
-interface ChartProps {
-    order: {
-        month: string;
-        total: number,
-        // Add other properties as needed
-    };
-}
+// interface ChartProps {
+//     data: {
+//       [year: string]: {
+//         months: { month: string; total: number }[];
+//         totalOrders: number;
+//         totalRevenue: number;
+//       };
+//     };
+//   }
 
 
-const SalesChart: React.FC<ChartProps> = (data: any) => {
+interface MonthData {
+    month: string;
+    total: number;
+  }
+  
+  interface YearData {
+    months: MonthData[];
+    totalRevenue: number;
+    totalOrders: number;
+  }
+  
+  interface SalesChartData {
+    [year: string]: YearData;
+  }
+  
+  interface ChartProps {
+    data: SalesChartData;
+  }
+
+
+const SalesChart: React.FC<ChartProps> = ({data}:any) => {
 
 
     const [year, setYear] = useState("2023");
-    const [filteredData, setFilteredData] = useState([]);
+    const [filteredData, setFilteredData] = useState<MonthData[]>([]);
     const [revenueData, setRevenueData] = useState(0);
     const [allOrderData, setAllOrderData] = useState(0);
-
+    console.log(data);
     const handleSelect = (selectedYear: string) => {
         setYear(selectedYear);
-        setFilteredData(data.data[selectedYear].months || []);
-        setRevenueData(data.data[selectedYear].totalRevenue || 0);
-        setAllOrderData(data.data[selectedYear].totalOrders || 0);
+        // setFilteredData(data.data[selectedYear].months || []);
+        // setRevenueData(data.data[selectedYear].totalRevenue || 0);
+        // setAllOrderData(data.data[selectedYear].totalOrders || 0);
+
+            // Check if data[selectedYear] is defined before accessing its properties
+    if (data[selectedYear]) {
+        setFilteredData(data[selectedYear].months || []);
+        setRevenueData(data[selectedYear].totalRevenue || 0);
+        setAllOrderData(data[selectedYear].totalOrders || 0);
+      } else {
+        // Handle the case when data[selectedYear] is undefined
+        console.error(`Data for year ${selectedYear} is undefined.`);
+      }
     };
 
     useEffect(() => {
         // Update filteredData when the selected year changes
-        setFilteredData(data.data[year].months || []);
-        setRevenueData(data.data[year].totalRevenue || 0);
-        setAllOrderData(data.data[year].totalOrders || 0);
-    }, [year, data.data]);
-    console.log(data.data[2023].totalRevenue);
+        setFilteredData(data[year]?.months || []);
+        setRevenueData(data[year]?.totalRevenue || 0);
+        setAllOrderData(data[year]?.totalOrders || 0);
+    }, [year, data]);
+   
     return (
 
         <>
@@ -108,7 +88,7 @@ const SalesChart: React.FC<ChartProps> = (data: any) => {
                 </SelectTrigger>
 
                 <SelectContent>
-                    {Object.keys(data.data).map((year) => (
+                    {Object.keys(data).map((year) => (
                         <SelectItem key={year} value={year}>
                             {year}
                         </SelectItem>
