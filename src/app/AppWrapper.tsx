@@ -19,6 +19,7 @@ const TenantHome = lazy(() => import("../pages/tenantHome"));
 const PropertyEditor = lazy(() => import("../pages/propertyEditor/propertyEditor"));
 const AddProperty = lazy(() => import("../pages/tenantProperty/propertyAdder"));
 const TenantSignIn = lazy(() => import("../pages/tenantProperty/tenantSignIn"));
+const TransactionsPage = lazy(()=> import ("../pages/tenantTransactions/transactionsPage"))
 const LoginAuthSuccess = lazy(() => import("../components/auth/LoginAuthSuccess"));
 const LoginAuthFailed = lazy(() => import("../components/auth/LoginAuthFailed"));
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -40,6 +41,7 @@ const AppWrapper = () => {
             <Route path="/tenant" element={<TenantHome />} />
             <Route path="/tenant/propertyAdder" element={<AddProperty />} />
             <Route path="/tenant/propertyEditor/:id" element={<PropertyEditor />} />
+            <Route path="/tenant/transactions" element={<TransactionsPage />} />
             <Route path="/tenantSignIn" element={<TenantSignIn />} />
 
             <Route path="property/:id" element={<PropertyDetail />} />
