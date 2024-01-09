@@ -96,7 +96,6 @@ export const formRoomSchema = z.object({
   person: z.number({ required_error: "Jumlah orang harus diisi" }).nonnegative(),
 });
 
-
 export const changePasswordSchema = z
   .object({
     oldPassword: z.string().min(6, { message: "Minimal 6 karakter" }).max(16, { message: "Maksimal 16 karakter" }),
@@ -161,7 +160,6 @@ export const editEmailSchema = z.object({
         const validateEmail = data.data.email;
         return validateEmail.includes(!e);
       } else {
-        console.log("thius", data);
         return e === e;
       }
     }, "Email tidak tersedia"),
@@ -172,7 +170,7 @@ export const genderSchema = z.object({
 });
 
 export const birthdateSchema = z.object({
-  birthdate: z.date(),
+  birthdate: z.number(),
 });
 
 export const searchSchema = z.object({

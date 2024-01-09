@@ -53,7 +53,6 @@ const VerifyEmail: React.FC<IData> = ({ data }) => {
       toast.error(otpError?.response.data.message);
     }
   }, [isOtpError]);
-  console.log(data.email);
 
   return (
     <Dialog>
