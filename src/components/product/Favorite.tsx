@@ -8,7 +8,7 @@ import { setRand } from "@/lib/features/globalReducer";
 import { useAppDispatch } from "@/lib/features/hook";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import { FormatToIDR } from "@/lib/utils";
-import LoginDialog from "../auth/LoginDialog";
+import AuthUser from "../auth/AuthUser";
 
 interface IData {
   data: {
@@ -61,7 +61,7 @@ const PropertyFavorite: React.FC<IData & IStatus> = ({ data, status }) => {
                   <DialogTrigger>
                     <FavoriteComponent />
                   </DialogTrigger>
-                  <LoginDialog />
+                  <AuthUser />
                 </Dialog>
               )}
             </div>

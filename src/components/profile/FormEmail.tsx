@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Form, FormControl, FormMessage, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -11,6 +11,15 @@ import { AuthContext } from "@/app/AuthContext";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/lib/features/hook";
 import { setRand } from "@/lib/features/globalReducer";
+import { TriggerBiodataUpdate } from "../Component";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 const FormEmail = ({ email }: { email: string }) => {
   const dispatch = useAppDispatch();
@@ -44,9 +53,7 @@ const FormEmail = ({ email }: { email: string }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <p className="italic hover:underline hover:cursor-pointer font-medium">Ubah</p>
-      </DialogTrigger>
+      <TriggerBiodataUpdate />
       <DialogContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, (err: any) => console.log(err))} encType="multipart/form-data">
@@ -65,9 +72,23 @@ const FormEmail = ({ email }: { email: string }) => {
               )}
             />
             <div className="flex">
-              <Button type="submit" className="text-xl font-semibold mx-auto">
-                Simpan
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger>Simpan</AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogDescription>
+                    Kamu yakin ingin mengubah alamat email? Jika iya semua transaksi tidak akan berlaku lagi di email
+                    lama dan akan dialihkan ke alamat email baru
+                  </AlertDialogDescription>
+                  <div className="flex">
+                    <AlertDialogCancel className="bg-red-700">Kembali</AlertDialogCancel>
+                    <AlertDialogAction>
+                      <Button type="submit" className="text-xl font-semibold mx-auto">
+                        Simpan
+                      </Button>
+                    </AlertDialogAction>
+                  </div>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </form>
         </Form>

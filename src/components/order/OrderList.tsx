@@ -13,7 +13,7 @@ interface IOrder {
   total_price: number;
   guest: number;
   status: string;
-  room: { image_url: string };
+  room: { name: string; image_url: string };
 }
 
 const OrderList = () => {
@@ -28,9 +28,9 @@ const OrderList = () => {
   }, []);
 
   return (
-    <div className="flex flex-grow flex-wrap justify-center">
+    <div className="flex flex-grow flex-wrap justify-center text-base">
       {isFetched && data.rows.length > 0 ? (
-        <div>
+        <div className="">
           {" "}
           <InfiniteScroll
             dataLength={data.rows.length}
@@ -41,7 +41,7 @@ const OrderList = () => {
             style={{ display: "flex", flexDirection: "column-reverse" }}
             loader={<div></div>}
           >
-            <div className="flex flex-grow flex-wrap justify-center">
+            <div className="flex flex-grow flex-wrap justify-center overflow-scroll h-[75vh]">
               {" "}
               {data.rows.map((order: IOrder) => (
                 <Order key={order.id} order={order} />

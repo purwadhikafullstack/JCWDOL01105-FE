@@ -10,11 +10,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { searchSchema } from "@/lib/schema";
 import { useGetAPI } from "@/lib/service";
 import { useAppDispatch } from "@/lib/features/hook";
-import { setQuery } from "@/lib/features/globalReducer";
+import { setFacility, setQuery } from "@/lib/features/globalReducer";
 import { DropdownCalendar } from "../ui/dropdown-calendar";
 import { parseDate } from "../../lib/utils";
 import { Label } from "../ui/label";
 import Filter from "./Filter";
+import { Separator } from "../ui/separator";
 
 const SearchField = () => {
   const dispatch = useAppDispatch();
@@ -45,6 +46,7 @@ const SearchField = () => {
         date: { from: date?.from?.setHours(14, 0, 0, 0), to: date?.to?.setHours(12, 0, 0, 0) },
       })
     );
+    dispatch(setFacility(""));
     setOpen(false);
     setLocation("");
   };
@@ -55,19 +57,30 @@ const SearchField = () => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="hidden md:flex rounded-full">
-        <div className="border rounded-l-full py-2 px-8">
-          <AddLocationAlt className="mr-2" /> Lokasi
+      <SheetTrigger className="flex rounded-full border">
+        <div className="hidden lg:flex space-x-8 px-6">
+          <div className="space-x-2 items-center flex">
+            <AddLocationAlt />
+            <span>Lokasi</span>
+          </div>
+          <Separator orientation="vertical" className="h-12" />
+          <div className="space-x-2 items-center flex">
+            <CalendarMonth />
+            <span>Tanggal</span>
+          </div>
+          <Separator orientation="vertical" className="h-12" />
+          <div className="space-x-2 items-center flex">
+            <Search />
+            <span>Cari...</span>
+          </div>
         </div>
-        <div className="border py-2 px-8">
-          <CalendarMonth className="mr-2" /> Tanggal
-        </div>
-        <div className="border rounded-r-full py-2 px-6">
-          <Search className="mr-2" /> Cari...
+        <div className="lg:hidden border rounded-full p-4">
+          <Search />
+          <span>Cari...</span>
         </div>
       </SheetTrigger>
       <SheetContent side={"top"} className="">
-        <div className="flex border w-full md:w-1/2 mx-auto rounded-full items-center justify-between">
+        <div className="flex border w-full lg:w-1/2 mx-auto rounded-full items-center justify-between">
           <Filter />
 
           <div className="w-1/2 text-center cursor-pointer" onClick={() => setTab("location")}>
@@ -109,7 +122,7 @@ const SearchField = () => {
                 <FormItem className={`${tab === "location" ? "" : "hidden"}`}>
                   <FormControl>
                     <FormItem>
-                      <Command className="w-[400px] md:w-[500px] lg:w-[600px] mx-auto">
+                      <Command className="w-[400px] lg:w-[500px] lg:w-[600px] mx-auto">
                         <CommandInput
                           placeholder="Cari lokasi..."
                           onChangeCapture={(e) => handleChange(e)}

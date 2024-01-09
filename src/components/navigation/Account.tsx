@@ -1,5 +1,5 @@
 import { Menu, AccountCircle, Brightness6, LightMode, DarkMode } from "@mui/icons-material";
-import { Dialog } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,12 +11,11 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
-import { Link } from "react-router-dom";
 import { useGetAPI } from "@/lib/service";
 import { random } from "@/lib/features/globalReducer";
 import { useAppSelector } from "@/lib/features/hook";
-import RegisterDialog from "@/components/auth/RegisterDialog";
-import LoginDialog from "@/components/auth/LoginDialog";
+import AuthUser from "../auth/AuthUser";
+import { MenuLink } from "../Component";
 
 const ProfilePicture = () => {
   const { bearer } = useContext(AuthContext);
@@ -26,7 +25,7 @@ const ProfilePicture = () => {
   useEffect(() => {
     setTimeout(() => {
       refetch();
-    }, 200);
+    }, 100);
   }, [rand, refetch]);
   return <Avatar className="ring-2 ring-[#FC5185] w-8 h-8">{isFetched && <AvatarImage src={data.image_url} />}</Avatar>;
 };
@@ -34,8 +33,10 @@ const ProfilePicture = () => {
 const Account = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [route, setRoute] = useState("");
+  const [tab, setTab] = useState("login");
+
   const { isLogin, logoutGoogle } = useContext(AuthContext);
+
   useEffect(() => {
     const mode = darkMode ? "dark" : "light";
     localStorage.setItem("mode", mode);
@@ -48,6 +49,23 @@ const Account = () => {
       document.documentElement.classList.remove(String(mode));
     };
   }, [darkMode]);
+
+  const DarkModeChild = () => (
+    <DropdownMenuItem className="flex lg:hidden">
+      <div className="flex">
+        <Switch
+          className="items-center mr-4 flex lg:hidden cursor-pointer"
+          onClick={() => setDarkMode(!darkMode)}
+        ></Switch>
+        <div className={darkMode ? "hidden" : "lg:visible text-yellow-400"}>
+          <LightMode />
+        </div>
+        <div className={darkMode ? "lg:visible text-yellow-400" : "hidden"}>
+          <DarkMode />
+        </div>
+      </div>
+    </DropdownMenuItem>
+  );
 
   return (
     <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
@@ -63,52 +81,18 @@ const Account = () => {
           {isLogin ? (
             <DropdownMenuContent className="w-[200px]">
               <div className="p-2">
-                <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">
-                  <Link className="w-full" to="/setting/favorite">
-                    Favorit
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">
-                  <Link className="w-full" to="/setting/order">
-                    Transaksi
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-medium py-2 cursor-pointer">
-                  <Link className="w-full" to="/setting/history">
-                    Riwayat
-                  </Link>
-                </DropdownMenuItem>
+                <MenuLink desc="Favorit" link="/setting/favorite" />
+                <MenuLink desc="Transaksi" link="/setting/order" />
+                <MenuLink desc="Riwayat" link="/setting/history" />
               </div>
               <DropdownMenuSeparator className="bg-slate-300" />
               <div className="p-2">
-                <DropdownMenuItem className="text-md font-thin py-2">
-                  <Link className="w-full" to="/tenantSignIn">
-                    Sewakan Properti
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-md font-thin py-2">
-                  <Link className="w-full " to={"/setting/profile"}>
-                    Akun
-                  </Link>
-                </DropdownMenuItem>
+                <MenuLink desc="Sewakan Property" link="/tenantSignIn" model="b" />
+                <MenuLink desc="Akun" link="/setting/profile" model="b" />
               </div>
               <DropdownMenuSeparator className="bg-slate-300" />
               <div className="p-2">
-                <DropdownMenuItem className="flex lg:hidden">
-                  <div className="flex">
-                    <Switch
-                      className="items-center mr-4 flex lg:hidden cursor-pointer"
-                      onClick={() => setDarkMode(!darkMode)}
-                    ></Switch>
-                    <div className={darkMode ? "hidden" : "lg:visible text-yellow-400"}>
-                      <LightMode />
-                    </div>
-                    <div className={darkMode ? "lg:visible text-yellow-400" : "hidden"}>
-                      <DarkMode />
-                    </div>
-                  </div>
-                </DropdownMenuItem>
-
+                <DarkModeChild />
                 <DropdownMenuItem className="text-md font-thin cursor-pointer py-2" onClick={() => logoutGoogle()}>
                   Keluar
                 </DropdownMenuItem>
@@ -120,7 +104,7 @@ const Account = () => {
                 <DropdownMenuItem
                   onClick={() => {
                     setIsEditDialogOpen(true);
-                    setRoute("RegisterDialog");
+                    setTab("register");
                   }}
                   className="text-md py-2 cursor-pointer"
                 >
@@ -130,7 +114,6 @@ const Account = () => {
                 <DropdownMenuItem
                   onClick={() => {
                     setIsEditDialogOpen(true);
-                    setRoute("Login");
                   }}
                   className="text-md font-medium py-2 cursor-pointer"
                 >
@@ -140,6 +123,8 @@ const Account = () => {
 
               <DropdownMenuSeparator className="bg-slate-300" />
 
+              <DarkModeChild />
+
               <div className="p-2">
                 <DropdownMenuItem className="text-md font-thin py-2 cursor-pointer">Sewakan Properti</DropdownMenuItem>
               </div>
@@ -147,7 +132,10 @@ const Account = () => {
           )}
         </DropdownMenu>
       </div>
-      {route === "RegisterDialog" ? <RegisterDialog /> : <LoginDialog />}
+
+      <DialogContent className="p-12">
+        <AuthUser tab={tab} />
+      </DialogContent>
     </Dialog>
   );
 };

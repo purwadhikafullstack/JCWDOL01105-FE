@@ -12,7 +12,7 @@ function App() {
   return (
     <Fragment>
       <Header />
-      <div className="mx-auto px-10 my-12">{<Outlet />}</div>
+      <div className="mx-auto px-10 my-12 text-slate-700 text-xl">{<Outlet />}</div>
       <Footer />
     </Fragment>
   );

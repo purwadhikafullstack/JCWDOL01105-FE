@@ -1,0 +1,121 @@
+import {
+  ChevronLeft,
+  CleaningServices,
+  GppGood,
+  SentimentVerySatisfied,
+  SupportAgent,
+  StarRate,
+} from "@mui/icons-material";
+import { Button } from "./ui/button";
+import { useNavigate } from "react-router";
+import { DropdownMenuItem } from "./ui/dropdown-menu";
+import { Link } from "react-router-dom";
+import { DialogTrigger } from "./ui/dialog";
+import icon from "@/assets";
+
+const LoginOauth = ({ googleAuth }: { googleAuth: Function }) => {
+  const oauth = [
+    { icon: icon.google, fn: () => googleAuth() },
+    { icon: icon.facebook, fn: () => {} },
+    { icon: icon.x, fn: () => {} },
+  ];
+
+  return (
+    <div className="flex justify-between">
+      {oauth.map((btn) => (
+        <Button
+          className="bg-white hover:bg-white text-black border items-center flex text-md flex-grow p-6 mx-4"
+          onClick={btn.fn}
+        >
+          <div className="flex items-center">
+            <img className="w-6" src={btn.icon} alt="" />
+          </div>
+        </Button>
+      ))}
+    </div>
+  );
+};
+
+const ButtonCounter = ({ desc, fn }: { desc: string; fn: () => void }) => {
+  return (
+    <Button className="bg-white hover:bg-slate-200 text-slate-500 rounded-full border" onClick={fn}>
+      {desc}
+    </Button>
+  );
+};
+
+const HeaderBack = ({ desc }: { desc: string }) => {
+  const navigate = useNavigate();
+  return (
+    <div className="flex relative items-center">
+      <div className="hover:bg-slate-100 rounded-full p-2 cursor-pointer" onClick={() => navigate(-1)}>
+        <ChevronLeft fontSize="large" />
+      </div>
+      <span className="text-2xl md:text-3xl lg:text-4xl font-medium">{desc}</span>
+    </div>
+  );
+};
+
+const ReviewPointA = ({ desc, score }: { desc: string; score: string }) => {
+  return (
+    <div>
+      {desc === "rating" ? (
+        <StarRate className="mb-2" sx={{ fontSize: "40px" }} />
+      ) : desc === "kebersihan" ? (
+        <CleaningServices className="mb-2" sx={{ fontSize: "40px" }} />
+      ) : desc === "keamanan" ? (
+        <GppGood className="mb-2" sx={{ fontSize: "40px" }} />
+      ) : desc === "pelayanan" ? (
+        <SupportAgent className="mb-2" sx={{ fontSize: "40px" }} />
+      ) : desc === "kepuasan" ? (
+        <SentimentVerySatisfied className="mb-2" sx={{ fontSize: "40px" }} />
+      ) : (
+        "INVALID"
+      )}
+      <p>{desc}</p>
+      <p>{score}</p>
+    </div>
+  );
+};
+
+const ReviewPointB = ({ desc, score }: { desc: string; score: string }) => {
+  return (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center space-x-4">
+        {desc === "rating" ? (
+          <StarRate className="mb-2" sx={{ fontSize: "32px" }} />
+        ) : desc === "kebersihan" ? (
+          <CleaningServices className="mb-2" sx={{ fontSize: "32px" }} />
+        ) : desc === "keamanan" ? (
+          <GppGood className="mb-2" sx={{ fontSize: "32px" }} />
+        ) : desc === "pelayanan" ? (
+          <SupportAgent className="mb-2" sx={{ fontSize: "32px" }} />
+        ) : desc === "kepuasan" ? (
+          <SentimentVerySatisfied className="mb-2" sx={{ fontSize: "32px" }} />
+        ) : (
+          "INVALID"
+        )}
+        <p>{desc}</p>
+      </div>
+      <p>{score}</p>
+    </div>
+  );
+};
+
+const MenuLink = ({ desc, link, model = "a" }: { desc: string; link: string; model?: string }) => {
+  return (
+    <DropdownMenuItem className={`${model === "a" ? "font-medium" : "font-thin"} text-md  py-2 cursor-pointer`}>
+      <Link className="w-full" to={link}>
+        {desc}
+      </Link>
+    </DropdownMenuItem>
+  );
+};
+
+const TriggerBiodataUpdate = () => {
+  return <DialogTrigger className="italic hover:underline hover:cursor-pointer font-thin text-lg">Ubah</DialogTrigger>;
+};
+
+const Component = { LoginOauth, ButtonCounter, HeaderBack, ReviewPointA, ReviewPointB, MenuLink, TriggerBiodataUpdate };
+export { LoginOauth, ButtonCounter, HeaderBack, ReviewPointA, ReviewPointB, MenuLink, TriggerBiodataUpdate };
+export default Component;

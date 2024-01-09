@@ -10,7 +10,7 @@ interface IOrderProps {
     total_price: number;
     guest: number;
     status: string;
-    room: { image_url: string };
+    room: { name: string; image_url: string };
   };
 }
 
@@ -18,28 +18,37 @@ const Order: React.FC<IOrderProps> = ({ order }) => {
   return (
     <Link className="w-full md:max-w-[320px] mb-8 mx-4" to={`/setting/order/${order.id}`}>
       <Card>
-        <CardHeader className="pb-2"></CardHeader>
-        <CardContent className="text-slate-500">
+        <CardContent className="text-slate-500 p-0">
           <img className="w-full rounded-xl" src={order.room.image_url} />
-          <div className="mt-2">
-            <div className="flex justify-end my-2">
+          <div className="p-4">
+            <div className="flex justify-end">
               <p
                 className={`${
                   order.status === "unpaid"
-                    ? "bg-yellow-300"
+                    ? "bg-yellow-400"
                     : order.status === "unconfirm"
                     ? "bg-yellow-600"
                     : order.status === "success"
                     ? "bg-green-600"
                     : "bg-[#D80032]"
-                } text-slate-100 border rounded-full  px-3 py-1 shadow-xl`}
+                } text-slate-100 border rounded-full px-4 shadow-xl font-thin`}
               >
-                {order.status}
+                {order.status === "unpaid"
+                  ? "belum bayar"
+                  : order.status === "unconfirm"
+                  ? "diproses"
+                  : order.status === "success"
+                  ? "sukses"
+                  : order.status === "expired"
+                  ? "kadaluarsa"
+                  : order.status === "cancel"
+                  ? "dibatalkan"
+                  : "ditolak"}
               </p>
             </div>
             <div className="flex justify-between">
-              <p>Tamu</p>
-              <p>{order.guest}</p>
+              <p>Kamar</p>
+              <p>{order.room.name}</p>
             </div>
             <div className="flex justify-between">
               <p>Total harga</p>

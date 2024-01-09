@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormMessage, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "../ui/button";
@@ -11,6 +11,7 @@ import { AuthContext } from "@/app/AuthContext";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/lib/features/hook";
 import { setRand } from "@/lib/features/globalReducer";
+import { TriggerBiodataUpdate } from "../Component";
 
 const FormGender = ({ gender }: { gender: string }) => {
   const dispatch = useAppDispatch();
@@ -43,9 +44,7 @@ const FormGender = ({ gender }: { gender: string }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <p className="italic hover:underline hover:cursor-pointer font-medium">Ubah</p>
-      </DialogTrigger>
+      <TriggerBiodataUpdate />
       <DialogContent className="max-w-[400px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, (err: any) => console.log(err))} encType="multipart/form-data">

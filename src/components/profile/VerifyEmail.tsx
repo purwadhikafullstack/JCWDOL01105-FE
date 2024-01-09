@@ -53,11 +53,12 @@ const VerifyEmail: React.FC<IData> = ({ data }) => {
       toast.error(otpError?.response.data.message);
     }
   }, [isOtpError]);
+  console.log(data.email);
 
   return (
     <Dialog>
       <DialogTrigger
-        className={data?.email_verified ? "hidden" : "mx-auto hover:underline"}
+        className={data?.email_verified ? "hidden" : "mx-auto hover:underline text-lg"}
         onClick={() => handleRequest()}
       >
         Minta Verifikasi

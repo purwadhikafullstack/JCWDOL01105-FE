@@ -11,15 +11,10 @@ import { usePostApi } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
+import { LoginOauth } from "../Component";
 import SendMail from "./SendMail";
-import icon from "@/assets/icons";
 
-interface ITab {
-  tab: boolean;
-  setTab: (b: boolean) => void;
-}
-
-const Login: React.FC<ITab> = ({ setTab, tab }) => {
+const Login = () => {
   const { login } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [page, setPage] = useState(1);
@@ -48,6 +43,9 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
       toast.success("Login Sukses");
       login(data.data);
       form.reset(initForm);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     }
     if (isError) {
       toast.error(error?.response?.data?.message);
@@ -55,21 +53,11 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
   }, [isSuccess, isError]);
 
   return (
-    <div>
+    <div className="text-base">
       {page === 1 && (
-        <div className="mt-10">
-          <p className="text-2xl">Selamat Datang di Lawang</p>
-          <span className="text-slate-500 text-sm">
-            Sudah memiliki akun{" "}
-            <span className="underline cursor-pointer" onClick={() => setTab(!tab)}>
-              di sini
-            </span>
-          </span>
-
-          <Separator className="bg-slate-300 my-4" />
-
+        <div className="space-y-6">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
+            <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))} className="space-y-4">
               <FormField
                 control={form.control}
                 name="emailOrPhoneNumber"
@@ -87,7 +75,7 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem className="my-4">
+                  <FormItem>
                     <FormControl>
                       <FormItem className="flex relative">
                         <Input type={`${show ? "text" : "password"}`} id="password" placeholder="Password" {...field} />
@@ -114,26 +102,7 @@ const Login: React.FC<ITab> = ({ setTab, tab }) => {
 
           <Separator className="bg-slate-300 mt-4" />
 
-          <div className="flex justify-between">
-            <Button
-              className="bg-white hover:bg-white text-black border items-center flex my-4 text-md flex-grow p-6"
-              onClick={() => googleAuth()}
-            >
-              <div className="flex items-center">
-                <img className="w-6" src={icon.google} alt="" />
-              </div>
-            </Button>
-            <Button className="bg-white hover:bg-white text-black border items-center flex my-4 text-md flex-grow p-6 mx-4">
-              <div className="flex items-center">
-                <img className="w-6" src={icon.facebook} alt="" />
-              </div>
-            </Button>
-            <Button className="bg-white hover:bg-white text-black border items-center flex my-4 text-md flex-grow p-6">
-              <div className="flex items-center">
-                <img className="w-6" src={icon.x} alt="" />
-              </div>
-            </Button>
-          </div>
+          <LoginOauth googleAuth={googleAuth} />
         </div>
       )}
       {page === 2 && <SendMail setPage={setPage} page={page} />}
