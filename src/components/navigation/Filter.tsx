@@ -11,8 +11,8 @@ const Filter = () => {
   const dispatch = useAppDispatch();
 
   const prices = [
-    { value: "expensive", text: "Tertinggi" },
-    { value: "cheap", text: "Terendah" },
+    { value: "desc", text: "Tertinggi" },
+    { value: "asc", text: "Terendah" },
   ];
   const sorts = [
     { value: "asc", text: "A-Z" },
@@ -20,11 +20,11 @@ const Filter = () => {
   ];
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectApartement, setSelectApartement] = useState("apartement");
-  const [selectHotel, setSelectHotel] = useState("hotel");
-  const [selectVilla, setSelectVilla] = useState("villa");
-  const [selectPrice, setSelectPrice] = useState("cheap");
-  const [selectSort, setSelectSort] = useState("asc");
+  const [selectApartement, setSelectApartement] = useState("");
+  const [selectHotel, setSelectHotel] = useState("");
+  const [selectVilla, setSelectVilla] = useState("");
+  const [selectPrice, setSelectPrice] = useState("");
+  const [selectSort, setSelectSort] = useState("");
 
   const onSubmit = () => {
     dispatch(
@@ -40,7 +40,7 @@ const Filter = () => {
 
   return (
     <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-      <DialogTrigger className="rounded-full w-12 h-12 bg-inherite">
+      <DialogTrigger className="rounded-full w-14 h-12 bg-inherite">
         <Tune className="text-[#FC5185]" />
       </DialogTrigger>
       <DialogContent>

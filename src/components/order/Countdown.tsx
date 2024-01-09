@@ -19,7 +19,7 @@ const CountdownTimer = ({ orderDate }: { orderDate: Date }) => {
 
   return (
     <div>
-      <span className={`border rounded-full px-4 py-1 bg-yellow-300 text-yellow-700 shadow-xl`}>
+      <span className={`border rounded-full px-4 py-1 bg-yellow-300 text-yellow-700 shadow-xl text-base`}>
         {hours}:{minutes.toString().padStart(2, "0")}:{seconds.toString().padStart(2, "0")}
       </span>
     </div>

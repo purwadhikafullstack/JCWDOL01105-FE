@@ -1,4 +1,4 @@
-import { Button } from "./ui/button";
+import { ButtonCounter } from "./Component";
 
 interface ICounter {
   state?: string;
@@ -25,14 +25,9 @@ const Counter: React.FC<ICounter> = ({ state, count, setCount, total, max }) => 
 
   return (
     <div className="flex items-center">
-      <Button className="bg-white hover:bg-slate-200 text-slate-500 rounded-full border" onClick={() => decrement()}>
-        {" "}
-        -
-      </Button>
+      <ButtonCounter desc="-" fn={decrement} />
       <p className="mx-4">{count}</p>
-      <Button className="bg-white hover:bg-slate-200 text-slate-500 rounded-full border" onClick={() => increment()}>
-        +
-      </Button>
+      <ButtonCounter desc="+" fn={increment} />
     </div>
   );
 };

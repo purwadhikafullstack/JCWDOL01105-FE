@@ -1,6 +1,6 @@
 import { useGetAPI } from "@/lib/service";
 import { useAppSelector } from "@/lib/features/hook";
-import { getFilter, getQuery, random } from "@/lib/features/globalReducer";
+import { getFacility, getFilter, getQuery, random } from "@/lib/features/globalReducer";
 import { useEffect, useState } from "react";
 import { Apartment } from "@mui/icons-material";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -21,22 +21,23 @@ const ProductList = () => {
   const query = useAppSelector(getQuery);
   const filter = useAppSelector(getFilter);
   const rand = useAppSelector(random);
+  const facility = useAppSelector(getFacility);
 
   const [limit, setLimit] = useState(4);
   const [params, setParams] = useState(
-    `/api/property?city=${query.city}&start=${query.date.from}&end=${query.date.to}&limit=${limit}&apartement=${filter.apartement}&hotel=${filter.hotel}&villa=${filter.villa}&price=${filter.price}&sort=${filter.sort}`
+    `/api/property?city=${query.city}&start=${query.date.from}&end=${query.date.to}&limit=${limit}&apartement=${filter.apartement}&hotel=${filter.hotel}&villa=${filter.villa}&price=${filter.price}&sort=${filter.sort}&facility=${facility}`
   );
 
   const { data: products, isLoading, refetch } = useGetAPI(params, "all-property");
 
   useEffect(() => {
     setParams(
-      `/api/property?city=${query.city}&start=${query.date.from}&end=${query.date.to}&limit=${limit}&apartement=${filter.apartement}&hotel=${filter.hotel}&villa=${filter.villa}&price=${filter.price}&sort=${filter.sort}`
+      `/api/property?city=${query.city}&start=${query.date.from}&end=${query.date.to}&limit=${limit}&apartement=${filter.apartement}&hotel=${filter.hotel}&villa=${filter.villa}&price=${filter.price}&sort=${filter.sort}&facility=${facility}`
     );
     setTimeout(() => {
       refetch();
     }, 100);
-  }, [query, params, limit, rand]);
+  }, [query, params, limit, facility, rand]);
 
   return (
     <div>
