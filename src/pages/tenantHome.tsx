@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import PropertyCard from "@/components/property/propCard";
-import { getPropertyData } from "@/api/propertyDataAPI";
+// import { getPropertyData } from "@/api/propertyDataAPI";
 import MainNavBarTenant from "@/components/mainNavBarTenant/mainNavBarTenant";
 import { useGetAPI } from "@/lib/service";
 import ProtectedRouteTenant from "@/components/auth/ProtectedRouteTenant";
@@ -17,7 +17,6 @@ const TenantHome = () => {
   //   },
   // });
 
-
   // const fetchPropertyData = async () => {
   //   try {
   //     const result = await getPropertyData()
@@ -33,36 +32,28 @@ const TenantHome = () => {
 
   // useEffect(() => { fetchPropertyData() }, [])
   const { id } = useContext(AuthContext);
-  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList/${id}`, "property");
+  const { data, isFetched, refetch } = useGetAPI(`/api/propertyList/${id}`, "property");
 
   console.log(data);
 
   const displayCard = () => {
-
     if (data && isFetched) {
-      return data.map((property: any, index: number) => (<PropertyCard key={index} property={property} />)
-      )
-    }
-    else (refetch())
-  }
+      return data.map((property: any, index: number) => <PropertyCard key={index} property={property} />);
+    } else refetch();
+  };
 
   return (
-  <ProtectedRouteTenant>
-    <>
+    <ProtectedRouteTenant>
+      <>
+        <MainNavBarTenant />
+        <br />
 
-      <MainNavBarTenant />
-      <br />
-
-      <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-        {displayCard()}
-      </div>
-      <br />
-      <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-        {displayCard()}
-      </div>
-      <br />
-    </>
-  </ProtectedRouteTenant>
+        <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">{displayCard()}</div>
+        <br />
+        <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">{displayCard()}</div>
+        <br />
+      </>
+    </ProtectedRouteTenant>
   );
 };
 

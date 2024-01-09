@@ -1,21 +1,19 @@
-
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuIndicator,
+  // NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
+  // NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
 
-import lawang_logo from "../../../public/lawang_logo.png"
+import lawang_logo from "../../../public/lawang_logo.png";
 import React from "react";
-import { Link } from "react-router-dom";
-import { Bold } from "lucide-react";
-
+// import { Link } from "react-router-dom";
+// import { Bold } from "lucide-react";
 
 const MainNavBarTenant: React.FC = () => {
   /////// TestAPI
@@ -27,26 +25,20 @@ const MainNavBarTenant: React.FC = () => {
   //   },
   // });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-
-
-  const menuComponents: { title: string; href: string; description: string }[] = [
-
-    {
-      title: "Home",
-      href: "/",
-      description: "Back To Home Page"
-
-    },
-    {
-      title: "",
-      href: "/tenantProperty",
-      description: "Back To Home Page"
-
-    }
-  ]
-
+  // const menuComponents: { title: string; href: string; description: string }[] = [
+  //   {
+  //     title: "Home",
+  //     href: "/",
+  //     description: "Back To Home Page",
+  //   },
+  //   {
+  //     title: "",
+  //     href: "/tenantProperty",
+  //     description: "Back To Home Page",
+  //   },
+  // ];
 
   return (
     // <div>
@@ -74,50 +66,48 @@ const MainNavBarTenant: React.FC = () => {
                       href="/tenant"
                     >
                       <img src={lawang_logo}></img>
-                      <div className="mb-2 mt-4 text-lg font-medium">
-                        Home
-                      </div>
-                      <p className="text-sm leading-tight text-muted-foreground">
-                        Takes you to Tenant Home Page
-                      </p>
+                      <div className="mb-2 mt-4 text-lg font-medium">Home</div>
+                      <p className="text-sm leading-tight text-muted-foreground">Takes you to Tenant Home Page</p>
                     </a>
                   </NavigationMenuLink>
                 </li>
 
-                <li>   <NavigationMenuLink asChild>
-                  <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    href="/tenant/propertyAdder"
-                  >
+                <li>
+                  {" "}
+                  <NavigationMenuLink asChild>
+                    <a
+                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                      href="/tenant/propertyAdder"
+                    >
+                      <div className="mb-2 mt-4 text-lg font-medium">
+                        <text>Add Property</text>
+                      </div>
+                      <p className="text-sm leading-tight text-muted-foreground">Add New Property to Your Portfolio</p>
+                    </a>
+                  </NavigationMenuLink>
+                </li>
 
-                    <div className="mb-2 mt-4 text-lg font-medium">
-                      <text>Add Property</text>
-                    </div>
-                    <p className="text-sm leading-tight text-muted-foreground">
-                      Add New Property to Your Portfolio
-                    </p>
-                  </a>
-                </NavigationMenuLink></li>
-
-                <li>   <NavigationMenuLink asChild>
-                  <a
-                    className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                    href="/tenant"
-                  >
-                    <div className="mb-2 mt-4 text-lg font-medium">
-                      <text>Report</text>
-                    </div>
-                    <p className="text-sm leading-tight text-muted-foreground">
-                      View Reports on Rents, Income & Occupancy Rates
-                    </p>
-                  </a>
-                </NavigationMenuLink></li>
+                <li>
+                  {" "}
+                  <NavigationMenuLink asChild>
+                    <a
+                      className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
+                      href="/tenant"
+                    >
+                      <div className="mb-2 mt-4 text-lg font-medium">
+                        <text>Report</text>
+                      </div>
+                      <p className="text-sm leading-tight text-muted-foreground">
+                        View Reports on Rents, Income & Occupancy Rates
+                      </p>
+                    </a>
+                  </NavigationMenuLink>
+                </li>
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-
     </>
   );
 };

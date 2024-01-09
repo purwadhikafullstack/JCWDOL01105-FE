@@ -66,7 +66,7 @@ export const DateRangePicker2: FC<DateRangePickerProps> & {
   // Refs to store the values of range and rangeCompare when the date picker is opened
   const openedRangeRef = useRef<DateRange | undefined>();
   const openedRangeCompareRef = useRef<DateRange | undefined>();
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isDisabled] = useState(false);
 
   const [isSmallScreen, setIsSmallScreen] = useState(typeof window !== "undefined" ? window.innerWidth < 960 : false);
 
