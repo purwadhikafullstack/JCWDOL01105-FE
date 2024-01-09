@@ -142,7 +142,9 @@ const Account = () => {
               <DropdownMenuSeparator className="bg-slate-300" />
 
               <div className="p-2">
-                <DropdownMenuItem className="text-md font-thin py-2 cursor-pointer">Sewakan Properti</DropdownMenuItem>
+                <DropdownMenuItem className="text-md font-thin py-2 cursor-pointer"> <Link className="w-full" to="/tenantSignIn">
+                    Sewakan Properti
+                  </Link></DropdownMenuItem>
               </div>
             </DropdownMenuContent>
           )}

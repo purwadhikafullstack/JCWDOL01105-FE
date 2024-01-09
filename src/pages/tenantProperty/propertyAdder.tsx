@@ -8,7 +8,7 @@ import { formPropertySchema, uploadImageSchema } from '@/lib/schema';
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import ProtectedRouteTenant from "@/components/auth/ProtectedRouteTenant";
-
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import {
   Form,
   FormControl,
@@ -24,11 +24,12 @@ import { useGetAPI, usePostApi, usePutApi } from "@/lib/service";
 import { useNavigate } from 'react-router';
 import { after } from 'node:test';
 import { AuthContext } from '@/app/AuthContext';
+import { useAppDispatch } from '@/lib/features/hook';
 
 
-import { useNavigate } from 'react-router';
-import { after } from 'node:test';
-import { AuthContext } from '@/app/AuthContext';
+// import { useNavigate } from 'react-router';
+// import { after } from 'node:test';
+// import { AuthContext } from '@/app/AuthContext';
 
 
 const AddProperty: React.FC = () => {
@@ -40,13 +41,32 @@ const AddProperty: React.FC = () => {
   // const form = useForm({defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema)})
   const form = useForm({ resolver: zodResolver(formPropertySchema) })
   // const formUpload =useForm({resolver:zodResolver(uploadImageSchema)});
-  const {id,token} = useContext(AuthContext);
-  // const {reset} = useForm();
-  // const form = {formState : formState, reset : reset, setValue : setValue, handleSubmit : handleSubmit, control : control}
-  // const { isDirty, isValid } = formState;
+  const { token } = useContext(AuthContext);
+  ///////////////////////////////////////
 
-  // const [propertyData, setPropertyData] = useState(initialPropertyData);
+
+
+  const [search, setSearch] = useState("");
+  const [queryLocation, setQueryLocation] = useState("kota");
+  const [location, setLocation] = useState("");
   const hiddenFileInput = useRef<HTMLInputElement>(null);
+
+
+  const {
+    data: locations,
+    isFetched,
+    refetch,
+  } = useGetAPI(`/api/property/location?city=${queryLocation}`, "get-location");
+
+  const handleChangeLocation = (e: React.FormEvent<HTMLInputElement>) => {
+    setSearch(e.currentTarget.value);
+    setQueryLocation(e.currentTarget.value);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [search, queryLocation]);
+  ////////////////////////////////////////
 
   const handleClick = () => {
     if (hiddenFileInput.current) hiddenFileInput.current.click();
@@ -80,6 +100,7 @@ const AddProperty: React.FC = () => {
       const formData = new FormData();
       formData.append("file", values.file);
       await mutate({ ...values });
+      console.log("location:", values.location)
       console.log(isSuccess, "inidia");
 
     }
@@ -90,25 +111,16 @@ const AddProperty: React.FC = () => {
 
       console.log(isSuccess)
       console.log(isError)
-
     }
-
   }
 
   useEffect(() => {
-    
+
     if (isSuccess) {
       form.reset();
       setTimeout(() => { navigate("/tenant") }, 50)
     }
   }, [isSuccess, isError])
-
-  // const afterSubmit = () => {
-  //   if (isSuccess) {
-  //     console.log("loglog")
-  //     setTimeout(() => { navigate("/tenant") }, 50)
-  //   }
-  // }
 
   return (
     <ProtectedRouteTenant>
@@ -144,7 +156,7 @@ const AddProperty: React.FC = () => {
             />
             <FormField
               control={form.control}
-              name="category_id"
+              name="categoryId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pilih Kategori Properti</FormLabel>
@@ -198,6 +210,54 @@ const AddProperty: React.FC = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem >
+                  <FormControl>
+                    <FormItem>
+                      <Command className="w-[400px] md:w-[500px] lg:w-[600px]">
+                        <CommandInput
+                          placeholder="Cari lokasi..."
+                          onChangeCapture={(e) => handleChangeLocation(e)}
+                          value={search}
+                        />
+                        <CommandEmpty className={`${search.length > 0 ? "" : "hidden"} font-thin pt-4`}>
+                          Lokasi tidak ditemukan....
+                        </CommandEmpty>
+                        <CommandGroup>
+                          {isFetched &&
+                            search.length > 0 &&
+                            locations.map((location: any) => (
+                              <CommandItem
+                                key={location.id}
+                                onSelect={() => {
+                                  setLocation(location.city);
+                                  // Update the form value when a CommandItem is selected
+                                  field.onChange(location.city);
+                                  // Clear the search
+                                  setSearch("");
+                                }}
+                                {...field}
+                              >
+                                {location.city}
+                              </CommandItem>
+                            ))}
+                        </CommandGroup>
+                      </Command>
+                      <Label className={`${location ? "hidden" : ""} text-sm font-thin`}>
+                        Masukkan lokasi properti yang akan disewakan
+                      </Label><Label className={`${location ? "" : "hidden"} text-sm font-thin`}>
+                       {location}
+                      </Label>
+                    </FormItem>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button type="submit" >Submit</Button>
           </form>
         </Form>

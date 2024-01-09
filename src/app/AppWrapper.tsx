@@ -8,6 +8,7 @@ const Home = lazy(() => import("../pages/Home"));
 const Setting = lazy(() => import("../layout/Setting"));
 const Profile = lazy(() => import("../pages/setting/Profile"));
 const Order = lazy(() => import("../pages/setting/Order"));
+const History =lazy(()=>import("../pages/setting/History"))
 const Privacy = lazy(() => import("../pages/setting/Privacy"));
 const Favorite = lazy(() => import("../pages/setting/Favorite"));
 const ResetPassword = lazy(() => import("../components/auth/ResetPassword"));
@@ -19,6 +20,7 @@ const TenantHome = lazy(() => import("../pages/tenantHome"));
 const PropertyEditor = lazy(() => import("../pages/propertyEditor/propertyEditor"));
 const AddProperty = lazy(() => import("../pages/tenantProperty/propertyAdder"));
 const TenantSignIn = lazy(() => import("../pages/tenantProperty/tenantSignIn"));
+const TransactionsPage = lazy(()=> import ("../pages/tenantTransactions/transactionsPage"))
 const LoginAuthSuccess = lazy(() => import("../components/auth/LoginAuthSuccess"));
 const LoginAuthFailed = lazy(() => import("../components/auth/LoginAuthFailed"));
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -40,6 +42,7 @@ const AppWrapper = () => {
             <Route path="/tenant" element={<TenantHome />} />
             <Route path="/tenant/propertyAdder" element={<AddProperty />} />
             <Route path="/tenant/propertyEditor/:id" element={<PropertyEditor />} />
+            <Route path="/tenant/transactions" element={<TransactionsPage />} />
             <Route path="/tenantSignIn" element={<TenantSignIn />} />
 
             <Route path="property/:id" element={<PropertyDetail />} />
@@ -55,6 +58,7 @@ const AppWrapper = () => {
               <Route path="order" element={<Order />} />
               <Route path="order/:id" element={<OrderDetail />} />
               <Route path="favorite" element={<Favorite />} />
+              <Route path="history" element={<History />} />
             </Route>
           </Route>
           <Route path="/reset-password" element={<ResetPassword />} />
