@@ -28,6 +28,7 @@ const SendMail: React.FC<ISendMail> = ({ page, setPage }) => {
 
   const { mutate, isSuccess, isError, error } = usePostApi("/api/user/reset-password/request");
   const onSubmit = (values: FormType) => {
+    console.log("this", values);
     mutate({ ...values });
   };
 
@@ -37,48 +38,48 @@ const SendMail: React.FC<ISendMail> = ({ page, setPage }) => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error("Mengirim Email Gagal");
-      // toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 
   return (
-    <div className="mt-10">
-      <div className="flex relative mb-6">
+    <div className="space-y-1">
+      <div className="flex relative items-center">
         <div
-          className="absolute left-[-40px] cursor-pointer mb-2 hover:bg-slate-200 rounded-full p-2"
+          className="absolute left-[-32px] cursor-pointer hover:bg-slate-200 rounded-full p-1"
           onClick={() => setPage(page - 1)}
         >
           <ChevronLeft />
         </div>
-        <span className="text-2xl mt-1">Kembali</span>
+        <span className="text-xl">Reset Password</span>
       </div>
 
-      <p className="text-xl">Reset Password</p>
-      <p className="mb-6">Kirim alamat email untuk medapatkan link reset password</p>
+      <div className="space-y-4">
+        <p className="font-thin">Kirim alamat email untuk medapatkan link reset password</p>
 
-      <Separator className="bg-slate-300 my-4" />
+        <Separator />
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="mb-6">
-                <FormControl>
-                  <Input type="text" id="email" placeholder="Email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormControl>
+                    <Input type="text" id="email" placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-        </form>
-      </Form>
+            <Button type="submit" className="w-full">
+              Submit
+            </Button>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 };

@@ -8,7 +8,7 @@ import { setRand } from "@/lib/features/globalReducer";
 import { useAppDispatch } from "@/lib/features/hook";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import { FormatToIDR } from "@/lib/utils";
-import LoginDialog from "../auth/LoginDialog";
+import AuthUser from "../auth/AuthUser";
 
 interface IData {
   data: {
@@ -26,12 +26,12 @@ interface IStatus {
 
 const PropertyFavorite: React.FC<IData & IStatus> = ({ data, status }) => {
   const dispatch = useAppDispatch();
-  const { id, bearer, isLogin } = useContext(AuthContext);
+  const { bearer, isLogin } = useContext(AuthContext);
   const { mutate } = usePostApi("/api/property/favorite", bearer);
 
   const handleFavorite = () => {
     if (isLogin) {
-      mutate({ userId: id, propertyId: data.id });
+      mutate({ propertyId: data.id });
       dispatch(setRand(Math.random()));
     }
   };
@@ -51,9 +51,9 @@ const PropertyFavorite: React.FC<IData & IStatus> = ({ data, status }) => {
     <div className="mb-4">
       {status === true && (
         <Card className="h-full w-full md:max-w-[320px] mx-2">
-          <CardContent className="w-full p-4">
+          <CardContent className="w-full p-0">
             <div className="relative">
-              <img loading="lazy" className="w-full md:w-[300px] h-[200px]" src={data.image_url} alt="" />
+              <img loading="lazy" className="w-full md:w-[320px] h-[200px] rounded-t-lg" src={data.image_url} alt="" />
               {isLogin ? (
                 <FavoriteComponent />
               ) : (
@@ -61,15 +61,17 @@ const PropertyFavorite: React.FC<IData & IStatus> = ({ data, status }) => {
                   <DialogTrigger>
                     <FavoriteComponent />
                   </DialogTrigger>
-                  <LoginDialog />
+                  <AuthUser />
                 </Dialog>
               )}
             </div>
-            <Link to={`/property/${data.id}`}>
-              <CardTitle className="my-1 text-md ">{maxTitle}</CardTitle>
-              <CardDescription>{data.location.city}</CardDescription>
-              <span>{lowestRoomPrice}</span>
-            </Link>
+            <div className="p-4 text-base">
+              <Link to={`/property/${data.id}`}>
+                <CardTitle className="text-base">{maxTitle}</CardTitle>
+                <CardDescription>{data.location.city}</CardDescription>
+                <span>{lowestRoomPrice}</span>
+              </Link>
+            </div>
           </CardContent>
         </Card>
       )}

@@ -6,9 +6,9 @@ import { useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
 import { setRand } from "@/lib/features/globalReducer";
 import { useAppDispatch } from "@/lib/features/hook";
-import { Dialog, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogTrigger, DialogContent } from "../ui/dialog";
 import { FormatToIDR } from "@/lib/utils";
-import LoginDialog from "../auth/LoginDialog";
+import AuthUser from "../auth/AuthUser";
 
 interface IData {
   data: {
@@ -36,8 +36,7 @@ const Product: React.FC<IData> = ({ data }) => {
 
   const find = data.favorites.find((favorite) => favorite.userId === id) ? true : false;
   const favorite = find ? data.favorites.find((favorite) => favorite.userId === id)?.status : false;
-  const lowestRoomPrice =
-    data.rooms.length > 0 ? FormatToIDR(Math.min(...data.rooms.map((room) => room.price))) : "Ruangan Tidak Tersedia";
+  const lowestRoomPrice = data.rooms.length > 0 ? FormatToIDR(data.rooms[0].price) : "Ruangan Tidak Tersedia";
 
   const FavoriteComponent = () => (
     <span onClick={() => handleFavorite()} className="hover:cursor-pointer absolute right-2 top-2">
@@ -59,13 +58,15 @@ const Product: React.FC<IData> = ({ data }) => {
                 <DialogTrigger>
                   <FavoriteComponent />
                 </DialogTrigger>
-                <LoginDialog />
+                <DialogContent className="p-12">
+                  <AuthUser />
+                </DialogContent>
               </Dialog>
             )}
           </div>
-          <div className="p-4">
+          <div className="p-4 text-base">
             <Link to={`/property/${data.id}`} className="">
-              <CardTitle className="text-md ">{maxTitle}</CardTitle>
+              <CardTitle className="text-base">{maxTitle}</CardTitle>
               <CardDescription>{data.location.city}</CardDescription>
               <span>{lowestRoomPrice}</span>
             </Link>

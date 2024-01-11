@@ -1,4 +1,3 @@
-
 import { Form, FormControl, FormMessage, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registeSchema } from "@/lib/schema";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { usePostApi } from "@/lib/service";
 import { Separator } from "../ui/separator";
@@ -65,9 +64,9 @@ const RegisterTenant = () => {
     //     <DialogDescription className="my-4">Selamat Datang Para Tenant!</DialogDescription>
     //   </div>
     <>
-    <div className="space-y-1">
+      <div className="space-y-1">
         <h4 className="text-sm font-medium leading-none">Register as Tenant</h4>
-        <br/>
+        <br />
       </div>
       <Separator className="bg-slate-300 w-full" />
       <div className="px-8 py-4">
@@ -161,7 +160,6 @@ const RegisterTenant = () => {
           </div>
         </Button>
       </div>
-    
     </>
   );
 };

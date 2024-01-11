@@ -8,7 +8,8 @@ const initialState = {
   page: 1,
   guest: 100,
   query: { city: "", date: { from: "", to: "" } },
-  filter: { apartement: "apartement", hotel: "hotel", villa: "villa", price: "cheap", sort: "asc" },
+  filter: { apartement: "", hotel: "", villa: "", price: "", sort: "" },
+  facility: "",
   date: {
     from: new Date().setHours(14, 0, 0, 0),
     to: new Date(new Date().getTime() + 24 * 36e5).setHours(12, 0, 0, 0),
@@ -40,6 +41,9 @@ export const globalSlice = createSlice({
     setFilter: (state, action) => {
       state.filter = action.payload;
     },
+    setFacility: (state, action) => {
+      state.facility = action.payload;
+    },
     setDate: (state, action) => {
       state.date = action.payload;
     },
@@ -53,6 +57,8 @@ export const getPage = (state: RootState) => state.page;
 export const getGuest = (state: RootState) => state.guest;
 export const getQuery = (state: RootState) => state.query;
 export const getFilter = (state: RootState) => state.filter;
+export const getFacility = (state: RootState) => state.facility;
 export const getDate = (state: RootState) => state.date;
-export const { setRand, setHome, setClick, setPage, setGuest, setQuery, setFilter, setDate } = globalSlice.actions;
+export const { setRand, setHome, setClick, setPage, setGuest, setQuery, setFilter, setFacility, setDate } =
+  globalSlice.actions;
 export default globalSlice.reducer;

@@ -41,7 +41,9 @@ const Privacy = () => {
     if (isSuccess) {
       form.reset(initForm);
       toast.success("Success Update Password");
-      logout();
+      setTimeout(() => {
+        logout();
+      }, 1000);
     }
     if (isError) {
       toast.error(error.response.data.message);

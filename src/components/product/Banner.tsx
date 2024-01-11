@@ -31,7 +31,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="my-8">
+    <div>
       <Slider {...settings}>
         <div>
           <img className="rounded-2xl p-2" src={image.ban1} alt="" />
