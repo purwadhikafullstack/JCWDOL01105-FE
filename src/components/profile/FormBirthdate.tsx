@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Form, FormMessage, FormField, FormItem } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { DropdownCalendar } from "../ui/dropdown-calendar";
@@ -16,6 +16,7 @@ import { AuthContext } from "@/app/AuthContext";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/lib/features/hook";
 import { setRand } from "@/lib/features/globalReducer";
+import { TriggerBiodataUpdate } from "../Component";
 
 const FormBirthDate = ({ birthdate }: { birthdate: any }) => {
   const dispatch = useAppDispatch();
@@ -27,7 +28,7 @@ const FormBirthDate = ({ birthdate }: { birthdate: any }) => {
   const { mutate, isSuccess, isError } = usePutApi(`/api/user/update`, bearer);
 
   const initForm = {
-    birthdate: birthdate ? birthdate : new Date(),
+    birthdate: birthdate ? birthdate : new Date().getTime(),
   };
 
   const form = useForm({ resolver: zodResolver(birthdateSchema), defaultValues: initForm });
@@ -51,9 +52,7 @@ const FormBirthDate = ({ birthdate }: { birthdate: any }) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <p className="italic hover:underline hover:cursor-pointer font-medium">Ubah</p>
-      </DialogTrigger>
+      <TriggerBiodataUpdate />
       <DialogContent className="max-w-[400px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit, (err: any) => console.log(err))}>

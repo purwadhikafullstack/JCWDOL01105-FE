@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/features/hook";
 import { Button } from "@/components/ui/button";
 import { uploadImageSchema } from "@/lib/schema";
 import { AddAPhoto } from "@mui/icons-material";
-import { getHome, setRand } from "@/lib/features/globalReducer";
+import { setRand } from "@/lib/features/globalReducer";
 import { random } from "@/lib/features/globalReducer";
 import { Toaster, toast } from "sonner";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -63,7 +63,7 @@ const Profile = () => {
     <div className="border rounded-xl p-10 flex flex-col sm:flex-row h-full">
       <Toaster />
       <div className="w-full mb-10 sm:w-1/3">
-        <div>
+        <div className="space-y-8">
           {isFetched && (
             <div className="flex justify-center">
               <Avatar className="ring-4 ring-[#FC5185] w-[150px] h-[150px] lg:w-[250px] lg:h-[250px]">
@@ -71,9 +71,9 @@ const Profile = () => {
               </Avatar>
             </div>
           )}
-          <div className="flex mt-2">
+          <div className="flex">
             <Button
-              className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 mx-auto"
+              className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal hover:bg-slate-200 mx-auto"
               onClick={() => handleClick()}
             >
               <AddAPhoto fontSize="small" className="mr-2" />
@@ -115,7 +115,7 @@ const Profile = () => {
 
         {isFetched && (
           <div className="lg:mx-auto text-center">
-            <p className="italic font-thin">
+            <p className="text-base italic font-thin">
               {data.email_verified ? "Email telah diverifikasi" : "Email belum diverifikasi"}
             </p>
             <VerifyEmail data={data} />

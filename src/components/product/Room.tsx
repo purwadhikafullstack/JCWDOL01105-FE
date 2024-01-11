@@ -28,7 +28,7 @@ const Room: React.FC<IDataProps> = ({ data }) => {
             <CardHeader>
               <div className="flex justify-between items-end">
                 <CardTitle>{data.name}</CardTitle>
-                <CardDescription>{FormatToIDR(Number(data.price))}/malam</CardDescription>
+                <CardDescription className="text-lg">{FormatToIDR(Number(data.price))}/malam</CardDescription>
               </div>
             </CardHeader>
             <CardContent>

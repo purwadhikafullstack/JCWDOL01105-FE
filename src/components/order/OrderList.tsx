@@ -13,35 +13,34 @@ interface IOrder {
   total_price: number;
   guest: number;
   status: string;
-  room: { image_url: string };
+  room: { name: string; image_url: string };
 }
 
 const OrderList = () => {
   const { bearer } = useContext(AuthContext);
   const { data, isFetched, refetch } = useGetAPI(`/api/order/user`, "orderlist", bearer);
 
-  const max = 6;
-  const [limit, setLimit] = useState(max);
+  const [limit, setLimit] = useState(6);
 
   useEffect(() => {
     refetch();
   }, []);
 
   return (
-    <div className="flex flex-grow flex-wrap justify-center">
+    <div className="flex flex-grow flex-wrap justify-center text-base">
       {isFetched && data.rows.length > 0 ? (
-        <div>
+        <div className="">
           {" "}
           <InfiniteScroll
             dataLength={data.rows.length}
             next={() => {
-              if (limit < data.count) setLimit(limit + max / 2);
+              if (limit < data.count) setLimit(limit + 3);
             }}
             hasMore={true}
             style={{ display: "flex", flexDirection: "column-reverse" }}
             loader={<div></div>}
           >
-            <div className="flex flex-grow flex-wrap justify-center">
+            <div className="flex flex-grow flex-wrap justify-center overflow-scroll h-[80vh]">
               {" "}
               {data.rows.map((order: IOrder) => (
                 <Order key={order.id} order={order} />

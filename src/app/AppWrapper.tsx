@@ -22,8 +22,8 @@ const AddProperty = lazy(() => import("../pages/tenantProperty/propertyAdder"));
 const TenantSignIn = lazy(() => import("../pages/tenantProperty/tenantSignIn"));
 const TransactionsPage = lazy(()=> import ("../pages/tenantTransactions/transactionsPage"))
 const LoginAuthSuccess = lazy(() => import("../components/auth/LoginAuthSuccess"));
-const LoginAuthFailed = lazy(() => import("../components/auth/LoginAuthFailed"));
 const NotFound = lazy(() => import("../pages/NotFound"));
+const MidtransTransaction = lazy(() => import("../components/order/MidtransTransaction"));
 
 const AppWrapper = () => {
   return (
@@ -33,7 +33,6 @@ const AppWrapper = () => {
           <Route path="" element={<App />}>
             <Route path="" element={<Home />} />
             <Route path="/login-auth-success" element={<LoginAuthSuccess />} />
-            <Route path="/login-auth-failed" element={<LoginAuthFailed />} />
 
             <Route path="property/:id" element={<PropertyDetail />} />
             <Route path="room/:id" element={<RoomDetail />} />
@@ -61,6 +60,8 @@ const AppWrapper = () => {
               <Route path="history" element={<History />} />
             </Route>
           </Route>
+
+          <Route path="/midtrans-transaction" element={<MidtransTransaction />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

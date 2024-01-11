@@ -11,10 +11,14 @@ import { DialogContent } from "../ui/dialog";
 import { useEffect } from "react";
 import { Toaster, toast } from "sonner";
 import { AuthContext } from "@/app/AuthContext";
+import { useAppDispatch } from "@/lib/features/hook";
+import { setRand } from "@/lib/features/globalReducer";
 
 const UploadProvePayment = ({ orderId }: { orderId: string }) => {
-  const { token } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
   const hiddenFileInput = useRef<HTMLInputElement>(null);
+
+  const { token } = useContext(AuthContext);
 
   const handleClick = () => {
     if (hiddenFileInput.current) hiddenFileInput.current.click();
@@ -37,13 +41,13 @@ const UploadProvePayment = ({ orderId }: { orderId: string }) => {
   const onSubmitUpload = async (values: any) => {
     const formData = new FormData();
     formData.append("file", values.file);
-    console.log("values", values);
     mutate(values);
   };
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Upload Gambar Sukses");
+      dispatch(setRand(Math.random()));
     }
     if (isError) {
       toast.error("Upload Gambar Gagal");

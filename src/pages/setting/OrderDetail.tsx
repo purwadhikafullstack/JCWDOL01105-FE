@@ -6,46 +6,73 @@ import { useParams } from "react-router";
 import { useNavigate } from "react-router";
 import { ChevronLeft } from "@mui/icons-material";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { AuthContext } from "@/app/AuthContext";
+import { formatDateLL } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useAppDispatch, useAppSelector } from "@/lib/features/hook";
+import { random, setRand } from "@/lib/features/globalReducer";
+import { Link } from "react-router-dom";
 import CountdownTimer from "../../components/order/Countdown";
 import UploadProvePayment from "@/components/order/UploadProvePayment";
-import { AuthContext } from "@/app/AuthContext";
+import { OrderStatus } from "@/components/Component";
 
 const OrderDetail = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const rand = useAppSelector(random);
+
   const { id } = useParams();
   const { bearer } = useContext(AuthContext);
   const { data: order, isFetched, refetch } = useGetAPI(`/api/order/id/${id}`, `order-${id}`, bearer);
-  const { mutate, data: transactionOrder, isSuccess } = usePostApi(`api/order/transaction`, bearer);
+  const { mutate: transaction, data: transactionOrder, isSuccess } = usePostApi(`api/order/transaction`, bearer);
+  const { mutate: cancelTransaction } = usePostApi(`api/order/transaction-cancel`, bearer);
 
   const [token, setToken] = useState("");
 
-  const checkIn = isFetched && new Date(order.start_date).toLocaleDateString();
-  const checkOut = isFetched && new Date(order.end_date).toLocaleDateString();
   const countDay = isFetched && Math.round(Math.abs(order.start_date - order.end_date) / (24 * 36 * 1e5));
+  const idString = JSON.stringify(id);
 
-  const transaction = () => {
-    const payload = isFetched && {
+  const handleTransaction = () => {
+    const payload = {
       orderId: id,
     };
-    mutate(payload);
+    transaction(payload);
+  };
+
+  const handleTransacionCancel = () => {
+    const payload = {
+      orderId: id,
+    };
+    cancelTransaction(payload);
+    setTimeout(() => {
+      dispatch(setRand(Math.random()));
+    }, 100);
   };
 
   useEffect(() => {
     if (isSuccess) {
+      localStorage.setItem("orderId", idString);
       setToken(transactionOrder.data.token);
       if (token) {
         window.snap.pay(transactionOrder.data.token);
       }
     }
     refetch();
-  }, [isSuccess, order, token]);
+  }, [isSuccess, order, token, rand]);
 
   useEffect(() => {
-    const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-    const midtransClientKey = "SB-Mid-client-ua4G3MNRZB0VnKx_";
+    const midtransUrl = import.meta.env.VITE_MIDTRANS_URL;
     let script = document.createElement("script");
     script.src = midtransUrl;
-    script.setAttribute("data-client-key", midtransClientKey);
+    script.setAttribute("data-client-key", import.meta.env.VITE_MIDTRANS_CLIENT_KEY);
     script.async = true;
     document.body.appendChild(script);
     return () => {
@@ -54,7 +81,7 @@ const OrderDetail = () => {
   }, []);
 
   return (
-    <div className="border rounded-xl md:h-full">
+    <div className="border rounded-xl xl:h-full">
       {isFetched && (
         <div className="px-12 pt-4">
           <div className="flex relative items-center mb-4">
@@ -66,58 +93,105 @@ const OrderDetail = () => {
             </div>
             <span className="text-2xl">kembali</span>
           </div>
-          <div className="flex flex-col md:flex-row-reverse">
+          <div className="flex flex-col xl:flex-row-reverse">
             <div>
-              <img className="w-full rounded-xl" src={order.room.image_url} alt="" />
+              <Link to={`/room/${order.room.id}`}>
+                <img className="w-full xl:max-w-[600px] rounded-xl" src={order.room.image_url} alt="" />
+              </Link>
               <Dialog>
-                <DialogTrigger className={`${order.status === "unconfirm" ? "" : "hidden"} text-center w-full mt-4`}>
+                <DialogTrigger
+                  className={`${
+                    order.status === "unconfirm" || order.status === "success" || order.status === "rejected"
+                      ? ""
+                      : "hidden"
+                  } text-center text-base italic w-full pt-4`}
+                >
                   <span className="underline font-thin cursor-pointer mx-auto">lihat bukti transaksi</span>
                 </DialogTrigger>
                 <DialogContent>
-                  <img src={order.image_url} />
+                  <img src={order.image_url} className="rounded-lg" />
                 </DialogContent>
               </Dialog>
             </div>
-            <div className="w-full relative mt-12 md:mt-0 md:pr-8">
-              <div className="flex justify-end">
-                {order.status === "unpaid" ? <CountdownTimer orderDate={order.createdAt} /> : ""}
+            <div className="w-full relative mt-12 xl:mt-0 xl:pr-8 space-y-4 font-thin">
+              <div className="flex justify-between">
+                <p className="font-normal">ORDER ID</p>
+                {order.status !== "unpaid" ? (
+                  <OrderStatus status={order.status} />
+                ) : (
+                  <CountdownTimer orderDate={order.createdAt} />
+                )}
               </div>
-              <div>
-                <p className="text-xl">ORDER ID</p>
-                <p className="text-sm">{order.id}</p>
+
+              <Link to={`/room/${order.room.id}`}>
+                <p className="font-bold text-sm">{order.id}</p>
+              </Link>
+
+              <div className="flex justify-between">
+                <p>Total harga</p>
+                <p>{FormatToIDR(order.total_price)}</p>
               </div>
-              <div className="flex justify-between my-4"></div>
-              <div className="flex justify-between my-4">
-                <p className="text-xl font-thin">Total harga</p>
-                <p className="text-xl font-thin">{FormatToIDR(order.total_price)}</p>
+              <div className="flex justify-between">
+                <p>Tamu</p>
+                <p>{order.guest} orang</p>
               </div>
-              <div className="flex justify-between my-4">
-                <p className="text-xl font-thin">Tamu</p>
-                <p className="text-xl font-thin">{order.guest} orang</p>
+              <div className="flex justify-between">
+                <p>Lama menginap</p>
+                <p>{countDay} malam</p>
               </div>
-              <div className="flex justify-between my-4">
-                <p className="text-xl font-thin">Lama menginap</p>
-                <p className="text-xl font-thin">{countDay} malam</p>
+              <div className="flex justify-between">
+                <p>Tanggal Check-In</p>
+                <p>{formatDateLL(order.start_date)}</p>
               </div>
-              <div className="flex justify-between my-4">
-                <p className="text-xl font-thin">Tanggal Check-In</p>
-                <p className="text-xl font-thin">{checkIn}</p>
+              <div className="flex justify-between">
+                <p>Tanggal Check-out</p>
+                <p>{formatDateLL(order.end_date)}</p>
               </div>
-              <div className="flex justify-between my-4">
-                <p className="text-xl font-thin">Tanggal Check-out</p>
-                <p className="text-xl font-thin">{checkOut}</p>
-              </div>
-              <div className="text-center">
-                <Button className={`${order.status !== "unpaid" ? "hidden" : ""}`} onClick={() => transaction()}>
-                  Bayar Sekarang
+              <div
+                className={`${
+                  order.status === "expired" ||
+                  order.status === "cancel" ||
+                  order.status === "unconfirm" ||
+                  order.status === "success"
+                    ? "hidden"
+                    : ""
+                } flex flex-col space-y-2 text-lg font-normal`}
+              >
+                <Button
+                  className={`${order.status === "rejected" ? "hidden" : ""}`}
+                  onClick={() => handleTransaction()}
+                >
+                  Bayar
                 </Button>
                 <Dialog>
-                  <DialogTrigger className={`${order.status !== "unconfirm" ? "hidden" : ""}`}>
-                    Upload Bukti Bayar
-                  </DialogTrigger>
+                  <DialogTrigger className={` bg-[#F5F5F5] rounded-lg py-2 px-4`}>Upload Bukti Bayar</DialogTrigger>
                   <UploadProvePayment orderId={String(id)} />
                 </Dialog>
+                <AlertDialog>
+                  <AlertDialogTrigger
+                    className={`${order.status === "unpaid" ? "" : "hidden"} bg-[#D80032] text-white p-2 rounded-lg`}
+                  >
+                    Batalkan Pesanan
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogTitle>Kamu yakin ingin membatalkan pesanan?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Dengan membatalkan pesanan maka status kamar akan dalam keadaan tersedia dan pengguna lain dapat
+                      melakukan pemesanan
+                    </AlertDialogDescription>
+                    <div className="flex justify-end space-x-4">
+                      <AlertDialogCancel>Kembali</AlertDialogCancel>
+                      <AlertDialogAction
+                        className="bg-[#D80032] hover:bg-[#D80032]/80 text-base"
+                        onClick={() => handleTransacionCancel()}
+                      >
+                        Konfirmasi
+                      </AlertDialogAction>
+                    </div>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
+              <div className="h-10"></div>
             </div>
           </div>
         </div>

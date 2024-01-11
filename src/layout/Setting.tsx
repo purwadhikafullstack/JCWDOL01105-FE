@@ -17,24 +17,24 @@ const Setting = () => {
   return (
     <ProtectedRoute>
       <div className="flex flex-col space-y-4 lg:space-y-0 lg:space-x-8 lg:flex-row h-[75vh]">
-        <div className="flex lg:h-full w-full lg:space-y-8  space-x-4 lg:space-x-0 p-4 border rounded-xl items-center sm:justify-around md:flex-row lg:w-[240px] lg:flex-col lg:items-start ">
-          <Link to={"/setting/profile"} className="sm:space-x-2 lg:p-4 lg:text-2xl">
+        <div className="flex lg:h-full w-full lg:space-y-8  space-x-4 lg:space-x-0 p-4 border rounded-xl items-center sm:justify-around md:flex-row lg:w-[240px] lg:flex-col lg:items-start md:text-2xl">
+          <Link to={"/setting/profile"} className="sm:space-x-2 lg:p-4">
             <AccountCircle sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className=" text-blue-500" />
             <span>Profil</span>
           </Link>
-          <Link to={"/setting/favorite"} className="sm:space-x-2 lg:p-4 lg:text-2xl">
+          <Link to={"/setting/favorite"} className="sm:space-x-2 lg:p-4">
             <Favorite sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="text-rose-500" />
             <span>Favorit</span>
           </Link>
-          <Link to={"/setting/order"} className="sm:space-x-2 lg:p-4 lg:text-2xl">
+          <Link to={"/setting/order"} className="sm:space-x-2 lg:p-4">
             <Receipt sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="" />
             <span>Transaksi</span>
           </Link>
-          <Link to={"/setting/history"} className="sm:space-x-2 lg:p-4 lg:text-2xl">
+          <Link to={"/setting/history"} className="sm:space-x-2 lg:p-4">
             <History sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="" />
             <span>Riwayat</span>
           </Link>
-          <Link to={"/setting/privacy"} className="sm:space-x-2 lg:p-4 lg:text-2xl">
+          <Link to={"/setting/privacy"} className="sm:space-x-2 lg:p-4">
             <Security sx={{ fontSize: { xs: 32, sm: 32, md: 32, lg: 40 } }} className="text-[#3FC1C9]" />
             <span>Privasi</span>
           </Link>
