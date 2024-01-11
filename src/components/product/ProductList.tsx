@@ -23,7 +23,7 @@ const ProductList = () => {
   const rand = useAppSelector(random);
   const facility = useAppSelector(getFacility);
 
-  const [limit, setLimit] = useState(4);
+  const [limit, setLimit] = useState(8);
   const [params, setParams] = useState(
     `/api/property?city=${query.city}&start=${query.date.from}&end=${query.date.to}&limit=${limit}&apartement=${filter.apartement}&hotel=${filter.hotel}&villa=${filter.villa}&price=${filter.price}&sort=${filter.sort}&facility=${facility}`
   );

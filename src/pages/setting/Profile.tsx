@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/features/hook";
 import { Button } from "@/components/ui/button";
 import { uploadImageSchema } from "@/lib/schema";
 import { AddAPhoto } from "@mui/icons-material";
-import { getHome, setRand } from "@/lib/features/globalReducer";
+import { setRand } from "@/lib/features/globalReducer";
 import { random } from "@/lib/features/globalReducer";
 import { Toaster, toast } from "sonner";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";

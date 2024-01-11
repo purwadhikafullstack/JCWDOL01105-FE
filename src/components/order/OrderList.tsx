@@ -20,8 +20,7 @@ const OrderList = () => {
   const { bearer } = useContext(AuthContext);
   const { data, isFetched, refetch } = useGetAPI(`/api/order/user`, "orderlist", bearer);
 
-  const max = 6;
-  const [limit, setLimit] = useState(max);
+  const [limit, setLimit] = useState(6);
 
   useEffect(() => {
     refetch();
@@ -35,7 +34,7 @@ const OrderList = () => {
           <InfiniteScroll
             dataLength={data.rows.length}
             next={() => {
-              if (limit < data.count) setLimit(limit + max / 2);
+              if (limit < data.count) setLimit(limit + 3);
             }}
             hasMore={true}
             style={{ display: "flex", flexDirection: "column-reverse" }}

@@ -154,7 +154,7 @@ const PropertyDetail = () => {
 
             {isFetched && <ReviewList reviews={reviews.reviews.rows} score={reviews.score} />}
 
-            {isFetched && reviews.length > 0 && (
+            {isFetched && reviews.reviews.count > 0 && (
               <Dialog>
                 <DialogTrigger className="font-thin rounded-xl border px-4 py-2 border-black">
                   Tampilkan Semua ({reviews.reviews.count}) Ulasan

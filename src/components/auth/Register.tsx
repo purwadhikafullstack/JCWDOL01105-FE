@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registeSchema } from "@/lib/schema";
 import { Toaster, toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { usePostApi } from "@/lib/service";
 import { Separator } from "../ui/separator";
 import { FormInput, FormInputPassword, LoginOauth } from "../Component";
@@ -49,8 +49,7 @@ const Register = () => {
       form.reset(initForm);
     }
     if (isError) {
-      toast.error("Register gagal");
-      // toast.error(error?.response?.data.message);
+      toast.error(error?.response?.data.message);
     }
   }, [isSuccess, isError]);
 

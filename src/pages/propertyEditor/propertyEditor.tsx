@@ -27,11 +27,6 @@ const initialRoomData = {
 const PropertyEditor = () => {
   console.log("Property Editor");
 
-  const formProp = useForm({ defaultValues: initialPropertyData });
-  const formRoom = useForm({ defaultValues: initialRoomData });
-  const { id } = useParams();
-  console.log(id);
-
   const config = {
     headers: {
       Accept: "multipart/form-data",

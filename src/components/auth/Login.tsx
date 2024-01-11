@@ -30,7 +30,7 @@ const Login = () => {
     defaultValues: initForm,
   });
 
-  const { mutate, data, isSuccess, isError } = usePostApi("/api/user/login");
+  const { mutate, data, isSuccess, isError, error } = usePostApi("/api/user/login");
   const onSubmit = (values: FormType) => {
     mutate({ ...values });
   };
@@ -45,8 +45,7 @@ const Login = () => {
       }, 500);
     }
     if (isError) {
-      toast.error("Login gagal");
-      // toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
     }
   }, [isSuccess, isError]);
 

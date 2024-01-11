@@ -69,11 +69,10 @@ const OrderDetail = () => {
   }, [isSuccess, order, token, rand]);
 
   useEffect(() => {
-    const midtransUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
-    const midtransClientKey = "SB-Mid-client-ua4G3MNRZB0VnKx_";
+    const midtransUrl = import.meta.env.VITE_MIDTRANS_URL;
     let script = document.createElement("script");
     script.src = midtransUrl;
-    script.setAttribute("data-client-key", midtransClientKey);
+    script.setAttribute("data-client-key", import.meta.env.VITE_MIDTRANS_CLIENT_KEY);
     script.async = true;
     document.body.appendChild(script);
     return () => {
@@ -82,7 +81,7 @@ const OrderDetail = () => {
   }, []);
 
   return (
-    <div className="border rounded-xl md:h-full">
+    <div className="border rounded-xl xl:h-full">
       {isFetched && (
         <div className="px-12 pt-4">
           <div className="flex relative items-center mb-4">
@@ -94,10 +93,10 @@ const OrderDetail = () => {
             </div>
             <span className="text-2xl">kembali</span>
           </div>
-          <div className="flex flex-col md:flex-row-reverse">
+          <div className="flex flex-col xl:flex-row-reverse">
             <div>
               <Link to={`/room/${order.room.id}`}>
-                <img className="w-full rounded-xl" src={order.room.image_url} alt="" />
+                <img className="w-full xl:max-w-[600px] rounded-xl" src={order.room.image_url} alt="" />
               </Link>
               <Dialog>
                 <DialogTrigger
@@ -192,6 +191,7 @@ const OrderDetail = () => {
                   </AlertDialogContent>
                 </AlertDialog>
               </div>
+              <div className="h-10"></div>
             </div>
           </div>
         </div>

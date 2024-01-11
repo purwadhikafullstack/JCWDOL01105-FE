@@ -2,9 +2,9 @@ import { useAppSelector } from "@/lib/features/hook";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { random } from "@/lib/features/globalReducer";
 import { useEffect, useRef } from "react";
+import { Toaster } from "sonner";
 import Login from "./Login";
 import Register from "./Register";
-import { Toaster } from "sonner";
 
 const AuthUser = ({ tab }: { tab?: string }) => {
   const rand = useAppSelector(random);

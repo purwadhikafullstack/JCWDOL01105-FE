@@ -61,9 +61,7 @@ const PropertyDetail = () => {
     if (isError) {
       toast.error(error?.response?.data.message);
     }
-    if (isFetched) {
-      setTotalPrice(room.price * countDay);
-    }
+
     dispatch(setHome(false));
   }, [isSuccess, isError]);
 
@@ -83,7 +81,10 @@ const PropertyDetail = () => {
         bookOrderRefetch();
       }, 1500);
     }
-  }, [bookOrder]);
+    if (isFetched) {
+      setTotalPrice(room.price * countDay);
+    }
+  }, [bookOrder, countDay]);
 
   return (
     <div className="text-slate-700 text-xl">
