@@ -84,10 +84,10 @@ const RoomAdderForm: React.FC = () => {
     };
 
     return (
-        <ScrollArea className="h-[500px] w-[400px] rounded-md border p-5">
+        <ScrollArea className="h-[500px] w-[700px] rounded-md grid place-items-center">
             <div className="w-[300px]">
                 <Form {...formRoom} >
-                    <form onSubmit={formRoom.handleSubmit(onSubmitRooms)} className="space-y-8" encType="multipart/form-data">
+                    <form onSubmit={formRoom.handleSubmit(onSubmitRooms)} className="space-y-8 p-2" encType="multipart/form-data">
                         <FormField
                             control={formRoom.control}
                             name="name"

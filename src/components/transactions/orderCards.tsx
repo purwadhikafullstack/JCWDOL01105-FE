@@ -9,11 +9,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { QueryObserverResult, QueryObserverRefetchErrorResult } from 'react-query';
-import { useDeleteApi } from "@/lib/service"
-
 import { Button } from "@/components/ui/button"
-import { Bold } from "lucide-react"
+
 import { AuthContext } from "@/app/AuthContext";
 import { usePutApi } from "@/lib/service";
 import { useState, useEffect } from "react";

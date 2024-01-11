@@ -39,7 +39,7 @@ const TransactionsPage: React.FC = () => {
             <div >
                 <MainNavBarTenant />
                 <br />
-                <Tabs defaultValue="userOrders" className="w-[900px]  ">
+                <Tabs defaultValue="userOrders" className="w-screen">
                     <TabsList>
                         <TabsTrigger value="userOrders" className='w-[300px] p-2 '>Order</TabsTrigger>
                         <TabsTrigger value="reportSales" className='w-[300px] p-2 '>Sales</TabsTrigger>

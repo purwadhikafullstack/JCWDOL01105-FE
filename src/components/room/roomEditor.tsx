@@ -1,5 +1,4 @@
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import {
     Sheet,
@@ -78,16 +77,17 @@ export const RoomEditor: React.FC<RoomEditorProps> = (roomId: any) => {
             <SheetTrigger asChild>
                 <Button >Edit </Button>
             </SheetTrigger>
-            <SheetContent side={"top"} >
+            <SheetContent >
                 <SheetHeader>
                     <SheetTitle>Room Details</SheetTitle>
                     <SheetDescription>
                         Here you can add rooms to your property to rent to users in our platform.
                     </SheetDescription>
                 </SheetHeader>
-                <ScrollArea className="h-[500px] w-[700px] rounded-md border p-5">
+                <ScrollArea className="h-[500px] w-[700px] rounded-md grid place-items-center">
+                    <div className="w-[300px]" >
                 <Form {...formRoom}>
-                    <form onSubmit={formRoom.handleSubmit(onSubmitRooms)} className="space-y-8" encType="multipart/form-data">
+                    <form onSubmit={formRoom.handleSubmit(onSubmitRooms)} className="space-y-8 p-2" encType="multipart/form-data">
                         <FormField
                             control={formRoom.control}
                             name="name"
@@ -187,12 +187,9 @@ export const RoomEditor: React.FC<RoomEditorProps> = (roomId: any) => {
                         />
                         <Button type="submit">Confirm</Button>
                     </form>
-                </Form>
+                </Form></div>
             </ScrollArea>
             </SheetContent>
         </Sheet>
-
-
     )
-
 }
