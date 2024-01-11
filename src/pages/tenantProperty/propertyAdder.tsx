@@ -1,47 +1,56 @@
-import React, { useContext, useRef } from "react";
-import { useForm } from "react-hook-form";
-// import * as z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import MainNavBarTenant from "@/components/mainNavBarTenant/mainNavBarTenant";
-import { formPropertySchema, uploadImageSchema } from "@/lib/schema";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "@/components/ui/button"
+import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
+import { formPropertySchema, uploadImageSchema } from '@/lib/schema';
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import ProtectedRouteTenant from "@/components/auth/ProtectedRouteTenant";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { AddAPhoto } from "@mui/icons-material";
 import { useGetAPI, usePostApi, usePutApi } from "@/lib/service";
-import { useNavigate } from "react-router";
-import { after } from "node:test";
-import { AuthContext } from "@/app/AuthContext";
-import { useAppDispatch } from "@/lib/features/hook";
+import { useNavigate } from 'react-router';
+import { after } from 'node:test';
+import { AuthContext } from '@/app/AuthContext';
+import { useAppDispatch } from '@/lib/features/hook';
 
-const initialPropertyData = {
-  name: "",
-  description: "",
-  image_url: "",
-  category_id: "1",
-};
 
 // import { useNavigate } from 'react-router';
 // import { after } from 'node:test';
 // import { AuthContext } from '@/app/AuthContext';
 
+
 const AddProperty: React.FC = () => {
+
+
+
   console.log("Proptery Adder");
 
   // const form = useForm({defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema)})
-  const form = useForm({ resolver: zodResolver(formPropertySchema) });
+  const form = useForm({ resolver: zodResolver(formPropertySchema) })
   // const formUpload =useForm({resolver:zodResolver(uploadImageSchema)});
   const { token } = useContext(AuthContext);
   ///////////////////////////////////////
+
+
 
   const [search, setSearch] = useState("");
   const [queryLocation, setQueryLocation] = useState("kota");
   const [location, setLocation] = useState("");
   const hiddenFileInput = useRef<HTMLInputElement>(null);
+
 
   const {
     data: locations,
@@ -71,13 +80,17 @@ const AddProperty: React.FC = () => {
     // form.setValue("file", fileValue!);
   };
 
+
   const config = {
     headers: {
-      Accept: "multipart/form-data",
+      "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`
     },
-  };
+  }
 
-  const { mutate, isSuccess } = usePostApi(`/api/propertyList/${id}`, config);
+
+  const { mutate, isSuccess, isError } = usePostApi(`/api/propertyList`, config)
+  // const { mutate:mutateImage, isSuccess:imageSuccess, isError:imageError } = usePostApi(`/api/propertyList/${id}`, config)
+
   const navigate = useNavigate();
 
   const onSubmit = async (values: any) => {
@@ -87,30 +100,27 @@ const AddProperty: React.FC = () => {
       const formData = new FormData();
       formData.append("file", values.file);
       await mutate({ ...values });
-      console.log("location:", values.location);
+      console.log("location:", values.location)
       console.log(isSuccess, "inidia");
 
-      form.reset();
-      // form.setValue("name","");
-      // form.setValue("description","");
-      // form.setValue("image_url","");
-    } catch (error) {
+    }
+    catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error posting property data:", error);
     } finally {
-      console.log(isSuccess);
-      console.log(isError);
+
+      console.log(isSuccess)
+      console.log(isError)
     }
-  };
+  }
 
   useEffect(() => {
+
     if (isSuccess) {
-      console.log("loglog");
-      setTimeout(() => {
-        navigate("/tenant");
-      }, 50);
+      form.reset();
+      setTimeout(() => { navigate("/tenant") }, 50)
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError])
 
   return (
     <ProtectedRouteTenant>
@@ -170,17 +180,20 @@ const AddProperty: React.FC = () => {
                 </FormItem>
               )}
             />
-            <div className="flex mt-2">
-              <Button
-                className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 mx-auto"
-                onClick={() => handleClick()}
-              >
-                <AddAPhoto fontSize="small" className="mr-2" />
-                upload
-              </Button>
+            <div>
+              <FormLabel>Pilih Gambar Properti</FormLabel>
+              <div className="flex mt-2">
+                <Button type="button"
+                  className="bg-slate-100 rounded-full shadow-2xl text-black px-6 font-normal text-md hover:bg-slate-200 "
+                  onClick={() => handleClick()}
+                >
+                  <AddAPhoto fontSize="small" className="mr-2" />
+                  Upload
+                </Button>
+              </div>
             </div>
             <FormField
-              control={formUpload.control}
+              control={form.control}
               name="file"
               render={() => (
                 <FormItem>
@@ -201,7 +214,7 @@ const AddProperty: React.FC = () => {
               control={form.control}
               name="location"
               render={({ field }) => (
-                <FormItem>
+                <FormItem >
                   <FormControl>
                     <FormItem>
                       <Command className="w-[400px] md:w-[500px] lg:w-[600px]">
@@ -235,8 +248,9 @@ const AddProperty: React.FC = () => {
                       </Command>
                       <Label className={`${location ? "hidden" : ""} text-sm font-thin`}>
                         Masukkan lokasi properti yang akan disewakan
+                      </Label><Label className={`${location ? "" : "hidden"} text-sm font-thin`}>
+                       {location}
                       </Label>
-                      <Label className={`${location ? "" : "hidden"} text-sm font-thin`}>{location}</Label>
                     </FormItem>
                   </FormControl>
                   <FormMessage />
@@ -244,12 +258,12 @@ const AddProperty: React.FC = () => {
               )}
             />
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit" >Submit</Button>
           </form>
         </Form>
       </>
     </ProtectedRouteTenant>
   );
-};
+}
 
 export default AddProperty;
