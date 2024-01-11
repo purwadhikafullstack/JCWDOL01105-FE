@@ -41,14 +41,6 @@ const MainNavBarTenant: React.FC = () => {
   // ];
 
   return (
-    // <div>
-    //   {isFetched &&
-    //     user.map((item: UserInterface) => (
-    //       <p className="text-blue-400" key={item.id}>
-    //         {item.name}
-    //       </p>
-    //     ))}
-    // </div>
     <>
       <br />
       <h1>TENANT PAGE</h1>
@@ -86,20 +78,17 @@ const MainNavBarTenant: React.FC = () => {
                     </a>
                   </NavigationMenuLink>
                 </li>
-
                 <li>
                   {" "}
                   <NavigationMenuLink asChild>
                     <a
                       className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                      href="/tenant"
+                      href="/tenant/transactions"
                     >
                       <div className="mb-2 mt-4 text-lg font-medium">
-                        <text>Report</text>
+                        <text>Orders & Report</text>
                       </div>
-                      <p className="text-sm leading-tight text-muted-foreground">
-                        View Reports on Rents, Income & Occupancy Rates
-                      </p>
+                      <p className="text-sm leading-tight text-muted-foreground">View User Orders & Sales Reports</p>
                     </a>
                   </NavigationMenuLink>
                 </li>

@@ -1,6 +1,8 @@
 import * as React from "react";
-// import { useNavigate } from "react-router"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useContext } from "react";
+import { useDeleteApi } from "@/lib/service";
+import { RoomEditor } from "./roomEditor";
 
 import { useDeleteApi } from "@/lib/service";
 import { RoomEditor } from "./roomEditor";
@@ -13,12 +15,13 @@ interface CardProps {
     name: string;
     price: number;
     description: string;
-    person: number;
+    guest: number;
     property_id: number;
 
     // Add other properties as needed
   };
 }
+import { FormatToIDR } from "@/lib/utils";
 
 const RoomCard: React.FC<CardProps> = ({ rooms }: any) => {
   console.log(rooms);
@@ -46,13 +49,16 @@ const RoomCard: React.FC<CardProps> = ({ rooms }: any) => {
   return (
     <Card className="">
       <CardHeader>
-        <CardTitle>{rooms.name}</CardTitle>
+        <CardTitle className="break-words overflow-hidden whitespace-nowrap overflow-ellipsis">{rooms.name}</CardTitle>
         <CardDescription>{rooms.description}</CardDescription>
-        <CardDescription>Price : {rooms.price}</CardDescription>
+        <CardDescription>Price : {FormatToIDR(rooms.price)}</CardDescription>
+        <CardDescription>Guest : {rooms.guest}</CardDescription>
       </CardHeader>
+      <CardContent>
+        <img className="h-[152px] w-full rounded-xl" src={rooms.image_url} alt={rooms.description} />
+      </CardContent>
       <CardContent className="gridcol-1 gap-3 w-">
-        Price : {rooms.price}
-        Guest : {rooms.person}
+        <div className="font-bold"> Rules :</div> {rooms.room_info}
       </CardContent>
       <CardFooter className="gridcol-3 gap-3">
         {/* <Button  onClick={()=>{navigate('/')}}>Room Editor</Button> */}

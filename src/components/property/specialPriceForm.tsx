@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
-import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
 import { Calendar } from '@/components/ui/calendar';
 
 import {
@@ -14,15 +13,11 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { DateRange } from 'react-day-picker';
 import { usePostApi } from "@/lib/service";
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { AuthContext } from '@/app/AuthContext';
 import { specialPriceSchema } from '@/lib/schema';
-import Combobox from '../ui/combo-box';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from '@radix-ui/react-label';
-import { boolean } from 'zod';
 import { Switch } from "@/components/ui/switch"
 // import { DateRange } from '@mui/icons-material';
 
@@ -32,14 +27,10 @@ const initialFormValues={
     date: new Date(),
 }
 
-
 const SpecialPriceForm: React.FC = () => {
-
-
 
     console.log("Special Price Submission");
     const form = useForm({ defaultValues: initialFormValues, resolver: zodResolver(specialPriceSchema) });
-    // const form = useForm({resolver: zodResolver(specialPriceSchema) });
     const { token } = useContext(AuthContext);
     const { id } = useParams();
     const config = {
@@ -50,8 +41,6 @@ const SpecialPriceForm: React.FC = () => {
     const { mutate, isSuccess, isError } = usePostApi(`/api/specialPrice/${id}`, config)
 
     const onSubmit = async (values: any) => {
-        console.log(values);
-        console.log("hello");
         try {
             // Call the mutate function to make the POST request
             await mutate({ ...values });
@@ -76,13 +65,11 @@ const SpecialPriceForm: React.FC = () => {
             setValPrc("hidden");
             setValPct("");
         }
-
     }
     useEffect(
         () => handleFooter()
         , [date]
     )
-
     useEffect(
         () => {
             handleSwitch();
@@ -91,34 +78,14 @@ const SpecialPriceForm: React.FC = () => {
     )
 const handleFooter=()=>{
     if (date) {
-        setFooter(`You picked ${date}`)
-
+        setFooter(`You picked ${date.toString().substring(0, 15)}`)
     }
     else if (date === undefined) {
         setFooter("Pick a Date")
     }
 }
-
-
-    // useEffect(() => {
-
-    //     if (isSuccess) {
-    //         form.reset();
-    //         setTimeout(() => { navigate("/tenant") }, 50)
-    //     }
-    // }, [isSuccess, isError])
-
-    // const afterSubmit = () => {
-    //   if (isSuccess) {
-    //     console.log("loglog")
-    //     setTimeout(() => { navigate("/tenant") }, 50)
-    //   }
-    // }
-
     return (
-
         <>
-            <MainNavBarTenant />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" encType="multipart/form-data">
                     <FormField
@@ -163,7 +130,6 @@ const handleFooter=()=>{
                             </FormItem>
                         )}
                     />
-
                     <div className="flex items-center space-x-2">
                         <Switch id="nominal-mode" onClick={() => { setSelect(!select) }} />
                         <Label htmlFor="nominal-mode">By Nominal</Label>

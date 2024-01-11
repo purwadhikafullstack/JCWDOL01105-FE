@@ -8,31 +8,13 @@ import { useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
 
 const TenantHome = () => {
-  // ///// TestA
-  // const { data: user, isFetched } = useQuery({
-  //   queryKey: ["user"],
-  //   queryFn: async () => {
-  //     const res = await axios.get("https://jsonplaceholder.typicode.com/users");
-  //     return res.data;
-  //   },
-  // });
-
-  // const fetchPropertyData = async () => {
-  //   try {
-  //     const result = await getPropertyData()
-  //     console.log(result);
-  //     setPropData(result.data.data);
-  //   }
-  //   catch (error) {
-  //     console.error("Error Message :", error);
-  //   }
-
-  // };
-  // const [propData, setPropData] = useState([]);
-
-  // useEffect(() => { fetchPropertyData() }, [])
-  const { id } = useContext(AuthContext);
-  const { data, isFetched, refetch } = useGetAPI(`/api/propertyList/${id}`, "property");
+  const { token } = useContext(AuthContext);
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList`, "property", config);
 
   const displayCard = () => {
     if (data && isFetched) {
