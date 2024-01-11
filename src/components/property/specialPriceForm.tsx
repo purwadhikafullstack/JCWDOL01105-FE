@@ -21,9 +21,9 @@ import { Label } from '@radix-ui/react-label';
 import { Switch } from "@/components/ui/switch"
 // import { DateRange } from '@mui/icons-material';
 
-const initialFormValues={
-    percentage:0,
-    price:0,
+const initialFormValues = {
+    percentage: 0,
+    price: 0,
     date: new Date(),
 }
 
@@ -38,13 +38,14 @@ const SpecialPriceForm: React.FC = () => {
             Accept: "multipart/form-data", Authorization: `Bearer ${token}`
         },
     }
-    const { mutate, isSuccess, isError } = usePostApi(`/api/specialPrice/${id}`, config)
+    const { mutate} = usePostApi(`/api/specialPrice/${id}`, config)
 
     const onSubmit = async (values: any) => {
+        console.log(values)
         try {
             // Call the mutate function to make the POST request
+
             await mutate({ ...values });
-            console.log(isSuccess);
         }
         catch (error) {
             // Handle any errors that may occur during the API call
@@ -54,36 +55,24 @@ const SpecialPriceForm: React.FC = () => {
     const [date, setDate] = useState<Date>();
     const [select, setSelect] = useState(false);
     const [footerValue, setFooter] = useState("")
-    const [valPct, setValPct] = useState("")
-    const [valPrc, setValPrc] = useState("hidden")
-    const handleSwitch = () => {
-        if (select) {
-            setValPrc("");
-            setValPct("hidden");
-        }
-        else if (!select) {
-            setValPrc("hidden");
-            setValPct("");
-        }
-    }
+
     useEffect(
         () => handleFooter()
         , [date]
     )
     useEffect(
         () => {
-            handleSwitch();
             form.reset();
         }, [select]
     )
-const handleFooter=()=>{
-    if (date) {
-        setFooter(`You picked ${date.toString().substring(0, 15)}`)
+    const handleFooter = () => {
+        if (date) {
+            setFooter(`You picked ${date.toString().substring(0, 15)}`)
+        }
+        else if (date === undefined) {
+            setFooter("Pick a Date")
+        }
     }
-    else if (date === undefined) {
-        setFooter("Pick a Date")
-    }
-}
     return (
         <>
             <Form {...form}>
@@ -91,17 +80,16 @@ const handleFooter=()=>{
                     <FormField
                         control={form.control}
                         name="percentage"
-                        disabled={select}
                         render={({ field }) => (
                             <FormItem >
                                 <FormLabel>Adjust Percentage</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="% Price Adjustments" {...field} onChange={(e) => {
+                                    <Input placeholder="% Price Adjustments" disabled={select} {...field} onChange={(e) => {
                                         // Parse the input value as a float
-                                        const parsedValue = parseFloat(e.target.value);
+                                        const parsedValuePercent = parseFloat(e.target.value);
                                         // Check if the parsing is successful and update the field value
-                                        if (!isNaN(parsedValue)) {
-                                            field.onChange(parsedValue);
+                                        if (!isNaN(parsedValuePercent)) {
+                                            field.onChange(parsedValuePercent);
                                         }
                                     }} />
                                 </FormControl>
@@ -112,17 +100,16 @@ const handleFooter=()=>{
                     <FormField
                         control={form.control}
                         name="price"
-                        disabled={!select}
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Adjust Nominal</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Nominal Price Adjustments" {...field} onChange={(e) => {
+                                    <Input placeholder="Nominal Price Adjustments" disabled={!select} {...field} onChange={(e) => {
                                         // Parse the input value as a float
-                                        const parsedValue = parseFloat(e.target.value);
+                                        const parsedValuePrice = parseFloat(e.target.value);
                                         // Check if the parsing is successful and update the field value
-                                        if (!isNaN(parsedValue)) {
-                                            field.onChange(parsedValue);
+                                        if (!isNaN(parsedValuePrice)) {
+                                            field.onChange(parsedValuePrice);
                                         }
                                     }} />
                                 </FormControl>

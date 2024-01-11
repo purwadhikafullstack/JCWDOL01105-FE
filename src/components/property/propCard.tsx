@@ -4,8 +4,6 @@ import { useNavigate } from "react-router"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
   DialogClose

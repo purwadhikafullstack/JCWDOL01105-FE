@@ -1,7 +1,7 @@
 import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
 import Loading from "@/components/Loading";
-import PropSpecialPrice from "@/pages/tenantProperty/propertySpecialPrice";
+
 
 const App = lazy(() => import("../app/App"));
 const Home = lazy(() => import("../pages/Home"));

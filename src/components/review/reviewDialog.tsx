@@ -52,7 +52,7 @@ const ReviewDialog: React.FC<DialogProps> = ({ order,refetch }: any) => {
         },
     }
 
-    const { mutate, isSuccess, isError } = usePostApi(`/api/review`, config)
+    const { mutate} = usePostApi(`/api/review`, config)
 
     const onSubmit = async (values: any) => {
         try {

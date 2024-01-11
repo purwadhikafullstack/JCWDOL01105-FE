@@ -27,7 +27,7 @@ const TransactionsPage: React.FC = () => {
     }
 
     const { data, isFetched, refetch } = useGetAPI(`/api/orderList`, "orders", config);
-    const { data:dataChart, isFetched:isFetchedChart, refetch: refetchChart } = useGetAPI(`/api/orderList/chartData`, "ordersChart", config);
+    const { data:dataChart} = useGetAPI(`/api/orderList/chartData`, "ordersChart", config);
     const displayCard = () => {
         if (data && isFetched)
             return data.map((orders: any, index: number) => (<OrderCard key={index} order={orders} />)
