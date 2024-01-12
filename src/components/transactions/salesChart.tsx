@@ -4,9 +4,7 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import {
     Select,
     SelectContent,
-    SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
@@ -14,17 +12,6 @@ import {
 import { useState, useEffect } from "react";
 import { FormatToIDR } from "@/lib/utils";
 import DisplayCard from "./displayCard";
-
-// interface ChartProps {
-//     data: {
-//       [year: string]: {
-//         months: { month: string; total: number }[];
-//         totalOrders: number;
-//         totalRevenue: number;
-//       };
-//     };
-//   }
-
 
 interface MonthData {
     month: string;
@@ -79,14 +66,11 @@ const SalesChart: React.FC<ChartProps> = ({data}:any) => {
     }, [year, data]);
    
     return (
-
         <>
-       
             <Select onValueChange={(selectedYear) => handleSelect(selectedYear)} value={year}>
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Select year" />
                 </SelectTrigger>
-
                 <SelectContent>
                     {Object.keys(data).map((year) => (
                         <SelectItem key={year} value={year}>
@@ -96,8 +80,6 @@ const SalesChart: React.FC<ChartProps> = ({data}:any) => {
             </Select>
             <div className="grid gap-2 p-3 md:w-[400px] lg:w-screen lg:grid-cols-[.75fr_1fr]">
             <ResponsiveContainer width="100%" className="m-4" height={350}>
-
-
                 <BarChart data={filteredData} margin={{
                     top: 5,
                     right: 30,

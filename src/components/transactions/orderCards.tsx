@@ -1,6 +1,4 @@
 import * as React from "react"
-import { useContext } from "react";
-import { useNavigate } from "react-router"
 import {
     Card,
     CardContent,
@@ -9,14 +7,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { QueryObserverResult, QueryObserverRefetchErrorResult } from 'react-query';
-import { useDeleteApi } from "@/lib/service"
-
 import { Button } from "@/components/ui/button"
-import { Bold } from "lucide-react"
-import { AuthContext } from "@/app/AuthContext";
 import { usePutApi } from "@/lib/service";
-import { useState, useEffect } from "react";
+
 interface CardProps {
     order: {
         id: number,
@@ -36,12 +29,6 @@ import { FormatToIDR } from "@/lib/utils";
 
 const OrderCard: React.FC<CardProps> = ({ order }: any) => {
 
-    console.log(order)
-    const navigate = useNavigate();
-    console.log(order.id);
-    const { token } = useContext(AuthContext)
-    const [buttonDisabler, setDisabler] = useState(false);
-
     const fromReparsed = new Date();
     const toReparsed = new Date();
 
@@ -58,20 +45,6 @@ const OrderCard: React.FC<CardProps> = ({ order }: any) => {
     }
 
     const { mutate } = usePutApi(`/api/orderList/status/${order.id}`, config)
-
-    // const buttonsDisabler=()=>{
-    //     if(order.status==="sussess" || order.status==="rejected" ||order.status==="cancel")
-    //     {
-    //         return true;
-    //     }
-    //     else{
-    //         return false;
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     setDisabler(buttonsDisabler());
-    //   }, [order.status]);
 
     const handleConfirm = () => {
         mutate({ status: "success" });
@@ -116,10 +89,9 @@ const OrderCard: React.FC<CardProps> = ({ order }: any) => {
             </CardContent>
             <CardFooter className="gridcol-3 gap-2 w-full object-cover">
 
-                {!(order.status === "success" || order.status === "rejected" || order.status === "cancel") && <Button className="text-sm" onClick={handleConfirm} disabled={buttonDisabler}>Confirm</Button>}
-                {!(order.status === "success" || order.status === "rejected" || order.status === "cancel") && <Button variant="destructive" onClick={handleReject} disabled={buttonDisabler}>Reject</Button>}
-                {(order.status === "unpaid") && <Button variant="destructive" onClick={handleCancel} disabled={buttonDisabler}>Cancel</Button>}
-
+                {!(order.status === "success" || order.status === "rejected" || order.status === "cancel") && <Button className="text-sm" onClick={handleConfirm} >Confirm</Button>}
+                {!(order.status === "success" || order.status === "rejected" || order.status === "cancel") && <Button variant="destructive" onClick={handleReject} >Reject</Button>}
+                {(order.status === "unpaid") && <Button variant="destructive" onClick={handleCancel} >Cancel</Button>}
             </CardFooter>
         </Card>
 

@@ -1,7 +1,6 @@
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -18,7 +17,7 @@ import { formRoomSchema } from "@/lib/schema"
 import { useParams } from "react-router"
 import { AddAPhoto } from "@mui/icons-material"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useState } from "react"
+
 
 const RoomAdderForm: React.FC = () => {
 
@@ -42,14 +41,8 @@ const RoomAdderForm: React.FC = () => {
     };
     const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config)
     const onSubmitRooms = async (values: any) => {
-        console.log("tes1")
         try {
-            console.log("tes2")
-            //Form Mutate data for property editor form
-            // const formData = new FormData();
-            // formData.append("file", values.file);
             await mutateAddRoom({ ...values });
-            console.log(values);
             //Form Reset
             formRoom.reset();
         } catch (error) {
@@ -57,37 +50,37 @@ const RoomAdderForm: React.FC = () => {
             console.error("Error adding room to property:", error);
         }
     }
-    const [inputValue, setInputValue] = useState('');
-    const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const rawValue = e.target.value;
-        // Remove non-numeric characters
-        const numericValue = rawValue.replace(/[^0-9.]/g, '');
+    // const [inputValue, setInputValue] = useState('');
+    // const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     const rawValue = e.target.value;
+    //     // Remove non-numeric characters
+    //     const numericValue = rawValue.replace(/[^0-9.]/g, '');
 
-        // Parse the numeric value
-        const parsedValue = parseFloat(numericValue);
+    //     // Parse the numeric value
+    //     const parsedValue = parseFloat(numericValue);
 
-        // Check if the parsing is successful
-        if (!isNaN(parsedValue)) {
-            // Format the numeric value as currency
-            const formattedValue = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'IDR',
-            }).format(parsedValue);
+    //     // Check if the parsing is successful
+    //     if (!isNaN(parsedValue)) {
+    //         // Format the numeric value as currency
+    //         const formattedValue = new Intl.NumberFormat('en-US', {
+    //           style: 'currency',
+    //           currency: 'IDR',
+    //         }).format(parsedValue);
       
-            // Update the input value with the formatted currency
-            setInputValue(formattedValue);
-        }
-         else {
-            // If parsing fails, update with raw numeric value
-            setInputValue(numericValue);
-        }
-    };
+    //         // Update the input value with the formatted currency
+    //         setInputValue(formattedValue);
+    //     }
+    //      else {
+    //         // If parsing fails, update with raw numeric value
+    //         setInputValue(numericValue);
+    //     }
+    // };
 
     return (
-        <ScrollArea className="h-[500px] w-[400px] rounded-md border p-5">
+        <ScrollArea className="h-[500px] w-[700px] rounded-md grid place-items-center">
             <div className="w-[300px]">
                 <Form {...formRoom} >
-                    <form onSubmit={formRoom.handleSubmit(onSubmitRooms)} className="space-y-8" encType="multipart/form-data">
+                    <form onSubmit={formRoom.handleSubmit(onSubmitRooms)} className="space-y-8 p-2" encType="multipart/form-data">
                         <FormField
                             control={formRoom.control}
                             name="name"

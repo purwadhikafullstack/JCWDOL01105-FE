@@ -27,7 +27,7 @@ const TransactionsPage: React.FC = () => {
     }
 
     const { data, isFetched, refetch } = useGetAPI(`/api/orderList`, "orders", config);
-    const { data:dataChart, isFetched:isFetchedChart, refetch: refetchChart } = useGetAPI(`/api/orderList/chartData`, "ordersChart", config);
+    const { data:dataChart} = useGetAPI(`/api/orderList/chartData`, "ordersChart", config);
     const displayCard = () => {
         if (data && isFetched)
             return data.map((orders: any, index: number) => (<OrderCard key={index} order={orders} />)
@@ -39,7 +39,7 @@ const TransactionsPage: React.FC = () => {
             <div >
                 <MainNavBarTenant />
                 <br />
-                <Tabs defaultValue="userOrders" className="w-[900px]  ">
+                <Tabs defaultValue="userOrders" className="w-screen">
                     <TabsList>
                         <TabsTrigger value="userOrders" className='w-[300px] p-2 '>Order</TabsTrigger>
                         <TabsTrigger value="reportSales" className='w-[300px] p-2 '>Sales</TabsTrigger>

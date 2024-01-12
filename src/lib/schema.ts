@@ -108,6 +108,7 @@ const SpecialPriceSchema = z.object({
   price: z.number().optional(),
   date: z.date(),
 }).refine(data => {
+  console.log(data);
   // Validate that either percentage or price is provided, but not both
   if (!((data.percentage !== 0  && data.price === 0) ||
         (data.percentage === 0 &&  data.price !==0))) {
@@ -170,6 +171,26 @@ export const nameSchema = z.object({
 export const emailSchema = z.object({
   email: z.string().email().min(3),
 });
+
+export const changeEmailSchema = z.object({
+  email: z
+    .string()
+    .min(3, { message: "Minimal 3 karakter" })
+    .max(50, { message: "Maksimal 50 karakter" })
+    .email("Email tidak valid")
+    .refine(async (e) => {
+      const { data } = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/user/email/${e}`);
+      if (data && data.data) {
+        const validateEmail = data.data.email;
+        return validateEmail.includes(!e);
+      } else {
+        console.log("thius", data);
+        return e === e;
+      }
+    }, "Email tidak tersedia"),
+  password: z.string().min(6, { message: "Minimal 6 karakter" }).max(16, { message: "Maksimal 16 karakter" }),
+});
+
 
 export const editEmailSchema = z.object({
   email: z
