@@ -23,8 +23,9 @@ const PropertyDetail = () => {
   const date = useAppSelector(getDate);
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
   const [totalGuest, setTotalGuest] = useState(1);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [rand, setRand] = useState(Math.random());
 
   const { id } = useParams();
   const { isLogin } = useContext(AuthContext);
@@ -32,6 +33,11 @@ const PropertyDetail = () => {
   const { data: room, isFetched, refetch: refetchRoom } = useGetAPI(`/api/room/${id}`, "room-detail");
   const { data: rating, isFetched: fetchRating } = useGetAPI(`/api/review/room?roomId=${id}`, `room-rating-${id}`);
   const { mutate, isSuccess, isError, error } = usePostApi("/api/order/book", bearer);
+  const { data: specialPrice, refetch: refetchSpecialPrice } = useGetAPI(
+    `/api/property/special-price?propertyId=${id}&start=${date.from}`,
+    "special-price"
+  );
+
   const {
     data: bookOrder,
     isFetched: bookOrderFetched,
@@ -42,6 +48,14 @@ const PropertyDetail = () => {
   const startDate = new Date(date.from).getTime();
   const endDate = new Date(date.to).getTime();
   const countDay = Math.round(Math.abs(startDate - endDate) / (24 * 36 * 1e5));
+  const price = (isFetched && Number(room.price)) || 0;
+  let adjustPrice = price;
+
+  if (specialPrice && specialPrice.percentage) {
+    adjustPrice = price * (1 + specialPrice.percentage / 100);
+  } else if (specialPrice && specialPrice.price) {
+    adjustPrice = price + specialPrice.price;
+  }
 
   const onSubmit = () => {
     const data = {
@@ -68,23 +82,18 @@ const PropertyDetail = () => {
   useEffect(() => {
     refetchRoom();
     bookOrderRefetch();
-    if (bookOrderFetched && bookOrder === "exist") {
+    refetchSpecialPrice();
+
+    if (bookOrderFetched && bookOrder) {
       toast("Kamar Tidak Tersedia");
     } else {
       toast("Silakan Melakukan Pemesanan");
     }
-  }, [bookOrder, date]);
+  }, [bookOrder, date, rand]);
 
   useEffect(() => {
-    if (bookOrderSuccess) {
-      setTimeout(() => {
-        bookOrderRefetch();
-      }, 1500);
-    }
-    if (isFetched) {
-      setTotalPrice(room.price * countDay);
-    }
-  }, [bookOrder, countDay]);
+    isFetched && setTotalPrice(adjustPrice * countDay);
+  }, [specialPrice, specialPrice, date]);
 
   return (
     <div className="text-slate-700 text-xl">
@@ -138,8 +147,13 @@ const PropertyDetail = () => {
               <div className="flex justify-center">
                 <Button
                   className="w-full text-xl"
-                  disabled={!isLogin || bookOrder === "exist"}
-                  onClick={() => onSubmit()}
+                  disabled={!isLogin || bookOrder}
+                  onClick={() => {
+                    onSubmit();
+                    setTimeout(() => {
+                      setRand(Math.random());
+                    }, 500);
+                  }}
                 >
                   Pesan
                 </Button>
@@ -186,9 +200,9 @@ const PropertyDetail = () => {
                 <p className="text-2xl">Rincian</p>
                 <div className="flex justify-between my-2">
                   <p className="font-this text-slate-500">
-                    {FormatToIDR(room.price)} x {countDay} malam
+                    {FormatToIDR(adjustPrice)} x {countDay} malam
                   </p>
-                  <p className="font-thin">{FormatToIDR(room.price * countDay)}</p>
+                  <p className="font-thin">{FormatToIDR(adjustPrice * countDay)}</p>
                 </div>
                 <div className="flex justify-between my-2">
                   <p className="font-this text-slate-500">Tamu</p>

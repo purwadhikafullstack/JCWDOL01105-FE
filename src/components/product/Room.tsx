@@ -14,10 +14,19 @@ interface IDataProps {
     guest: number;
     image_url: string;
   };
+  specialPrice?: { percentage: number; price: number };
 }
 
-const Room: React.FC<IDataProps> = ({ data }) => {
+const Room: React.FC<IDataProps> = ({ data, specialPrice }) => {
   const [fullDescription, setFullDescription] = useState(false);
+  const price = Number(data.price);
+  let adjustPrice = price;
+
+  if (specialPrice && specialPrice.percentage) {
+    adjustPrice = price * (1 + specialPrice.percentage / 100);
+  } else if (specialPrice && specialPrice.price) {
+    adjustPrice = price + specialPrice.price;
+  }
 
   return (
     <Dialog>
@@ -27,8 +36,8 @@ const Room: React.FC<IDataProps> = ({ data }) => {
           <div className="w-full">
             <CardHeader>
               <div className="flex justify-between items-end">
-                <CardTitle>{data.name}</CardTitle>
-                <CardDescription className="text-lg">{FormatToIDR(Number(data.price))}/malam</CardDescription>
+                <CardTitle>{data.name.length > 15 ? data.name.substring(12) + "..." : data.name}</CardTitle>
+                <CardDescription className="text-lg">{FormatToIDR(adjustPrice)}/malam</CardDescription>
               </div>
             </CardHeader>
             <CardContent>
