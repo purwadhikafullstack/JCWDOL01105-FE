@@ -36,7 +36,6 @@ const AddProperty: React.FC = () => {
 
 
 
-  console.log("Proptery Adder");
 
   // const form = useForm({defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema)})
   const form = useForm({ resolver: zodResolver(formPropertySchema) })
@@ -94,14 +93,11 @@ const AddProperty: React.FC = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (values: any) => {
-    // console.log(values);
     try {
       // Call the mutate function to make the POST request
       const formData = new FormData();
       formData.append("file", values.file);
       await mutate({ ...values });
-      console.log("location:", values.location)
-      console.log(isSuccess, "inidia");
 
     }
     catch (error) {
@@ -109,8 +105,6 @@ const AddProperty: React.FC = () => {
       console.error("Error posting property data:", error);
     } finally {
 
-      console.log(isSuccess)
-      console.log(isError)
     }
   }
 

@@ -25,7 +25,6 @@ const RoomAdderForm: React.FC = () => {
     const { token } = useContext(AuthContext);
     const formRoom = useForm({ resolver: zodResolver(formRoomSchema) })
     const { id } = useParams();
-    console.log(id);
     const config = {
         headers: {
             "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`
@@ -42,14 +41,11 @@ const RoomAdderForm: React.FC = () => {
     };
     const { mutate: mutateAddRoom } = usePostApi(`/api/roomList/${id}`, config)
     const onSubmitRooms = async (values: any) => {
-        console.log("tes1")
         try {
-            console.log("tes2")
             //Form Mutate data for property editor form
             // const formData = new FormData();
             // formData.append("file", values.file);
             await mutateAddRoom({ ...values });
-            console.log(values);
             //Form Reset
             formRoom.reset();
         } catch (error) {

@@ -48,7 +48,6 @@ const SalesChart: React.FC<ChartProps> = ({ data }: any) => {
   const [filteredData, setFilteredData] = useState<MonthData[]>([]);
   const [revenueData, setRevenueData] = useState(0);
   const [allOrderData, setAllOrderData] = useState(0);
-  console.log(data);
   const handleSelect = (selectedYear: string) => {
     setYear(selectedYear);
     // setFilteredData(data.data[selectedYear].months || []);
