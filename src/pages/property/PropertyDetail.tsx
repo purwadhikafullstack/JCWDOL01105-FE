@@ -4,7 +4,7 @@ import { StarRate, Map, BedroomParent } from "@mui/icons-material";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useAppDispatch, useAppSelector } from "@/lib/features/hook";
-import { getGuest, setHome } from "@/lib/features/globalReducer";
+import { getGuest, setHome, getDate } from "@/lib/features/globalReducer";
 import { useEffect } from "react";
 import { facilities } from "@/lib/constant";
 import { HeaderBack } from "@/components/Component";
@@ -33,9 +33,16 @@ interface IFacility {
 const PropertyDetail = () => {
   const dispatch = useAppDispatch();
   const guest = useAppSelector(getGuest);
+  const date = useAppSelector(getDate);
 
   const { id } = useParams();
-  const { data, isLoading, refetch: refetchProperty } = useGetAPI(`/api/property/${id}`, "property-detail");
+  const { data, isLoading, refetch: refetchProperty } = useGetAPI(`/api/property/id/${id}`, "property-detail");
+  const {
+    data: specialPrice,
+    isFetched: fetchSpecialPrice,
+    refetch: refetchSpecialPrice,
+  } = useGetAPI(`/api/property/special-price?propertyId=${id}&start=${date.from}`, "special-price");
+
   const {
     data: reviews,
     isFetched,
@@ -49,7 +56,8 @@ const PropertyDetail = () => {
     dispatch(setHome(false));
     refetchReview();
     refetchProperty();
-  }, [reviews]);
+    refetchSpecialPrice();
+  }, [reviews, date]);
 
   return (
     <div>
@@ -128,12 +136,12 @@ const PropertyDetail = () => {
 
             <div className="flex justify-between space-x-4 text-lg">
               <div className="overflow-scroll max-h-[440px] mr-2 w-3/4 pr-2 pb-2">
-                {data.property.rooms.length > 0 ? (
+                {fetchSpecialPrice && data.property.rooms.length > 0 ? (
                   data.property.rooms.map((room: IRoom) => {
                     if (room.guest === guest) {
-                      return <Room key={room.id} data={room} />;
+                      return <Room key={room.id} data={room} specialPrice={specialPrice} />;
                     } else if (guest == 100) {
-                      return <Room key={room.id} data={room} />;
+                      return <Room key={room.id} data={room} specialPrice={specialPrice} />;
                     }
                   })
                 ) : (

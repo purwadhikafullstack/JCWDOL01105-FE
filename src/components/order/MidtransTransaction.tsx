@@ -10,7 +10,7 @@ const MidtransTransaction = () => {
 
   useEffect(() => {
     if (getOrderId) mutate({ orderId: JSON.parse(getOrderId) });
-  }, [getOrderId]);
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {

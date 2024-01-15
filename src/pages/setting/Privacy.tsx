@@ -11,14 +11,14 @@ import { Toaster, toast } from "sonner";
 import { AuthContext } from "@/app/AuthContext";
 
 const Privacy = () => {
-  const { bearer, logout } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [show3, setShow3] = useState(false);
 
+  const { bearer, logout } = useContext(AuthContext);
   const { mutate, isSuccess, isError, error } = usePostApi("/api/user/update-password", bearer);
   const { data, isFetched } = useGetAPI("/api/user/id", "user-privacy", bearer);
-  console.log(isFetched && data.password === null);
+
   const initForm = {
     oldPassword: "",
     newPassword: "",

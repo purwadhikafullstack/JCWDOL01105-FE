@@ -127,9 +127,7 @@ const Account = () => {
               <DarkModeChild />
 
               <div className="p-2">
-                <DropdownMenuItem className="text-md font-thin py-2 cursor-pointer"> <Link className="w-full" to="/tenantSignIn">
-                    Sewakan Properti
-                  </Link></DropdownMenuItem>
+                <MenuLink desc="Sewakan Property" link="tenantSignIn" model="b" />
               </div>
             </DropdownMenuContent>
           )}

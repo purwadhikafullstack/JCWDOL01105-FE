@@ -2,13 +2,12 @@ import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router";
 import Loading from "@/components/Loading";
 
-
 const App = lazy(() => import("../app/App"));
 const Home = lazy(() => import("../pages/Home"));
 const Setting = lazy(() => import("../layout/Setting"));
 const Profile = lazy(() => import("../pages/setting/Profile"));
 const Order = lazy(() => import("../pages/setting/Order"));
-const History =lazy(()=>import("../pages/setting/History"))
+const History = lazy(() => import("../pages/setting/History"));
 const Privacy = lazy(() => import("../pages/setting/Privacy"));
 const Favorite = lazy(() => import("../pages/setting/Favorite"));
 const ResetPassword = lazy(() => import("../components/auth/ResetPassword"));
@@ -20,7 +19,7 @@ const TenantHome = lazy(() => import("../pages/tenantHome"));
 const PropertyEditor = lazy(() => import("../pages/propertyEditor/propertyEditor"));
 const AddProperty = lazy(() => import("../pages/tenantProperty/propertyAdder"));
 const TenantSignIn = lazy(() => import("../pages/tenantProperty/tenantSignIn"));
-const TransactionsPage = lazy(()=> import ("../pages/tenantTransactions/transactionsPage"))
+const TransactionsPage = lazy(() => import("../pages/tenantTransactions/transactionsPage"));
 const LoginAuthSuccess = lazy(() => import("../components/auth/LoginAuthSuccess"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const MidtransTransaction = lazy(() => import("../components/order/MidtransTransaction"));

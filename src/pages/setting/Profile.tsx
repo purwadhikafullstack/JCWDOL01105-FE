@@ -42,11 +42,9 @@ const Profile = () => {
   };
 
   const onSubmitUpload = async (values: any) => {
-    // const formData = new FormData();
-    // formData.append("file", values.file);
-    console.log("print pp:",values)
+    const formData = new FormData();
+    formData.append("file", values.file);
     mutate(values);
-    
   };
 
   useEffect(() => {

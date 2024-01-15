@@ -42,7 +42,6 @@ import PropSpecialPrice from '../tenantProperty/propertySpecialPrice';
 import RoomAdderForm from '@/components/room/roomAdder';
 
 const PropertyEditor: React.FC = () => {
-    console.log("Property Editor");
     const { token } = useContext(AuthContext)
     const formProp = useForm({ resolver: zodResolver(formPropertySchema) })
     const { id } = useParams();

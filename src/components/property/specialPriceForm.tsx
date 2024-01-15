@@ -1,24 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@/components/ui/button"
-import { Calendar } from '@/components/ui/calendar';
+import React, { useContext, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { usePostApi } from "@/lib/service";
-import { useParams } from 'react-router';
-import { AuthContext } from '@/app/AuthContext';
-import { specialPriceSchema } from '@/lib/schema';
-import { Label } from '@radix-ui/react-label';
-import { Switch } from "@/components/ui/switch"
+import { useParams } from "react-router";
+import { AuthContext } from "@/app/AuthContext";
+import { specialPriceSchema } from "@/lib/schema";
+import { Label } from "@radix-ui/react-label";
+import { Switch } from "@/components/ui/switch";
 // import { DateRange } from '@mui/icons-material';
 
 const initialFormValues = {
@@ -28,15 +21,24 @@ const initialFormValues = {
 }
 
 const SpecialPriceForm: React.FC = () => {
+  const form = useForm({ defaultValues: initialFormValues, resolver: zodResolver(specialPriceSchema) });
+  const { token } = useContext(AuthContext);
+  const { id } = useParams();
+  const config = {
+    headers: {
+      Accept: "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const { mutate, isSuccess, isError } = usePostApi(`/api/specialPrice/${id}`, config);
 
-    console.log("Special Price Submission");
-    const form = useForm({ defaultValues: initialFormValues, resolver: zodResolver(specialPriceSchema) });
-    const { token } = useContext(AuthContext);
-    const { id } = useParams();
-    const config = {
-        headers: {
-            Accept: "multipart/form-data", Authorization: `Bearer ${token}`
-        },
+  const onSubmit = async (values: any) => {
+    try {
+      // Call the mutate function to make the POST request
+      await mutate({ ...values });
+    } catch (error) {
+      // Handle any errors that may occur during the API call
+      console.error("Error posting special price data:", error);
     }
     const { mutate} = usePostApi(`/api/specialPrice/${id}`, config)
 

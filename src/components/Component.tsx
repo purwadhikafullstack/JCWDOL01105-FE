@@ -27,10 +27,11 @@ const LoginOauth = ({ googleAuth }: { googleAuth: Function }) => {
 
   return (
     <div className="flex justify-between">
-      {oauth.map((btn) => (
+      {oauth.map((btn, i) => (
         <Button
           className="bg-white hover:bg-white text-black border items-center flex text-md flex-grow p-6 mx-4"
           onClick={btn.fn}
+          key={i}
         >
           <div className="flex items-center">
             <img className="w-6" src={btn.icon} alt="" />
