@@ -13,10 +13,7 @@ const TenantHome = () => {
        Authorization: `Bearer ${token}`
     },
   }
-  const { data, isLoading, isFetched, isError, refetch } = useGetAPI(`/api/propertyList`, "property",config);
-
-
-
+  const { data, isFetched, refetch } = useGetAPI(`/api/propertyList`, "property",config);
   const displayCard = () => {
 
     if (data && isFetched) {
@@ -31,7 +28,6 @@ const TenantHome = () => {
   return (
   <ProtectedRouteTenant>
     <>
-
       <MainNavBarTenant />
       <br />
 

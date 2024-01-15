@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useForm } from "react-hook-form"
-import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import MainNavBarTenant from '@/components/mainNavBarTenant/mainNavBarTenant';
-import { formPropertySchema, uploadImageSchema } from '@/lib/schema';
+import { formPropertySchema } from '@/lib/schema';
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import ProtectedRouteTenant from "@/components/auth/ProtectedRouteTenant";
@@ -12,7 +11,6 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,37 +18,25 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { AddAPhoto } from "@mui/icons-material";
-import { useGetAPI, usePostApi, usePutApi } from "@/lib/service";
+import { useGetAPI, usePostApi} from "@/lib/service";
 import { useNavigate } from 'react-router';
-import { after } from 'node:test';
 import { AuthContext } from '@/app/AuthContext';
-import { useAppDispatch } from '@/lib/features/hook';
 
 
-// import { useNavigate } from 'react-router';
-// import { after } from 'node:test';
-// import { AuthContext } from '@/app/AuthContext';
 
 
 const AddProperty: React.FC = () => {
 
-
-
-
+  console.log("Proptery Adder");
   // const form = useForm({defaultValues: initialPropertyData, resolver: zodResolver(formPropertySchema)})
   const form = useForm({ resolver: zodResolver(formPropertySchema) })
   // const formUpload =useForm({resolver:zodResolver(uploadImageSchema)});
   const { token } = useContext(AuthContext);
   ///////////////////////////////////////
-
-
-
   const [search, setSearch] = useState("");
   const [queryLocation, setQueryLocation] = useState("kota");
   const [location, setLocation] = useState("");
   const hiddenFileInput = useRef<HTMLInputElement>(null);
-
-
   const {
     data: locations,
     isFetched,
@@ -75,8 +61,6 @@ const AddProperty: React.FC = () => {
     const { files } = event.target;
     const selectedFiles = files as FileList;
     form.setValue("file", selectedFiles[0]);
-    // const fileValue = selectedFiles.length > 0 ? selectedFiles[0] : null;
-    // form.setValue("file", fileValue!);
   };
 
 
@@ -86,30 +70,25 @@ const AddProperty: React.FC = () => {
     },
   }
 
-
   const { mutate, isSuccess, isError } = usePostApi(`/api/propertyList`, config)
-  // const { mutate:mutateImage, isSuccess:imageSuccess, isError:imageError } = usePostApi(`/api/propertyList/${id}`, config)
+
 
   const navigate = useNavigate();
 
   const onSubmit = async (values: any) => {
+
     try {
       // Call the mutate function to make the POST request
       const formData = new FormData();
       formData.append("file", values.file);
       await mutate({ ...values });
-
     }
     catch (error) {
       // Handle any errors that may occur during the API call
       console.error("Error posting property data:", error);
-    } finally {
-
-    }
+    } 
   }
-
   useEffect(() => {
-
     if (isSuccess) {
       form.reset();
       setTimeout(() => { navigate("/tenant") }, 50)

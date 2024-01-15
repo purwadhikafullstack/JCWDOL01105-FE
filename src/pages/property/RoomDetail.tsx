@@ -42,6 +42,7 @@ const PropertyDetail = () => {
     data: bookOrder,
     isFetched: bookOrderFetched,
     refetch: bookOrderRefetch,
+    isSuccess: bookOrderSuccess,
   } = useGetAPI(`/api/order/book-order?roomId=${id}&start=${date.from}&end=${date.to}`, `book-order-${id}`);
 
   const startDate = new Date(date.from).getTime();
@@ -94,6 +95,17 @@ const PropertyDetail = () => {
   useEffect(() => {
     isFetched && setTotalPrice(adjustPrice * countDay);
   }, [specialPrice, specialPrice, date]);
+
+  useEffect(() => {
+    if (bookOrderSuccess) {
+      setTimeout(() => {
+        bookOrderRefetch();
+      }, 1500);
+    }
+    if (isFetched) {
+      setTotalPrice(room.price * countDay);
+    }
+  }, [bookOrder, countDay]);
 
   return (
     <div className="text-slate-700 text-xl">

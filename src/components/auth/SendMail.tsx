@@ -28,6 +28,7 @@ const SendMail: React.FC<ISendMail> = ({ page, setPage }) => {
 
   const { mutate, isSuccess, isError, error } = usePostApi("/api/user/reset-password/request");
   const onSubmit = (values: FormType) => {
+    console.log("this", values);
     mutate({ ...values });
   };
 
