@@ -47,7 +47,7 @@ const LoginTenant = () => {
 
   const { mutate, data, isSuccess, isError, error } = usePostApi("/api/user/login");
   const onSubmit = (values: FormType) => {
-    mutate({ ...values });
+    mutate({ ...values, role: "tenant" });
   };
 
   useEffect(() => {

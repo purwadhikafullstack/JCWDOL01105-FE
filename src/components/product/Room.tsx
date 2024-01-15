@@ -23,9 +23,9 @@ const Room: React.FC<IDataProps> = ({ data, specialPrice }) => {
   let adjustPrice = price;
 
   if (specialPrice && specialPrice.percentage) {
-    adjustPrice = price * (1 + specialPrice.percentage / 100);
+    adjustPrice = price * (1 + Number(specialPrice.percentage) / 100);
   } else if (specialPrice && specialPrice.price) {
-    adjustPrice = price + specialPrice.price;
+    adjustPrice = price + Number(specialPrice.price);
   }
 
   return (

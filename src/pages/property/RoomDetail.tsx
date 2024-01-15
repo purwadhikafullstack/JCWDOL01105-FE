@@ -42,7 +42,6 @@ const PropertyDetail = () => {
     data: bookOrder,
     isFetched: bookOrderFetched,
     refetch: bookOrderRefetch,
-    isSuccess: bookOrderSuccess,
   } = useGetAPI(`/api/order/book-order?roomId=${id}&start=${date.from}&end=${date.to}`, `book-order-${id}`);
 
   const startDate = new Date(date.from).getTime();
@@ -52,9 +51,9 @@ const PropertyDetail = () => {
   let adjustPrice = price;
 
   if (specialPrice && specialPrice.percentage) {
-    adjustPrice = price * (1 + specialPrice.percentage / 100);
+    adjustPrice = price * (1 + Number(specialPrice.percentage) / 100);
   } else if (specialPrice && specialPrice.price) {
-    adjustPrice = price + specialPrice.price;
+    adjustPrice = price + Number(specialPrice.price);
   }
 
   const onSubmit = () => {
@@ -62,6 +61,7 @@ const PropertyDetail = () => {
       startDate: date.from,
       endDate: date.to,
       guest: totalGuest,
+      price: adjustPrice,
       totalPrice: totalPrice,
       roomId: isFetched && room.id,
     };

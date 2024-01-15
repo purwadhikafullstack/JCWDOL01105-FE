@@ -222,7 +222,7 @@ export const genderSchema = z.object({
 });
 
 export const birthdateSchema = z.object({
-  birthdate: z.date(),
+  birthdate: z.number(),
 });
 
 export const searchSchema = z.object({
