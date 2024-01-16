@@ -19,7 +19,7 @@ import { useNavigate } from "react-router";
 
 const LoginTenant = () => {
   const dispatch = useAppDispatch();
-  const { login, id } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const page = useAppSelector(getPage);
   const googleAuth = () => {
