@@ -1,6 +1,5 @@
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Form, FormControl, FormMessage, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "../ui/input";
+import { Form } from "@/components/ui/form";
 import { Button } from "../ui/button";
 import { nameSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";

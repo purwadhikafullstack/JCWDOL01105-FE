@@ -1,15 +1,12 @@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { useGetAPI, usePostApi } from "@/lib/service";
 import { AuthContext } from "@/app/AuthContext";
 import { useState } from "react";
 import { Calendar } from "../ui/calendar";
-import { useParams } from "react-router";
 import { CircleBackslashIcon } from "@radix-ui/react-icons";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -19,17 +16,10 @@ interface DisableRoomProps {
 
 const RoomDisable: React.FC<DisableRoomProps> = (roomId) => {
   const [date, setDate] = useState<Date>();
-  const [footerValue, setFooter] = useState("");
+  const [footerValue] = useState("");
   const { token } = useContext(AuthContext);
   const form = useForm();
 
-  const handleFooter = () => {
-    if (date) {
-      setFooter(`You picked ${date}`);
-    } else if (date === undefined) {
-      setFooter("Pick a Date");
-    }
-  };
   const config = {
     headers: {
       Accept: "multipart/form-data",
@@ -37,8 +27,8 @@ const RoomDisable: React.FC<DisableRoomProps> = (roomId) => {
     },
   };
 
-  const { mutate, isSuccess, isError } = usePostApi(`/api/disableRoom/${roomId.roomId}`, config);
-  const { data, isFetched, refetch } = useGetAPI(`/api/disableRoom/${roomId.roomId}`, "unavailableDates");
+  const { mutate } = usePostApi(`/api/disableRoom/${roomId.roomId}`, config);
+  const { data, refetch } = useGetAPI(`/api/disableRoom/${roomId.roomId}`, "unavailableDates");
 
   // const handleDatePick=(date:any)=>{
   //     if (date > new Date())
