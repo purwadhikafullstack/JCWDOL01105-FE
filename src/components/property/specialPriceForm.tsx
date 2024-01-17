@@ -34,7 +34,6 @@ const SpecialPriceForm: React.FC = () => {
   const { mutate } = usePostApi(`/api/specialPrice/${id}`, config);
 
   const onSubmit = async (values: any) => {
-    console.log(values);
     try {
       // Call the mutate function to make the POST request
 

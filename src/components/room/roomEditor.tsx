@@ -39,7 +39,6 @@ export const RoomEditor: React.FC<RoomEditorProps> = (roomId: any) => {
             Authorization: `Bearer ${token}`
         }
     }
-    console.log(roomId.roomId);
     const { mutate: mutateEditRoom } = usePutApi(`/api/roomList/${roomId.roomId}`, config)
 
     const onSubmitRooms = async (values: any) => {
@@ -48,7 +47,6 @@ export const RoomEditor: React.FC<RoomEditorProps> = (roomId: any) => {
             const formData = new FormData();
             formData.append("file", values.file);
             await mutateEditRoom({ ...values });
-            console.log(roomId.roomId)
             //Form Reset
             formRoom.reset();
         } catch (error) {
