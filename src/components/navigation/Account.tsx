@@ -25,7 +25,7 @@ const ProfilePicture = () => {
   useEffect(() => {
     setTimeout(() => {
       refetch();
-    }, 100);
+    }, 500);
   }, [rand, refetch]);
   return <Avatar className="ring-2 ring-[#FC5185] w-8 h-8">{isFetched && <AvatarImage src={data.image_url} />}</Avatar>;
 };
