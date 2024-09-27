@@ -121,7 +121,6 @@ const SpecialPriceSchema = z
     date: z.date(),
   })
   .refine((data) => {
-    console.log(data);
     // Validate that either percentage or price is provided, but not both
     if (!((data.percentage !== 0 && data.price === 0) || (data.percentage === 0 && data.price !== 0))) {
       throw new Error("Either percentage or price should be provided, but not both.");

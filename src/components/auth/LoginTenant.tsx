@@ -1,4 +1,3 @@
-import { DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Form, FormControl, FormMessage, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/lib/schema";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useContext, useEffect, useState } from "react";
 import { usePostApi } from "@/lib/service";
 
@@ -14,14 +13,13 @@ import { Label } from "../ui/label";
 import { useAppDispatch, useAppSelector } from "@/lib/features/hook";
 import { getPage, setPage } from "@/lib/features/globalReducer";
 import { Separator } from "../ui/separator";
-import SendMail from "./SendMail";
 import icon from "@/assets/icons";
 import { AuthContext } from "@/app/AuthContext";
 import { useNavigate } from "react-router";
 
 const LoginTenant = () => {
   const dispatch = useAppDispatch();
-  const { login, id } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const page = useAppSelector(getPage);
   const googleAuth = () => {

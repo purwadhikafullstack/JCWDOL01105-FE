@@ -7,7 +7,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/app/AuthContext";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -26,7 +25,7 @@ const ProfilePicture = () => {
   useEffect(() => {
     setTimeout(() => {
       refetch();
-    }, 100);
+    }, 500);
   }, [rand, refetch]);
   return <Avatar className="ring-2 ring-[#FC5185] w-8 h-8">{isFetched && <AvatarImage src={data.image_url} />}</Avatar>;
 };
